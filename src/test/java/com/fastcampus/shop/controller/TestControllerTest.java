@@ -27,7 +27,7 @@ public class TestControllerTest {
     public void testCheckDb() throws Exception {
         System.out.println("Running testCheckDb...");
 
-        // Create a mock TestMapper
+        // Create a mock TestMapper q
         TestMapper mockMapper = new TestMapper() {
             @Override
             public String testConnection() {
