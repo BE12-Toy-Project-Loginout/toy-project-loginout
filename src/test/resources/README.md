@@ -50,7 +50,7 @@ java -cp target/classes;target/test-classes com.fastcampus.shop.controller.TestC
 3. Run the following command:
 
 ```
-java -cp target/classes;target/test-classes com.fastcampus.shop.mapper.TestMapperTest
+java -cp target/classes;target/test-classes com.fastcampus.shop.dao.TestMapperTest
 ```
 
 ### Running IntegrationTest

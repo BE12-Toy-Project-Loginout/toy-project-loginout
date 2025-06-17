@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.UserMapper">
+    <select id="findById"
+            parameterType="string"
+            resultType="com.fastcampus.shop.dto.User">
+        SELECT
+            member_login_id as userLoginId,
+            member_password as userPassword
+        FROM
+            member
+        WHERE
+            member_login_id = #{userLoginId}
+
+
+    </select>
+
+    <select id="validateUser"
+            parameterType="com.fastcampus.shop.dto.User"
+            resultType="boolean">
+        SELECT
+            COUNT(*) > 0
+        FROM
+            member
+        WHERE
+            member_login_id = #{userLoginId}
+          AND member_password = #{userPassword}
+    </select>
+
+
+</mapper>

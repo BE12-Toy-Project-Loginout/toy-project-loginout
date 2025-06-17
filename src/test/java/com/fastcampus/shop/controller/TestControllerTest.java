@@ -1,6 +1,6 @@
 package com.fastcampus.shop.controller;
 
-import com.fastcampus.shop.mapper.TestMapper;
+import com.fastcampus.shop.dao.TestMapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -130,6 +130,7 @@ public class TestControllerTest {
         @Override public String encodeRedirectURL(String url) { return url; }
         @Override public String encodeUrl(String url) { return url; }
         @Override public String encodeRedirectUrl(String url) { return url; }
+        // encodeUrl and encodeRedirectUrl are deprecated in Jakarta EE
         @Override public void sendError(int sc, String msg) throws IOException {}
         @Override public void sendError(int sc) throws IOException {}
         @Override public void sendRedirect(String location) throws IOException {}
@@ -141,6 +142,7 @@ public class TestControllerTest {
         @Override public void addIntHeader(String name, int value) {}
         @Override public void setStatus(int sc) {}
         @Override public void setStatus(int sc, String sm) {}
+        // setStatus(int sc, String sm) is deprecated in Jakarta EE
         @Override public int getStatus() { return 200; }
         @Override public String getHeader(String name) { return null; }
         @Override public java.util.Collection<String> getHeaders(String name) { return null; }
