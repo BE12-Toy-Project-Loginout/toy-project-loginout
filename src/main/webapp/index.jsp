@@ -6,7 +6,7 @@
     <title>Welcome</title>
 </head>
 <body>
-    <h1>Welcome to Spring Shopping Mall</h1>
+    <h1>LoginOut Shopping Mall</h1>
     <p>This is a placeholder index page.</p>
     <p><a href="/login">Go to Login</a></p>
 </body>
