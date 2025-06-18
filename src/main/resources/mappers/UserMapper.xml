@@ -29,5 +29,13 @@
           AND member_password = #{userPassword}
     </select>
 
+    <update id="updateLastLogin" parameterType="string">
+        UPDATE
+            member
+        SET
+            last_login = NOW()
+        WHERE
+            member_login_id = #{userLoginId}
+    </update>
 
 </mapper>

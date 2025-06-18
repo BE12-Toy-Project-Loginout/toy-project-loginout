@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
     String findById(String userId);
     boolean validateUser(User user);
+    void updateLastLogin(String userLoginId);
 }

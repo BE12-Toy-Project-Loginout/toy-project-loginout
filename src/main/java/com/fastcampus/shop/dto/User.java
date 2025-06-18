@@ -1,8 +1,11 @@
 package com.fastcampus.shop.dto;
 
+import java.util.Date;
+
 public class User {
     private String userLoginId;
     private String userPassword;
+    private Date lastLogin;
 
     public User (){}
     public User (String userLoginId, String userPassword){
@@ -20,6 +23,12 @@ public class User {
     }
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
     @Override
     public String toString() {
