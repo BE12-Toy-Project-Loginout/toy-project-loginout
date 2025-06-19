@@ -28,6 +28,14 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("/home")
+    public String homeView(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("userLoginId") != null) {
+            model.addAttribute("isLoggedIn", true);
+        }
+        return "home";}
+
 
     @PostMapping ( value = "/loginCheck")
     @ResponseBody
