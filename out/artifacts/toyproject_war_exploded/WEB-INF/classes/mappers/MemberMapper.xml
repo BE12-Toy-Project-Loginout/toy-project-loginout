@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.MemberMapper">
+
+    <select id="isDuplicateId" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_id = #{id}
+    </select>
+
+    <select id="isDuplicateEmail" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_email = #{email}
+    </select>
+
+    <insert id="insertMember" parameterType="com.fastcampus.shop.dto.Member">
+        INSERT INTO member (member_id, member_pwd, member_name, member_phonenumber, email)
+        VALUES (#{id}, #{pwd}, #{name}, CONCAT(#{phone1}, ' ', #{phone2}, ' ', #{phone3}), #{email})
+    </insert>
+
+</mapper>
