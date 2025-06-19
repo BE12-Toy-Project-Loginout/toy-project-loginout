@@ -19,23 +19,43 @@
 
     <select id="validateUser"
             parameterType="com.fastcampus.shop.dto.User"
-            resultType="boolean">
+            resultType="int">
         SELECT
-            COUNT(*) > 0
+            COUNT(*)
         FROM
             member
         WHERE
             member_login_id = #{userLoginId}
-          AND member_password = #{userPassword}
+            AND member_password = #{userPassword}
+            AND member_login_fail_count &lt; 3
+
     </select>
 
     <update id="updateLastLogin" parameterType="string">
         UPDATE
             member
         SET
-            last_login = NOW()
+            member_last_login_date = NOW()
         WHERE
             member_login_id = #{userLoginId}
+    </update>
+
+    <select id="getLoginFailCount" parameterType="string" resultType="int">
+        SELECT member_login_fail_count
+        FROM member
+        WHERE member_login_id = #{userLoginId}
+    </select>
+
+    <update id="incrementLoginFailCount" parameterType="string">
+        UPDATE member
+        SET member_login_fail_count = member_login_fail_count + 1
+        WHERE member_login_id = #{userLoginId}
+    </update>
+
+    <update id="resetLoginFailCount" parameterType="string">
+        UPDATE member
+        SET member_login_fail_count = 0
+        WHERE member_login_id = #{userLoginId}
     </update>
 
 </mapper>

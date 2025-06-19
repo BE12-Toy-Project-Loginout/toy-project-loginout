@@ -22,7 +22,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean validateUser(User user) throws Exception {
-        return userMapper.validateUser(user);
+        Integer count = userMapper.validateUser(user);
+        if (count == null|| count == 0) {
+            return false;
+        }
+
+        userMapper.resetLoginFailCount(user.getUserLoginId());
+
+        return true;
     }
 
     @Override
@@ -38,4 +45,17 @@ public class UserServiceImpl implements UserService {
             session.invalidate();
         }
     }
+
+    @Override
+    public int getLoginFailCount(User user) throws Exception {
+        return userMapper.getLoginFailCount(user.getUserLoginId());
+    }
+
+    @Override
+    public void incrementLoginFailCount(String userLoginId) throws Exception {
+        userMapper.incrementLoginFailCount(userLoginId);
+
+    }
+
+
 }

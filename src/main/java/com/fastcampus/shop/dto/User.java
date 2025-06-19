@@ -6,6 +6,7 @@ public class User {
     private String userLoginId;
     private String userPassword;
     private Date lastLogin;
+    private int loginFailCount;
 
     public User (){}
     public User (String userLoginId, String userPassword){
@@ -30,6 +31,18 @@ public class User {
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }
+
+    public int getLoginFailCount() {
+        return loginFailCount;
+    }
+    public void setLoginFailCount(int loginFailCount) {
+        this.loginFailCount = loginFailCount;
+    }
+
+    public void incrementLoginFailCount() {
+        this.loginFailCount++;
+    }
+
     @Override
     public String toString() {
         return "User [userLoginId=" + userLoginId +"]";

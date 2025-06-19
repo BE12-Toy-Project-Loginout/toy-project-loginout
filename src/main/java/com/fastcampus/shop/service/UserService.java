@@ -11,4 +11,9 @@ public interface UserService {
     public void updateLastLogin(String userLoginId) throws Exception;
 
     public void logout() throws Exception;
+
+    public int getLoginFailCount(User user) throws Exception;
+
+    void incrementLoginFailCount(String userLoginId) throws Exception;
+
 }

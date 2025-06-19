@@ -32,13 +32,13 @@ function login(){
         }),
         success : function(result) { // 결과 성공 콜백함수
             console.log(result);
-            if (result === true) {
-                alert("로그인 성공!");
+            if (result.success === true) {
+                alert(result.message);
                 // Show logout div and hide login div
                 $('#div_login').hide();
                 $('#div_logout').show();
             } else {
-                alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+                alert(result.message);
             }
         },
         error : function(request, status, error) { // 결과 에러 콜백함수
