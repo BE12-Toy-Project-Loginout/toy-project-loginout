@@ -1,4 +1,4 @@
-package com.fastcampus.shop;
+package com.fastcampus.shop.Service;
 
 import org.springframework.context.annotation.Configuration;
 
