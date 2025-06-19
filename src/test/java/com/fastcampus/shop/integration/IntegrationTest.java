@@ -1,7 +1,7 @@
 package com.fastcampus.shop.integration;
 
 import com.fastcampus.shop.controller.TestController;
-import com.fastcampus.shop.mapper.TestMapper;
+import com.fastcampus.shop.dao.TestMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

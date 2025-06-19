@@ -1,0 +1,36 @@
+package com.fastcampus.shop.service;
+
+import com.fastcampus.shop.dao.ProductListDao;
+import com.fastcampus.shop.dto.ProductListDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class ProductListService {
+
+    @Autowired
+    ProductListDao productListDao;
+
+//    public List<ProductListDto> getProductList() throws Exception {
+//        return productListDao.selectProductList();
+//    }
+
+    public int getCount()  throws Exception{
+        return productListDao.count();
+    }
+
+    public int getFilteredCount(Map<String, Object> countMap) throws Exception {
+        return productListDao.filteredCount(countMap);
+    }
+
+    public List<ProductListDto> getPage(Map countMap) throws Exception{
+        return productListDao.selectPage(countMap);
+    }
+
+    public List<ProductListDto> getFilteredSortedPage(Map<String, Object> countMap) throws Exception {
+        return productListDao.selectFilteredSortedPage(countMap);
+    }
+}

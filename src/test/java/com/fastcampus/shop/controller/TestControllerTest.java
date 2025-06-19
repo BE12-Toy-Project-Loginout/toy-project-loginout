@@ -1,6 +1,6 @@
 package com.fastcampus.shop.controller;
 
-import com.fastcampus.shop.mapper.TestMapper;
+import com.fastcampus.shop.dao.TestMapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;

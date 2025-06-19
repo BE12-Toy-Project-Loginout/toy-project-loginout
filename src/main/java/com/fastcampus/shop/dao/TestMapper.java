@@ -1,4 +1,4 @@
-package com.fastcampus.shop.mapper;
+package com.fastcampus.shop.dao;
 
 public interface TestMapper {
     String testConnection();
