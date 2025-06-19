@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.ProductListMapper">
+
+    <select id="selectAllProductList" resultType="ProductListDto" parameterType="map">
+        SELECT product_id, product_name, product_description, product_category, product_price, product_image, product_sales_volume, product_posted_at
+        FROM product
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectFilteredSortedPage" resultType="ProductListDto" parameterType="map">
+        SELECT product_id, product_name, product_description, product_category, product_price,
+        product_image, product_sales_volume, product_posted_at
+        FROM product
+        <where>
+            <if test="product_category != null and product_category != ''">
+                product_category = #{product_category}
+            </if>
+        </where>
+        <choose>
+            <when test="orderColumn != null and orderDir != null">
+                ORDER BY
+                <choose>
+                    <when test="orderColumn == 'product_posted_at'"> product_posted_at </when>
+                    <when test="orderColumn == 'product_name'"> product_name </when>
+                    <when test="orderColumn == 'product_price'"> product_price </when>
+                    <when test="orderColumn == 'product_sales_volume'"> product_sales_volume </when>
+                </choose>
+                <choose>
+                    <when test="orderDir == 'ASC'"> ASC </when>
+                    <when test="orderDir == 'DESC'"> DESC </when>
+                </choose>
+            </when>
+        </choose>
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM product
+    </select>
+
+    <select id="filteredCount" resultType="int" parameterType="java.util.Map">
+        SELECT COUNT(*) FROM product
+        <where>
+            <if test="product_category != null and product_category != ''">
+                product_category = #{product_category}
+            </if>
+        </where>
+    </select>
+
+</mapper>
