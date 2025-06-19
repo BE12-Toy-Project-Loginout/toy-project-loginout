@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.QnaDao">
+
+    <!-- 전체 조회 -->
+    <select id="findAll" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at
+        FROM qna
+        ORDER BY create_at DESC
+    </select>
+    <!-- 상세 조회 -->
+    <select id="findById" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at
+        FROM qna
+        WHERE qna_id = #{qnaId}
+    </select>
+    <!-- 사용자별 상세 조회 -->
+    <select id="findByMemberId" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at
+        FROM qna
+        WHERE member_id = #{memberId}
+    </select>
+    <!-- 등록 -->
+    <insert id="insert" parameterType="QnaDto">
+        INSERT INTO qna (qna_category, title, content, is_secret, member_id, product_id)
+        VALUES (#{qnaCategory}, #{title}, #{content}, #{isSecret}, #{memberId}, #{productId})
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="QnaDto">
+        UPDATE qna
+        SET title = #{title},
+            content = #{content},
+            qna_category = #{qnaCategory},
+            is_secret = #{isSecret},
+            password = #{password}
+        WHERE qna_id = #{qnaId}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM qna WHERE qna_id = #{qnaId}
+    </delete>
+
+</mapper>
