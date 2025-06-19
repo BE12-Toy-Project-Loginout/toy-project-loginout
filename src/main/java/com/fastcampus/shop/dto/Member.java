@@ -8,15 +8,13 @@ public class Member {
     private String verifyPwd;
     private String name;
 
-    private String zipcode;
-    private String address1;
-    private String address2;
-
     private String phone1;
     private String phone2;
     private String phone3;
 
     private String email;
+
+    public Member(){}
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -30,15 +28,6 @@ public class Member {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getZipcode() { return zipcode; }
-    public void setZipcode(String zipcode) { this.zipcode = zipcode; }
-
-    public String getAddress1() { return address1; }
-    public void setAddress1(String address1) { this.address1 = address1; }
-
-    public String getAddress2() { return address2; }
-    public void setAddress2(String address2) { this.address2 = address2; }
-
     public String getPhone1() { return phone1; }
     public void setPhone1(String phone1) { this.phone1 = phone1; }
 
@@ -51,8 +40,6 @@ public class Member {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getFullAddress() { return zipcode + " " + address1 + " " + (address2 != null ? address2 : ""); }
-
     public String getFullPhone() { return phone1 + "-" + phone2 + "-" + phone3; }
 
     @Override
@@ -60,16 +47,14 @@ public class Member {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Member member = (Member) o;
-        return id.equals(member.id) && Objects.equals(name, member.name) && Objects.equals(zipcode, member.zipcode)
-                && Objects.equals(address1, member.address1) && Objects.equals(address2, member.address2)
-                && Objects.equals(phone1, member.phone1) && Objects.equals(phone2, member.phone2) && Objects.equals(phone3, member.phone3) && Objects.equals(email, member.email);
+        return id.equals(member.id) && Objects.equals(name, member.name) && Objects.equals(phone1, member.phone1) && Objects.equals(phone2, member.phone2) && Objects.equals(phone3, member.phone3) && Objects.equals(email, member.email);
     }
 
     @Override
-    public int hashCode() { return Objects.hash(id, name, zipcode, address1, address2, phone1, phone2, phone3, email); }
+    public int hashCode() { return Objects.hash(id, name, phone1, phone2, phone3, email); }
 
     @Override
-    public String toString() { return "Member{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", fullAddress='" + getFullAddress() + '\'' +
+    public String toString() { return "Member{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", fullAddress='" + '\'' +
             ", fullPhone='" + getFullPhone() + '\'' + ", email='" + email + '\'' + '}'; }
 
 }

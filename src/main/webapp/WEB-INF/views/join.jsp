@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<meta charset="UTF-8">
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -109,7 +110,11 @@
                             </td>
                         </tr>
                     </table>
-                    <div id="msg" class="msg" style="color: #bba2d6; text-align: center; margin: 10px 0;"></div>
+                    <c:if test="${not empty msg}">
+                        <div id="msg" class="msg" style="color: #bba2d6; text-align: center; margin: 10px 0;">
+                                ${msg}
+                        </div>
+                    </c:if>
                     <div class="submit-row">
                         <button type="submit" class="submit-btn">회원가입</button>
                     </div>

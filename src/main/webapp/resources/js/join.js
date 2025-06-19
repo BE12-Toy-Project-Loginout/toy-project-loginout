@@ -12,11 +12,10 @@ function execDaumPostcode() {
     }).open();
 }
 
-
+let isIdChecked = false;
 
 // 아이디 중복확인
 function checkId() {
-    let isIdChecked = false;
     const id = document.querySelector('input[name="id"]').value;
     fetch(`/feature/checkId?id=${encodeURIComponent(id)}`)
         .then(res => res.text())
