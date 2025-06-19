@@ -1,115 +1,225 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 25. 6. 17.
-  Time: 오후 2:18
-  To change this template use File | Settings | File Templates.
---%>
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.net.URLDecoder" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoginOut - 로그인</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./resources/css/shopping-mall.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOGINOUT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="<c:url value='/resources/css/login.css' />"/>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="./resources/js/login.js" type="text/javascript"></script>
+    <script>
+        // Define contextPath for login.js
+        var contextPath = '${pageContext.request.contextPath}';
+    </script>
+    <script src="${pageContext.request.contextPath}/resources/js/login.js" type="text/javascript"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .menu-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+            z-index: 2000;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px;
+            width: 260px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            padding: 60px 20px;
+            transition: left 0.3s ease;
+            z-index: 1500;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .sidebar ul li a:hover {
+            color: purple;
+        }
+
+        /* 세로 LOGINOUT 텍스트 - 더 크게 */
+        .vertical-text {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: #000;
+            font-weight: bold;
+            font-size: 20px;
+            z-index: 500;
+        }
+
+        /* 하단 아이콘 - 항상 고정되게 */
+        .icon-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 9999; /* 사이드바보다 위 */
+        }
+
+        .icon-bar img {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-top">
-                <div class="logo">LoginOut</div>
-                <div class="header-actions">
-                    <a href="#">회원가입</a>
-                    <a href="login">로그인</a>
-                    <a href="#">장바구니</a>
-                    <a href="#">마이페이지</a>
-                </div>
-            </div>
-            <nav class="nav-main">
-                <ul>
-                    <li><a href="home">홈</a></li>
-                    <li><a href="#">베스트</a></li>
-                    <li><a href="#">신상품</a></li>
-                    <li><a href="#">세일</a></li>
-                    <li><a href="#">이벤트</a></li>
-                    <li><a href="about">소개</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Login Section -->
-    <section class="container">
-        <div class="login-container">
-            <h2 class="login-title">로그인</h2>
+<div class="container">
+
+    <!-- 메뉴 열기 버튼 -->
+    <div class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</div>
+
+    <!-- 사이드바 -->
+    <div class="sidebar" id="sidebar">
+        <div class="close-btn" id="closeBtn" onclick="toggleSidebar()">✖</div>
+
+        <ul>
+            <li><a href="#" style="text-decoration: none; color: inherit;">SHOP</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">공지사항</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">Q&A</a></li>
+            <li><a href="${pageContext.request.contextPath}/login" id="login-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>로그인</a></li>
+            <li><a href="#" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
+            <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">장바구니</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">주문조회</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">마이페이지</a></li>
+        </ul>
+    </div>
+
+    <!-- 세로 텍스트 (쇼핑몰 로고) -->
+    <div class="vertical-text">
+        <span style="color: #c084fc;">LOGINOUT</span>
+    </div>
+
+    <!-- 고정 하단 아이콘 -->
+    <div class="icon-bar">
+        <img src="${pageContext.request.contextPath}/resources/images/icon_mypage.png" alt="mypage">
+        <img src="${pageContext.request.contextPath}/resources/images/icon_cart.png" alt="cart">
+        <img src="${pageContext.request.contextPath}/resources/images/icon_search.png" alt="search">
+    </div>
+
+    <main class="login-main">
+        <div class="login-card">
+            <h1 style="text-align: center; font-size: 1.875rem; font-weight: bold; margin-bottom: 1.5rem;">로그인</h1>
 
             <div id="div_login" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>
-                <div class="form-group">
-                    <label for="id">아이디</label>
-                    <input type="text" id="id" name="userLoginId" class="form-control" placeholder="아이디를 입력하세요">
+                <form id="loginForm" action="loginCheck" method="post" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label for="id" class="input-label">아이디</label>
+                        <input type="text" id="id" name="userLoginId" class="input-field" />
+                    </div>
+                    <div>
+                        <label for="pwd" class="input-label">비밀번호</label>
+                        <input type="password" id="pwd" name="userPassword" class="input-field" />
+                    </div>
+                    <div id="msg" style="color: red; font-size: 0.875rem;"></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #6b7280;">
+                        <a href="#" style="text-decoration: underline;">아이디찾기</a>
+                        <a href="#" style="text-decoration: underline;">비밀번호 찾기</a>
+                    </div>
+                    <button type="button" id="btn" style="width: 100%; background-color: #c084fc; color: white; padding: 0.5rem; border-radius: 0.375rem; border: none; cursor: pointer;">
+                        로그인
+                    </button>
+                </form>
+                <div style="margin-top: 1.5rem; text-align: center; color: #6b7280;">
+                    loginout 회원가입시 <span style="font-weight: bold; color: #374151;">3000원</span> 할인 쿠폰코드 발급
                 </div>
-                <div class="form-group">
-                    <label for="pwd">비밀번호</label>
-                    <input type="password" id="pwd" name="userPassword" class="form-control" placeholder="비밀번호를 입력하세요">
-                </div>
-                <button type="button" id="btn" class="login-btn">로그인</button>
-
-                <div class="login-links">
-                    <a href="#">아이디 찾기</a> | 
-                    <a href="#">비밀번호 찾기</a> | 
-                    <a href="#">회원가입</a>
+                <div class="footer-text">
+                    아직 <span style="font-weight: bold; color: #374151;">LOGINOUT</span> 회원이 아니신가요?<br />
+                    회원가입하고 다양한 혜택과 서비스를 이용해보세요!
                 </div>
             </div>
 
             <div id="div_logout" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>
                 <div style="text-align: center; padding: 20px 0;">
                     <p style="font-size: 18px; margin-bottom: 20px;">로그인 되었습니다.</p>
-                    <button type="button" id="btn_logout" class="login-btn">로그아웃</button>
+                    <button type="button" id="btn_logout" style="width: 100%; background-color: #c084fc; color: white; padding: 0.5rem; border-radius: 0.375rem; border: none; cursor: pointer;">로그아웃</button>
                 </div>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>고객센터</h3>
-                    <ul>
-                        <li>전화: 1234-5678</li>
-                        <li>이메일: support@loginout.com</li>
-                        <li>운영시간: 평일 9:00 - 18:00</li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>쇼핑몰 정보</h3>
-                    <ul>
-                        <li><a href="#">회사소개</a></li>
-                        <li><a href="#">이용약관</a></li>
-                        <li><a href="#">개인정보처리방침</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>고객지원</h3>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">배송조회</a></li>
-                        <li><a href="#">반품/교환</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 LoginOut. All rights reserved.</p>
-            </div>
+    <footer style="background-color: #f3f4f6; padding: 1.5rem 0;">
+        <div style="text-align: center; color: #6b7280;">
+            <div style="font-weight: bold; font-size: 1.125rem; margin-bottom: 0.5rem;">LOGINOUT</div>
+
         </div>
     </footer>
+
+</div>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('closeBtn');
+
+        if (sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            closeBtn.style.display = 'none';
+        } else {
+            sidebar.classList.add('open');
+            closeBtn.style.display = 'block';
+        }
+    }
+</script>
 </body>
 </html>

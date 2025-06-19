@@ -1,207 +1,197 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoginOut - 쇼핑몰</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./resources/css/shopping-mall.css">
+    <title>LOGINOUT HOME</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: url('${pageContext.request.contextPath}/resources/images/main1.png') no-repeat center center / cover;
+        }
+
+        .menu-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+            z-index: 2000;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px;
+            width: 260px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            padding: 60px 20px;
+            transition: left 0.3s ease;
+            z-index: 1500;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .sidebar ul li a:hover {
+            color: purple;
+        }
+
+        /* 세로 LOGINOUT 텍스트 - 더 크게 */
+        .vertical-text {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: #000;
+            font-weight: bold;
+            font-size: 20px;
+            z-index: 500;
+        }
+
+        /* 하단 아이콘 - 항상 고정되게 */
+        .icon-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 9999; /* 사이드바보다 위 */
+        }
+
+        .icon-bar img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .text-content {
+            position: absolute;
+            top: 30%;
+            left: 20%;
+            color: white;
+            text-align: left;
+            z-index: 500;
+        }
+
+        .text-content h1 {
+            font-size: 40px;
+            margin: 0;
+        }
+
+        .text-content p {
+            font-size: 16px;
+        }
+
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="header-top">
-                <div class="logo">LoginOut</div>
-                <div class="header-actions">
-                    <a href="#">회원가입</a>
-                    <a href="login">로그인</a>
-                    <a href="#">장바구니</a>
-                    <a href="#">마이페이지</a>
-                </div>
-            </div>
-            <nav class="nav-main">
-                <ul>
-                    <li><a href="home">홈</a></li>
-                    <li><a href="#">베스트</a></li>
-                    <li><a href="#">신상품</a></li>
-                    <li><a href="#">세일</a></li>
-                    <li><a href="#">이벤트</a></li>
-                    <li><a href="about">소개</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>신상품 컬렉션</h1>
-            <p>2025 여름 신상품이 출시되었습니다. 지금 바로 확인해보세요.</p>
-            <a href="#" class="btn">쇼핑하기</a>
-        </div>
-    </section>
+<div class="container">
 
-    <!-- Featured Products -->
-    <section class="products container">
-        <h2 class="section-title">인기 상품</h2>
-        <div class="product-grid">
-            <!-- Product 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">여성의류</div>
-                    <h3 class="product-title">여름 원피스</h3>
-                    <div class="product-price">39,000원</div>
-                </div>
-            </div>
+    <!-- 메뉴 열기 버튼 -->
+    <div class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</div>
 
-            <!-- Product 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">남성의류</div>
-                    <h3 class="product-title">여름 티셔츠</h3>
-                    <div class="product-price">29,000원</div>
-                </div>
-            </div>
+    <!-- 사이드바 -->
+    <div class="sidebar" id="sidebar">
+        <div class="close-btn" id="closeBtn" onclick="toggleSidebar()">✖</div>
 
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">액세서리</div>
-                    <h3 class="product-title">여름 모자</h3>
-                    <div class="product-price">19,000원</div>
-                </div>
-            </div>
+        <ul>
+            <li><a href="#" style="text-decoration: none; color: inherit;">SHOP</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">공지사항</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">Q&A</a></li>
+            <li><a href="${pageContext.request.contextPath}/login" id="login-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>로그인</a></li> <%-- 로그인 컨트롤러로 이동 --%>
+            <li><a href="#" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
+            <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">장바구니</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">주문조회</a></li>
+            <li><a href="#" style="text-decoration: none; color: inherit;">마이페이지</a></li>
+        </ul>
+    </div>
 
-            <!-- Product 4 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">신발</div>
-                    <h3 class="product-title">여름 샌들</h3>
-                    <div class="product-price">49,000원</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- 세로 텍스트 (쇼핑몰 로고) -->
+    <div class="vertical-text">
+        <span style="color: #c084fc;">LOGINOUT</span>
+    </div>
 
-    <!-- New Arrivals -->
-    <section class="products container">
-        <h2 class="section-title">신상품</h2>
-        <div class="product-grid">
-            <!-- Product 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">여성의류</div>
-                    <h3 class="product-title">여름 블라우스</h3>
-                    <div class="product-price">35,000원</div>
-                </div>
-            </div>
+    <!-- 고정 하단 아이콘 -->
+    <div class="icon-bar">
+        <img src="${pageContext.request.contextPath}/resources/images/icon_mypage.png" alt="mypage">
+        <img src="${pageContext.request.contextPath}/resources/images/icon_cart.png" alt="cart">
+        <img src="${pageContext.request.contextPath}/resources/images/icon_search.png" alt="search">
+    </div>
 
-            <!-- Product 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">남성의류</div>
-                    <h3 class="product-title">여름 반바지</h3>
-                    <div class="product-price">32,000원</div>
-                </div>
-            </div>
 
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">액세서리</div>
-                    <h3 class="product-title">여름 선글라스</h3>
-                    <div class="product-price">25,000원</div>
-                </div>
-            </div>
 
-            <!-- Product 4 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; justify-content: center; align-items: center;">
-                        <span style="color: #adb5bd; font-size: 14px;">상품 이미지</span>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <div class="product-category">가방</div>
-                    <h3 class="product-title">여름 토트백</h3>
-                    <div class="product-price">45,000원</div>
-                </div>
-            </div>
-        </div>
-    </section>
+</div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>고객센터</h3>
-                    <ul>
-                        <li>전화: 1234-5678</li>
-                        <li>이메일: support@loginout.com</li>
-                        <li>운영시간: 평일 9:00 - 18:00</li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>쇼핑몰 정보</h3>
-                    <ul>
-                        <li><a href="#">회사소개</a></li>
-                        <li><a href="#">이용약관</a></li>
-                        <li><a href="#">개인정보처리방침</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>고객지원</h3>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">배송조회</a></li>
-                        <li><a href="#">반품/교환</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 LoginOut. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('closeBtn');
+
+        if (sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            closeBtn.style.display = 'none';
+        } else {
+            sidebar.classList.add('open');
+            closeBtn.style.display = 'block';
+        }
+    }
+
+    $(document).ready(function() {
+        // Add click event for login link
+        $('#login-link').on('click', function(e) {
+            // No need to prevent default as we want the normal link behavior
+            console.log('Login link clicked');
+        });
+    });
+</script>
 </body>
 </html>

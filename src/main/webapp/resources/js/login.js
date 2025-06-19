@@ -17,9 +17,25 @@ function login(){
     let id = $('#id').val();
     let pwd = $('#pwd').val();
 
+    // 입력 검증
+    if(id.length === 0 || pwd.length === 0) {
+        showErrorMessage('아이디 혹은 비밀번호를 반드시 입력해야 합니다.');
+        return;
+    }
+
+    if(id.length < 3) {
+        showErrorMessage('아이디의 길이는 3이상이어야 합니다.');
+        return;
+    }
+
+    if(pwd.length < 3) {
+        showErrorMessage('비밀번호의 길이는 3이상이어야 합니다.');
+        return;
+    }
+
     $.ajax({
         type : 'post', // 타입 (get, post, put 등등)
-        url : '/loginCheck', // 요청할 서버url 이거랑 맞춘거 저거 리턴으로?
+        url : contextPath + '/loginCheck', // 요청할 서버url
         async : true, // 비동기화 여부 (default : true)
         headers : { // Http header
             "Content-Type" : "application/json",
@@ -38,12 +54,12 @@ function login(){
                 $('#div_login').hide();
                 $('#div_logout').show();
             } else {
-                alert(result.message);
+                showErrorMessage(result.message);
             }
         },
         error : function(request, status, error) { // 결과 에러 콜백함수
             console.log(error);
-            alert("로그인 처리 중 오류가 발생했습니다.");
+            showErrorMessage("로그인 처리 중 오류가 발생했습니다.");
         }
     });
 }
@@ -51,7 +67,7 @@ function login(){
 function logout() {
     $.ajax({
         type: 'get',
-        url: '/logout',
+        url: contextPath + '/logout',
         success: function() {
             alert("로그아웃 되었습니다.");
             // Show login div and hide logout div
@@ -66,4 +82,8 @@ function logout() {
             alert("로그아웃 처리 중 오류가 발생했습니다.");
         }
     });
+}
+
+function showErrorMessage(msg) {
+    $('#msg').html('<i class="fa fa-exclamation-circle"> ' + msg + '</i>');
 }
