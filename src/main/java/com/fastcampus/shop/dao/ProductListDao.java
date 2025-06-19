@@ -1,11 +1,11 @@
 package com.fastcampus.shop.dao;
 
 import com.fastcampus.shop.dto.ProductListDto;
+import com.fastcampus.shop.dto.ProductListImageDto;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +16,6 @@ public class ProductListDao {
     private SqlSession sqlSession;
 
     private static String namespace = "com.fastcampus.shop.dao.ProductListMapper.";
-
-//    public List<ProductListDto> selectProductList() throws Exception {
-//        return sqlSession.selectList(namespace+".selectAllProductList");
-//    }
 
     public int count() throws Exception{
         return sqlSession.selectOne(namespace+"count");
@@ -33,7 +29,13 @@ public class ProductListDao {
         return sqlSession.selectList(namespace+"selectAllProductList", map);
     }
 
-    public List<ProductListDto> selectFilteredSortedPage(Map<String, Object> map) {
+    public List<ProductListDto> selectFilteredSortedPage(Map<String, Object> map) throws Exception{
         return sqlSession.selectList(namespace+"selectFilteredSortedPage", map);
     }
+
+    // 대표 이미지 ProductListImageDto에 담아서 가져오기
+    public ProductListImageDto selectThumbnailImage(String productId) throws Exception {
+        return sqlSession.selectOne(namespace + "selectThumbnailImage", productId);
+    }
+
 }

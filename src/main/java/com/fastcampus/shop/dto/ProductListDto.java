@@ -9,14 +9,14 @@ public class ProductListDto {
     private String product_description;
     private String product_category;
     private Integer product_price;
-    private String product_image;
+    private byte[] product_image;
     private Integer product_sales_volume;
     private Date product_posted_at;
 
     public ProductListDto() {}
     public ProductListDto(Integer product_id, String product_name,
                           String product_description, String product_category,
-                          Integer product_price, String product_image,
+                          Integer product_price, byte[] product_image,
                           Integer product_sales_volume, Date product_posted_at) {
         this.product_id = product_id;
         this.product_name = product_name;
@@ -68,11 +68,11 @@ public class ProductListDto {
         this.product_price = product_price;
     }
 
-    public String getProduct_image() {
+    public byte[] getProduct_image() {
         return product_image;
     }
 
-    public void setProduct_image(String product_image) {
+    public void setProduct_image(byte[] product_image) {
         this.product_image = product_image;
     }
 

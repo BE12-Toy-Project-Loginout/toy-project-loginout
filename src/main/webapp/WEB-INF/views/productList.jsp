@@ -58,31 +58,11 @@
 </div>
 
 
-<%--&lt;%&ndash; 정렬 옵션 &ndash;%&gt;--%>
-<%--<div class="toolbar">--%>
-<%--  <c:forEach var="sortOption" items="${['신상품','상품명','낮은가격','높은가격','인기상품']}">--%>
-<%--    <c:url var="sortLink" value="/product">--%>
-<%--      <c:param name="sort" value="${sortOption}" />--%>
-<%--      <c:if test="${not empty param.category}">--%>
-<%--        <c:param name="category" value="${param.category}" />--%>
-<%--      </c:if>--%>
-<%--    </c:url>--%>
-<%--    <a href="${sortLink}" class="${param.sort == sortOption || (sortOption == '신상품' && empty param.sort) ? 'active-filter' : ''}">${sortOption}</a>--%>
-<%--    <c:if test="${sortOption != '인기상품'}"> | </c:if>--%>
-<%--  </c:forEach>--%>
-<%--</div>--%>
-
-
-<%--&lt;%&ndash; 총 개수 &ndash;%&gt;--%>
-<%--<div class="count-info">--%>
-<%--  총 ${productCount} ITEMS--%>
-<%--</div>--%>
-
 <%-- 상품 목록 --%>
 <div class="grid">
   <c:forEach var="product" items="${productList}" varStatus="status">
     <div class="product">
-      <img src="${pageContext.request.contextPath}/resources/images/${product.product_image}" alt="${product.product_name}" />
+      <img src="${pageContext.request.contextPath}/product/image?productId=${product.product_id}" />
       <div class="product-name">${product.product_name}</div>
       <div class="product-desc">${product.product_description}</div>
       <div class="product-price">

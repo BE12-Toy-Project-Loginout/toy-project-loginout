@@ -9,6 +9,7 @@ target/
 .idea/compiler.xml
 .idea/libraries/
 .idea/dataSources.xml
+.idea/webContexts.xml
 src/main/resources/application.properties
 *.iws
 *.iml

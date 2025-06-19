@@ -50,4 +50,20 @@
         </where>
     </select>
 
+    <select id="selectThumbnailImage"
+            resultType="com.fastcampus.shop.dto.ProductListImageDto">
+        SELECT
+            image_id,
+            product_id,
+            filename,
+            content_type,
+            image_data,
+            is_thumbnail
+        FROM product_image
+        WHERE product_id = #{productId}
+          AND is_thumbnail = 1
+            LIMIT 1
+    </select>
+
+
 </mapper>
