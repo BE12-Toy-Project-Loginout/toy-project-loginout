@@ -53,6 +53,8 @@ function login(){
                 // Update the username in the welcome message if available
                 if (result.userName) {
                     $('#userNameDisplay').text(result.userName);
+                    // Show the user welcome message
+                    $('#userWelcome').show();
                 }
                 // Show logout div and hide login div
                 $('#div_login').hide();
@@ -90,6 +92,9 @@ function logout() {
             $('#login-link').show();
             $('#signup-link').show();
             $('#logout-link').hide();
+
+            // Hide the user welcome message
+            $('#userWelcome').hide();
         },
         error: function(request, status, error) {
             console.log(error);

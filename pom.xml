@@ -148,6 +148,14 @@
       <scope>runtime</scope>
     </dependency>
 
+    <!-- Explicitly exclude slf4j-reload4j to prevent multiple SLF4J bindings -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-reload4j</artifactId>
+      <version>${org.slf4j-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- @Inject -->
     <dependency>
       <groupId>javax.inject</groupId>

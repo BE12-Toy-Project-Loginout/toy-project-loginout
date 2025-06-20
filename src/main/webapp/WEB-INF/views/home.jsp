@@ -5,6 +5,11 @@
 <head>
     <title>LOGINOUT HOME</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // Define contextPath for login.js
+        var contextPath = '${pageContext.request.contextPath}';
+    </script>
+    <script src="${pageContext.request.contextPath}/resources/js/login.js" type="text/javascript"></script>
     <style>
         * {
             margin: 0;
@@ -22,7 +27,7 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            background: url('${pageContext.request.contextPath}/resources/images/main1.png') no-repeat center center / cover;
+            background: url('${pageContext.request.contextPath}${backgroundImage != null ? backgroundImage.imagePath : "/resources/images/bg_main.png"}') no-repeat center center / cover;
         }
 
         .menu-toggle {
@@ -153,6 +158,13 @@
             <li><a href="#" style="text-decoration: none; color: inherit;">주문조회</a></li>
             <li><a href="#" style="text-decoration: none; color: inherit;">마이페이지</a></li>
         </ul>
+
+        <!-- 로그인된 사용자 이름 표시 -->
+        <div id="userWelcome" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>
+            <p style="margin-top: 20px; font-size: 14px; text-align: center;">
+                <b id="userNameDisplay">${userName}</b> 님, 환영합니다!
+            </p>
+        </div>
     </div>
 
     <!-- 세로 텍스트 (쇼핑몰 로고) -->
@@ -172,19 +184,6 @@
 </div>
 
 <script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const closeBtn = document.getElementById('closeBtn');
-
-        if (sidebar.classList.contains('open')) {
-            sidebar.classList.remove('open');
-            closeBtn.style.display = 'none';
-        } else {
-            sidebar.classList.add('open');
-            closeBtn.style.display = 'block';
-        }
-    }
-
     $(document).ready(function() {
         // Add click event for login link
         $('#login-link').on('click', function(e) {

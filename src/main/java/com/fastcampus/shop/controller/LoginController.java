@@ -1,6 +1,8 @@
 package com.fastcampus.shop.controller;
 
+import com.fastcampus.shop.dto.BackgroundImage;
 import com.fastcampus.shop.dto.User;
+import com.fastcampus.shop.service.BackgroundImageService;
 import com.fastcampus.shop.service.UserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,9 @@ public class LoginController {
     @Resource(name = "userService")
     private UserService userService;
 
+    @Resource(name = "backgroundImageService")
+    private BackgroundImageService backgroundImageService;
+
     @GetMapping("/login")
     public String loginView(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
@@ -35,9 +40,22 @@ public class LoginController {
     public String homeView(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("userLoginId") != null) {
-            model.addAttribute("isLoggedIn", true);
+          //  model.addAttribute("isLoggedIn", true);
+            // Add userName to the model for display
+            String userName = (String) session.getAttribute("userName");
+            model.addAttribute("userName", userName);
         }
-        return "home";}
+
+        // 데이터베이스에서 메인 배경 이미지를 가져옵니다
+        BackgroundImage backgroundImage = backgroundImageService.getMainBackgroundImage();
+        if (backgroundImage != null) {
+            model.addAttribute("backgroundImage", backgroundImage);
+        } else {
+            System.out.println("데이터베이스에서 배경 이미지를 찾을 수 없습니다");
+        }
+
+        return "home";
+    }
 
 
     @PostMapping ( value = "/loginCheck")
@@ -51,12 +69,12 @@ public class LoginController {
             User validatedUser = userService.validateUser(user);
 
             if (validatedUser != null) {
-                // Create session
+                // 세션 생성
                 HttpSession session = request.getSession(true);
                 session.setAttribute("userName", validatedUser.getUserName());
                 session.setAttribute("userLoginId", validatedUser.getUserLoginId());
-                System.out.println("userName = " + validatedUser.getUserName());
-                // Update last login timestamp
+
+                // 마지막 로그인 시간 업데이트
                 userService.updateLastLogin(validatedUser.getUserLoginId());
                 response.put("success", true);
                 response.put("message", "로그인 성공");
@@ -79,7 +97,7 @@ public class LoginController {
             }
             //return loginAt;
         } catch (Exception e) {
-            System.err.println("Login error: " + e.getMessage());
+            System.err.println("로그인 오류: " + e.getMessage());
             e.printStackTrace();
 
             response.put("success", false);
@@ -95,7 +113,7 @@ public class LoginController {
             userService.logout();
             return "redirect:/login";
         } catch (Exception e) {
-            System.err.println("Logout error: " + e.getMessage());
+            System.err.println("로그아웃 오류: " + e.getMessage());
             e.printStackTrace();
             return "redirect:/";
         }
