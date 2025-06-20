@@ -1,0 +1,138 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 40px;
+    background-color: #fff;
+    margin: 0;
+}
+
+.header {
+    text-align: center;
+    font-size: 33px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.toolbar {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.toolbar a {
+    margin: 0 10px;
+    color: #666;
+    text-decoration: none;
+}
+
+.toolbar a.active-filter {
+    font-weight: bold;
+    color: #000;
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* ✅ 항상 3열 고정 */
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    box-sizing: border-box;
+}
+
+
+.product {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    border: none;    height: 100%; /* 중요! 카드 전체 높이 고정 또는 맞춤 */
+    box-sizing: border-box;
+}
+
+.product img {
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    background-color: #f5f5f5; /*회색 박스처럼 표시*/
+    display: block;
+    aspect-ratio: 1 / 1;
+}
+
+.product-name {
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.product-name a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+
+.product-desc {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-size: 17px;
+    font-weight: bold;
+    color: #000;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #444;
+}
+
+.pagination a.current-page {
+    font-weight: bold;
+    color: #000;
+    text-decoration: underline;
+}
+
+.sort-bar-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    padding: 0 10px;
+}
+
+.count-info {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
+}
+
+.sort-toolbar {
+    font-size: 16px;
+}
+
+.sort-toolbar a {
+    margin: 0 6px;
+    text-decoration: none;
+    color: #555;
+}
+
+.sort-bar-wrapper .sort-toolbar a.active-filter {
+    font-weight: bold;
+    color: #000;
+}

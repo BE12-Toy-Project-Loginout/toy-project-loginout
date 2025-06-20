@@ -1,4 +1,4 @@
-package com.fastcampus.shop.mapper;
+package com.fastcampus.shop.dao;
 
 import java.io.FileInputStream;
 import java.io.IOException;
