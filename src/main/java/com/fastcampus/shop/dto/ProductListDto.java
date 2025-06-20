@@ -1,8 +1,11 @@
 package com.fastcampus.shop.dto;
 
+import lombok.Getter;
+
 import java.util.Date;
 import java.util.Objects;
 
+@Getter
 public class ProductListDto {
     private Integer product_id;
     private String product_name;
@@ -25,70 +28,6 @@ public class ProductListDto {
         this.product_price = product_price;
         this.product_image = product_image;
         this.product_sales_volume = product_sales_volume;
-        this.product_posted_at = product_posted_at;
-    }
-
-    public Integer getProduct_id() {
-        return product_id;
-    }
-
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
-    }
-
-    public String getProduct_name() {
-        return product_name;
-    }
-
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
-    }
-
-    public String getProduct_description() {
-        return product_description;
-    }
-
-    public void setProduct_description(String product_description) {
-        this.product_description = product_description;
-    }
-
-    public String getProduct_category() {
-        return product_category;
-    }
-
-    public void setProduct_category(String product_category) {
-        this.product_category = product_category;
-    }
-
-    public Integer getProduct_price() {
-        return product_price;
-    }
-
-    public void setProduct_price(Integer product_price) {
-        this.product_price = product_price;
-    }
-
-    public byte[] getProduct_image() {
-        return product_image;
-    }
-
-    public void setProduct_image(byte[] product_image) {
-        this.product_image = product_image;
-    }
-
-    public Integer getProduct_sales_volume() {
-        return product_sales_volume;
-    }
-
-    public void setProduct_sales_volume(Integer product_sales_volume) {
-        this.product_sales_volume = product_sales_volume;
-    }
-
-    public Date getProduct_posted_at() {
-        return product_posted_at;
-    }
-
-    public void setProduct_posted_at(Date product_posted_at) {
         this.product_posted_at = product_posted_at;
     }
 

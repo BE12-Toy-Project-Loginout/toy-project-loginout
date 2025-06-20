@@ -1,8 +1,11 @@
 package com.fastcampus.shop.dto;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.Objects;
 
+@Getter
 public class ProductListImageDto {
     private Integer image_id;
     private Integer product_id;
@@ -19,54 +22,6 @@ public class ProductListImageDto {
         this.filename = filename;
         this.content_type = content_type;
         this.image_data = image_data;
-        this.is_thumbnail = is_thumbnail;
-    }
-
-    public Integer getImage_id() {
-        return image_id;
-    }
-
-    public void setImage_id(Integer image_id) {
-        this.image_id = image_id;
-    }
-
-    public Integer getProduct_id() {
-        return product_id;
-    }
-
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    public String getContent_type() {
-        return content_type;
-    }
-
-    public void setContent_type(String content_type) {
-        this.content_type = content_type;
-    }
-
-    public byte[] getImage_data() {
-        return image_data;
-    }
-
-    public void setImage_data(byte[] image_data) {
-        this.image_data = image_data;
-    }
-
-    public boolean isIs_thumbnail() {
-        return is_thumbnail;
-    }
-
-    public void setIs_thumbnail(boolean is_thumbnail) {
         this.is_thumbnail = is_thumbnail;
     }
 
