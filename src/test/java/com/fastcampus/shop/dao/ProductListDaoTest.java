@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
+@ContextConfiguration(locations = {"file:../../../../../../main/webapp/WEB-INF/spring/appServlet/root-context.xml"})
 public class ProductListDaoTest {
     @Autowired
     private ProductListDao productListDao;

@@ -1,7 +1,7 @@
 package com.fastcampus.shop.controller;
 
 import com.fastcampus.shop.ProductDto.ProductDto;
-import com.fastcampus.shop.mapper.ProductMapper;
+import com.fastcampus.shop.dao.ProductMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

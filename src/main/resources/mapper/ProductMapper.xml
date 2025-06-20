@@ -4,7 +4,7 @@
 
 
 
-<mapper namespace="com.fastcampus.shop.mapper.ProductMapper">
+<mapper namespace="com.fastcampus.shop.dao.ProductMapper">
 
     <select id="detailPage" parameterType="String" resultType="com.fastcampus.shop.ProductDto.ProductDto" >
 
