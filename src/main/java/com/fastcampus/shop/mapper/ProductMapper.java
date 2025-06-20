@@ -1,27 +1,28 @@
 package com.fastcampus.shop.mapper;
 
 
-import com.fastcampus.shop.ProductDto.ProductDto;
+import com.fastcampus.shop.ProductVO.ProductVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface ProductMapper {
 
-    ProductDto detailPage(String productId);
+    ProductVO detailPage(String productId);
 
     // 전체 조회 (필요 시 페이지네이션 추가)
-    List<ProductDto> list();
+    List<ProductVO> list();
 
     // Insert (필요 시 사용)
-    int ProductInsert(ProductDto productDetail);
+    int insert(ProductVO productDetail);
 
     // Update (필요 시)
-    int ProductUpdate(ProductDto productDetail);
+    int update(ProductVO productDetail);
 
     // Delete (필요 시)
-    int ProductDelete(int productDetailId);
+    int delete(int productDetailId);
 }
 
 

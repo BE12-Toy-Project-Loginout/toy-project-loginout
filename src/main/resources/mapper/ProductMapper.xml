@@ -6,7 +6,7 @@
 
 <mapper namespace="com.fastcampus.shop.mapper.ProductMapper">
 
-    <select id="detailPage" parameterType="String" resultType="com.fastcampus.shop.ProductDto.ProductDto" >
+    <select id="detailPage" parameterType="String" resultType="com.fastcampus.shop.ProductVO.ProductVO" >
 
         select
         PD.product_detail_id AS productDetailId ,
@@ -18,8 +18,8 @@
         P.product_name AS productName,
         p.product_price as productPrice
 
-        from product_detail PD
-        INNER JOIN product P ON PD.product_id = P.product_id
+        from loginout.product_detail PD
+        INNER JOIN loginout.product P ON PD.product_id = P.product_id
         where PD.product_id = #{product_id}
 
 
