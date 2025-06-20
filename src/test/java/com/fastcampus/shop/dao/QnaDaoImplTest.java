@@ -22,22 +22,23 @@ public class QnaDaoImplTest {
     QnaDao qnaDao;
 
     @Test
-    @Rollback  // 테스트 후 롤백 (DB에 반영 안 됨)
-    public void insert() {
+    @Transactional
+    @Rollback
+    public void insert() throws Exception {
         QnaDto dto = new QnaDto();
         dto.setQnaCategory("배송문의");
         dto.setTitle("배송 언제 오나요?");
         dto.setContent("이 제품 배송이 늦어지고 있어요.");
         dto.setIsSecret(false);
-        dto.setMemberId(1001);
-        dto.setProductId(2001);
+        dto.setMemberId(1001);     // FK 대상이 존재해야 함
+        dto.setProductId(1);    // FK 대상이 존재해야 함
 
         qnaDao.insert(dto);
         System.out.println("삽입 성공");
     }
 
     @Test
-    public void findAll() {
+    public void findAll() throws Exception  {
         List<QnaDto> list = qnaDao.findAll();
         assertNotNull(list);
         for (QnaDto dto : list) {
@@ -46,7 +47,7 @@ public class QnaDaoImplTest {
     }
 
     @Test
-    public void findById() {
+    public void findById() throws Exception {
         QnaDto dto = qnaDao.findById(1);
         assertNotNull(dto);
         assertEquals(Integer.valueOf(1), dto.getQnaId());
@@ -54,7 +55,7 @@ public class QnaDaoImplTest {
     }
 
     @Test
-    public void findByMemberId() {
+    public void findByMemberId() throws Exception {
         List<QnaDto> list = qnaDao.findByMemberId(1001);
         assertNotNull(list);
         System.out.println(list);
@@ -62,7 +63,7 @@ public class QnaDaoImplTest {
 
     @Test
     @Rollback
-    public void update() {
+    public void update() throws Exception {
         QnaDto dto = new QnaDto();
         dto.setQnaId(1); // 존재하는 ID로 테스트
         dto.setTitle("수정된 제목");
@@ -77,7 +78,7 @@ public class QnaDaoImplTest {
 
     @Test
     @Rollback
-    public void delete() {
+    public void delete() throws Exception {
         qnaDao.delete(1); // 존재하는 ID 사용
         System.out.println("삭제 성공");
     }

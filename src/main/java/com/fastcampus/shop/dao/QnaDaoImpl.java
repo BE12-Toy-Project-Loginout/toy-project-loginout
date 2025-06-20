@@ -1,8 +1,9 @@
 package com.fastcampus.shop.dao;
 
 import com.fastcampus.shop.dto.QnaDto;
-import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -10,7 +11,9 @@ import java.util.*;
 @Repository
 public class QnaDaoImpl implements QnaDao {
     @Autowired
+    @Qualifier("sqlSession")
     private SqlSession sqlSession;
+    //private SqlSessionTemplate sqlSession;
     private static String NAMESPACE = "com.fastcampus.shop.dao.QnaDao";
 
    @Override
@@ -29,19 +32,37 @@ public class QnaDaoImpl implements QnaDao {
     }
 
     @Override
-    public void insert(QnaDto qnaDto) {
-        sqlSession.insert(NAMESPACE + ".insert", qnaDto);
+    public int insert(QnaDto qnaDto) {
+        return sqlSession.insert(NAMESPACE + ".insert", qnaDto);
     }
 
     @Override
-    public void update(QnaDto qnaDto) {
-        sqlSession.update(NAMESPACE + ".update", qnaDto);
+    public int update(QnaDto qnaDto) {
+        return sqlSession.update(NAMESPACE + ".update", qnaDto);
     }
 
     @Override
-    public void delete(Integer qnaId) {
-        sqlSession.delete(NAMESPACE + ".delete", qnaId);
+    public int delete(Integer qnaId) {
+        return sqlSession.delete(NAMESPACE + ".delete", qnaId);
     }
 
+    @Override
+    public int deleteAll(){
+        return sqlSession.delete(NAMESPACE + ".deleteAll");
+    }
 
+    @Override
+    public int count() {
+        return sqlSession.selectOne(NAMESPACE + ".count");
+    }
+
+    /*@Override
+    public List<QnaDto> findPage(Map<String, Object> params) {
+        return sqlSession.selectList(NAMESPACE + ".findPage", params);
+    }*/
+
+    @Override
+    public List<QnaDto> selectPage(Map map) {
+        return sqlSession.selectList(NAMESPACE + ".selectPage", map);
+    }
 }

@@ -7,7 +7,7 @@
   <!-- Root Context Configuration -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/spring/applicationContext.xml</param-value>
+    <param-value>/WEB-INF/spring/root-context.xml</param-value>
   </context-param>
 
   <!-- ContextLoaderListener to load the root application context -->

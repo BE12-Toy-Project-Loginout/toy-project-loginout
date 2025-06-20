@@ -3,17 +3,26 @@ package com.fastcampus.shop.dao;
 import com.fastcampus.shop.dto.QnaDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface QnaDao {
-    List<QnaDto> findAll();
+    List<QnaDto> findAll() throws Exception ;
 
-    QnaDto findById(Integer qnaId);
+    QnaDto findById(Integer qnaId) throws Exception ;
 
-    List<QnaDto> findByMemberId(Integer memberId);
+    List<QnaDto> findByMemberId(Integer memberId) throws Exception ;
 
-    void insert(QnaDto qnaDto);
+    int insert(QnaDto qnaDto) throws Exception ;
 
-    void update(QnaDto qnaDto);
+    int update(QnaDto qnaDto) throws Exception ;
 
-    void delete(Integer qnaId);
+    int delete(Integer qnaId) throws Exception ;
+
+    int deleteAll() throws Exception ;
+
+    int count() throws Exception ;
+
+    //List<QnaDto> findPage(Map<String, Object> params) throws Exception ;
+
+    List<QnaDto> selectPage(Map map) throws Exception;
 }
