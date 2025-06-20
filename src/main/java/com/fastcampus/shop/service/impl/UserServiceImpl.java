@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service("userService")
@@ -149,5 +150,28 @@ public class UserServiceImpl implements UserService {
             return "ADMIN".equals(userStatus);
         }
         return false;
+    }
+
+    @Override
+    public List<User> getLockedUsers() {
+        try {
+            return userMapper.getLockedUsers();
+        } catch (Exception e) {
+            System.err.println("잠긴 사용자 목록 조회 오류: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean unlockUser(String userLoginId) {
+        try {
+            userMapper.resetLoginFailCount(userLoginId);
+            return true;
+        } catch (Exception e) {
+            System.err.println("사용자 잠금 해제 오류: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 }

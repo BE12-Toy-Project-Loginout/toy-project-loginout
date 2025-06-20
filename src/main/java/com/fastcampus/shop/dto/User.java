@@ -22,7 +22,6 @@ public class User {
     private String statusType;
 
 
-
     public User(String userLoginId, String userPassword) {
         this.userLoginId = userLoginId;
         this.userPassword = userPassword;

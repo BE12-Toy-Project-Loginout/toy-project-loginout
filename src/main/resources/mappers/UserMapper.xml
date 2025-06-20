@@ -26,7 +26,8 @@
             member_name as userName,
             member_login_fail_count as loginFailCount,
             member_last_login_date as lastLogin,
-            member_status_type as statusType
+            member_status_type as statusType,
+            is_lock as isLock
         FROM
             member
         WHERE
@@ -69,10 +70,19 @@
         WHERE member_login_id = #{userLoginId}
     </update>
 
- <!--   <select id="checkStatusTpye" parameterType="string" resultType="string">
-        SELECT membet_status_type
-        FROM member
-        WHERE member_login_id = #{userLoginId}
-    </select>-->
+    <select id="getLockedUsers" resultType="com.fastcampus.shop.dto.User">
+        SELECT
+            member_login_id as userLoginId,
+            member_name as userName,
+            member_login_fail_count as loginFailCount,
+            member_last_login_date as lastLogin,
+            member_status_type as statusType,
+            is_lock as isLock
+        FROM
+            member
+        WHERE
+            member_login_fail_count >= 3 OR is_lock = 1
+    </select>
+
 
 </mapper>
