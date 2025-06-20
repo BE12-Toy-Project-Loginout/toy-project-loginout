@@ -24,27 +24,35 @@ public class LoginController {
     @Resource(name = "backgroundImageService")
     private BackgroundImageService backgroundImageService;
 
-    @GetMapping("/login")
-    public String loginView(HttpServletRequest request, Model model) {
+
+    private boolean setCommonModelAttributes(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("userLoginId") != null) {
             model.addAttribute("isLoggedIn", true);
             String userName = (String) session.getAttribute("userName");
             model.addAttribute("userName", userName);
 
+            // Add isAdmin attribute to the model
+            String userStatus = (String) session.getAttribute("userStatus");
+            boolean isAdmin = "ADMIN".equals(userStatus);
+            model.addAttribute("isAdmin", isAdmin);
+            return true;
+        } else {
+            model.addAttribute("isLoggedIn", false);
+            model.addAttribute("isAdmin", false);
+            return false;
         }
+    }
+
+    @GetMapping("/login")
+    public String loginView(HttpServletRequest request, Model model) {
+        setCommonModelAttributes(request, model);
         return "login";
     }
 
     @GetMapping("/home")
     public String homeView(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("userLoginId") != null) {
-          //  model.addAttribute("isLoggedIn", true);
-            // Add userName to the model for display
-            String userName = (String) session.getAttribute("userName");
-            model.addAttribute("userName", userName);
-        }
+        setCommonModelAttributes(request, model);
 
         // 데이터베이스에서 메인 배경 이미지를 가져옵니다
         BackgroundImage backgroundImage = backgroundImageService.getMainBackgroundImage();
@@ -73,6 +81,9 @@ public class LoginController {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("userName", validatedUser.getUserName());
                 session.setAttribute("userLoginId", validatedUser.getUserLoginId());
+                String status = userService.getUserStatus(validatedUser);
+                session.setAttribute("userStatus", status);
+
 
                 // 마지막 로그인 시간 업데이트
                 userService.updateLastLogin(validatedUser.getUserLoginId());
@@ -80,6 +91,9 @@ public class LoginController {
                 response.put("message", "로그인 성공");
                 response.put("userName", validatedUser.getUserName());
 
+                // 관리자 여부 추가
+                boolean isAdmin = "ADMIN".equals(status);
+                response.put("isAdmin", isAdmin);
             } else{
                 userService.incrementLoginFailCount(user.getUserLoginId());
 
@@ -117,5 +131,27 @@ public class LoginController {
             e.printStackTrace();
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/admin")
+    public String adminView(HttpServletRequest request, Model model) {
+        // Check if user is logged in
+        if (!setCommonModelAttributes(request, model)) {
+            // 로그인하지 않은 경우 로그인 페이지로 리다이렉트
+            return "redirect:/login";
+        }
+
+        // Get session to check if user is admin
+        HttpSession session = request.getSession(false);
+        String userStatus = (String) session.getAttribute("userStatus");
+
+        // 관리자가 아닌 경우 홈으로 리다이렉트
+        if (!"ADMIN".equals(userStatus)) {
+            return "redirect:/home";
+        }
+
+        // Admin user - ensure isAdmin is true for admin page
+        model.addAttribute("isAdmin", true);
+        return "admin";
     }
 }

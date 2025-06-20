@@ -25,7 +25,8 @@
             member_password as userPassword,
             member_name as userName,
             member_login_fail_count as loginFailCount,
-            member_last_login_date as lastLogin
+            member_last_login_date as lastLogin,
+            member_status_type as statusType
         FROM
             member
         WHERE
@@ -67,5 +68,11 @@
         SET is_lock = 1
         WHERE member_login_id = #{userLoginId}
     </update>
+
+ <!--   <select id="checkStatusTpye" parameterType="string" resultType="string">
+        SELECT membet_status_type
+        FROM member
+        WHERE member_login_id = #{userLoginId}
+    </select>-->
 
 </mapper>

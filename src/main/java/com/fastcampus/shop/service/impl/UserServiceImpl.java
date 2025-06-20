@@ -80,5 +80,11 @@ public class UserServiceImpl implements UserService {
         userMapper.isUserLock(user);
     }
 
+    @Override
+    public String getUserStatus(User user) throws Exception {
+        User loginUser = userMapper.getUserByCredentials(user);
+        return loginUser.getStatusType();
+    }
+
 
 }

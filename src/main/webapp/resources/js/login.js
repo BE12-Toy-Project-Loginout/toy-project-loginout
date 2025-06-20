@@ -50,6 +50,13 @@ function login(){
             console.log(result);
             if (result.success === true) {
                 alert(result.message);
+
+                // 관리자인 경우 관리자 페이지로 리다이렉트
+                if (result.isAdmin === true) {
+                    window.location.href = contextPath + '/admin';
+                    return;
+                }
+
                 // Update the username in the welcome message if available
                 if (result.userName) {
                     $('#userNameDisplay').text(result.userName);
@@ -64,6 +71,13 @@ function login(){
                 $('#login-link').hide();
                 $('#signup-link').hide();
                 $('#logout-link').show();
+
+                // Show admin link if user is admin
+                if (result.isAdmin === true) {
+                    $('#admin-link').show();
+                } else {
+                    $('#admin-link').hide();
+                }
             } else {
                 showErrorMessage(result.message);
             }
@@ -92,6 +106,7 @@ function logout() {
             $('#login-link').show();
             $('#signup-link').show();
             $('#logout-link').hide();
+            $('#admin-link').hide();
 
             // Hide the user welcome message
             $('#userWelcome').hide();

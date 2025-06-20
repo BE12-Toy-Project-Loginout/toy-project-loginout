@@ -19,6 +19,10 @@ public class User {
     private int loginFailCount;
     private String userName;
     private boolean isLock;
+    private String statusType;
+
+
+
     public User(String userLoginId, String userPassword) {
         this.userLoginId = userLoginId;
         this.userPassword = userPassword;

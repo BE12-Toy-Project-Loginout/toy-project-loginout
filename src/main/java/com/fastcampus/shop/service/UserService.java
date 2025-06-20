@@ -17,4 +17,6 @@ public interface UserService {
     void incrementLoginFailCount(String userLoginId) throws Exception;
 
     void isLocked(User user) throws Exception;
+
+    String getUserStatus(User user) throws Exception;
 }
