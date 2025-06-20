@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="
+           http://www.springframework.org/schema/mvc
+           https://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           https://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx
+           https://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 1. DataSource -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://192.168.130.35:3306/loginout?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC"/>
+		<property name="username" value="skykim"/>
+		<property name="password" value="skykim"/>
+	</bean>
+
+	<!-- 2. MyBatis SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 전역 설정파일 사용 시:
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        -->
+		<!-- 매퍼 XML 직접 로드: resources/mapper/*.xml -->
+		<property name="mapperLocations" value="classpath:mapper/*.xml"/>
+		<!-- VO 타입 자동 매핑 -->
+		<property name="typeAliasesPackage" value="com.fastcampus.shop.ProductVO"/>
+	</bean>
+
+	<!-- 3. MyBatis Mapper Scan (중복 없이 한 번만) -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+		<property name="basePackage" value="com.fastcampus.shop.mapper"/>
+	</bean>
+
+	<!-- 4. SqlSessionTemplate -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
+
+	<!-- 5. Transaction -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<!-- 6. Component Scan -->
+	<context:component-scan base-package="com.fastcampus.shop"/>
+</beans>

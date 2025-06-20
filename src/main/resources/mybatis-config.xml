@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+	 <typeAlias alias="BoardDto" type="com.fastcampus.shop.domain.BoardDto"/>
+		<package name="com.fastcampus.shop.ProductVO"/>
+	</typeAliases>
+		<mappers>
+		<!-- resources/mapper/ProductMapper.xml 위치라면 -->
+		<mapper resource="mapper/ProductMapper.xml"/>
+		<!-- 다른 매퍼가 있으면 추가 나열 -->
+	</mappers>
+</configuration>
