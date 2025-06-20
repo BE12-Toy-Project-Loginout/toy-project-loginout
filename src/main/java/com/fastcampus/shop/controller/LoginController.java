@@ -31,12 +31,11 @@ public class LoginController {
             model.addAttribute("isLoggedIn", true);
             String userName = (String) session.getAttribute("userName");
             model.addAttribute("userName", userName);
-
-            // Add isAdmin attribute to the model
             String userStatus = (String) session.getAttribute("userStatus");
             boolean isAdmin = "ADMIN".equals(userStatus);
             model.addAttribute("isAdmin", isAdmin);
             return true;
+
         } else {
             model.addAttribute("isLoggedIn", false);
             model.addAttribute("isAdmin", false);
@@ -135,7 +134,7 @@ public class LoginController {
 
     @GetMapping("/admin")
     public String adminView(HttpServletRequest request, Model model) {
-        // Check if user is logged in
+
         if (!setCommonModelAttributes(request, model)) {
             // 로그인하지 않은 경우 로그인 페이지로 리다이렉트
             return "redirect:/login";
@@ -150,7 +149,6 @@ public class LoginController {
             return "redirect:/home";
         }
 
-        // Admin user - ensure isAdmin is true for admin page
         model.addAttribute("isAdmin", true);
         return "admin";
     }
