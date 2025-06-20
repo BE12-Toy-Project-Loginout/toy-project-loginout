@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/product")
-public class ProductDetailController {
+public class ProductDetailController  {
 
 
     private final ProductMapper productMapper;
