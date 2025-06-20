@@ -5,12 +5,15 @@ import com.fastcampus.shop.dto.User;
 import com.fastcampus.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -21,10 +24,7 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
     }
 
-    /**
-     * 사용자 인증을 수행하는 메소드
-     * 사용자 자격 증명을 확인하고 로그인 실패 횟수를 초기화합니다.
-     */
+
     @Override
     public User validateUser(User user) throws Exception {
         User validatedUser = userMapper.getUserByCredentials(user);
@@ -35,19 +35,13 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    /**
-     * 사용자의 마지막 로그인 시간을 업데이트하는 메소드
-     * 로그인 성공 시 사용자의 마지막 로그인 시간을 현재 시간으로 갱신합니다.
-     */
+
     @Override
     public void updateLastLogin(String userLoginId) throws Exception {
         userMapper.updateLastLogin(userLoginId);
     }
 
-    /**
-     * 사용자 로그아웃을 처리하는 메소드
-     * 현재 HTTP 세션을 무효화하여 사용자를 로그아웃 상태로 만듭니다.
-     */
+
     @Override
     public void logout() throws Exception {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -57,19 +51,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    /**
-     * 사용자의 로그인 실패 횟수를 조회하는 메소드
-     * 특정 사용자의 로그인 실패 횟수를 데이터베이스에서 가져옵니다.
-     */
+
     @Override
     public int getLoginFailCount(User user) throws Exception {
         return userMapper.getLoginFailCount(user.getUserLoginId());
     }
 
-    /**
-     * 사용자의 로그인 실패 횟수를 증가시키는 메소드
-     * 로그인 실패 시 해당 사용자의 실패 횟수를 1 증가시킵니다.
-     */
+
     @Override
     public void incrementLoginFailCount(String userLoginId) throws Exception {
         userMapper.incrementLoginFailCount(userLoginId);
@@ -87,4 +75,79 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public boolean setUserAttributesInModel(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("userLoginId") != null) {
+            model.addAttribute("isLoggedIn", true);
+            String userName = (String) session.getAttribute("userName");
+            model.addAttribute("userName", userName);
+            String userStatus = (String) session.getAttribute("userStatus");
+            boolean isAdmin = "ADMIN".equals(userStatus);
+            model.addAttribute("isAdmin", isAdmin);
+            return true;
+        } else {
+            model.addAttribute("isLoggedIn", false);
+            model.addAttribute("isAdmin", false);
+            return false;
+        }
+    }
+
+
+    @Override
+    public Map<String, Object> processLogin(User user, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            User validatedUser = validateUser(user);
+
+            if (validatedUser != null) {
+                // 세션 생성
+                HttpSession session = request.getSession(true);
+                session.setAttribute("userName", validatedUser.getUserName());
+                session.setAttribute("userLoginId", validatedUser.getUserLoginId());
+                String status = getUserStatus(validatedUser);
+                session.setAttribute("userStatus", status);
+
+                // 마지막 로그인 시간 업데이트
+                updateLastLogin(validatedUser.getUserLoginId());
+                response.put("success", true);
+                response.put("message", "로그인 성공");
+                response.put("userName", validatedUser.getUserName());
+
+                // 관리자 여부 추가
+                boolean isAdmin = "ADMIN".equals(status);
+                response.put("isAdmin", isAdmin);
+            } else {
+                incrementLoginFailCount(user.getUserLoginId());
+
+                int failCount = getLoginFailCount(user);
+                if (failCount >= 3) {
+                    response.put("success", false);
+                    response.put("message", "경고: 로그인 시도 횟수 3회 초과! 계정이 잠겼습니다.");
+                    isLocked(user);
+                } else {
+                    response.put("success", false);
+                    response.put("message", "로그인 실패. 남은 시도 횟수: " + (3 - failCount));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("로그인 오류: " + e.getMessage());
+            e.printStackTrace();
+
+            response.put("success", false);
+            response.put("message", "로그인 처리 중 오류가 발생했습니다.");
+        }
+        return response;
+    }
+
+    @Override
+    public boolean isAdmin(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("userStatus") != null) {
+            String userStatus = (String) session.getAttribute("userStatus");
+            return "ADMIN".equals(userStatus);
+        }
+        return false;
+    }
 }
