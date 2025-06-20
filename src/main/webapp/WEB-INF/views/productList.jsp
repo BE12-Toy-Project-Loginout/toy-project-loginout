@@ -30,11 +30,11 @@
   <c:forEach var="cat" items="${['전체보기', '트리트먼트/헤어팩','에센스/오일','샴푸','스타일링']}">
     <c:url var="link" value="/product">
       <c:param name="category" value="${cat}" />
-      <c:if test="${not empty param.sort}">
-        <c:param name="sort" value="${param.sort}" />
+      <c:if test="${not empty sort}">
+        <c:param name="sort" value="${sort}" />
       </c:if>
     </c:url>
-    <a href="${link}" class="${param.category == cat || (cat == '전체보기' && empty param.category) ? 'active-filter' : ''}">${cat}</a>
+    <a href="${link}" class="${category == cat || (cat == '전체보기' && empty category) ? 'active-filter' : ''}">${cat}</a>
     <c:if test="${cat != '스타일링'}"> | </c:if>
   </c:forEach>
 </div>
@@ -47,11 +47,11 @@
     <c:forEach var="sortOption" items="${['신상품','상품명','낮은가격','높은가격','인기상품']}">
       <c:url var="sortLink" value="/product">
         <c:param name="sort" value="${sortOption}" />
-        <c:if test="${not empty param.category}">
-          <c:param name="category" value="${param.category}" />
+        <c:if test="${not empty category}">
+          <c:param name="category" value="${category}" />
         </c:if>
       </c:url>
-      <a href="${sortLink}" class="${param.sort == sortOption || (sortOption == '신상품' && empty param.sort) ? 'active-filter' : ''}">${sortOption}</a>
+      <a href="${sortLink}" class="${sort == sortOption || (sortOption == '신상품' && empty sort) ? 'active-filter' : ''}">${sortOption}</a>
       <c:if test="${sortOption != '인기상품'}"> | </c:if>
     </c:forEach>
   </div>
@@ -62,8 +62,14 @@
 <div class="grid">
   <c:forEach var="product" items="${productList}" varStatus="status">
     <div class="product">
-      <img src="${pageContext.request.contextPath}/product/image?productId=${product.product_id}" />
-      <div class="product-name">${product.product_name}</div>
+      <a href="${pageContext.request.contextPath}/product/detail/${product.product_id}">
+        <img src="${pageContext.request.contextPath}/product/image?productId=${product.product_id}" />
+      </a>
+      <div class="product-name">
+        <a href="${pageContext.request.contextPath}/product/detail/${product.product_id}">
+            ${product.product_name}
+        </a>
+      </div>
       <div class="product-desc">${product.product_description}</div>
       <div class="product-price">
         <fmt:formatNumber value="${product.product_price}" type="number" />원

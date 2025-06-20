@@ -7,15 +7,16 @@ body {
 
 .header {
     text-align: center;
-    font-size: 30px;
+    font-size: 33px;
     font-weight: bold;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
 .toolbar {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .toolbar a {
@@ -27,7 +28,6 @@ body {
 .toolbar a.active-filter {
     font-weight: bold;
     color: #000;
-    text-decoration: underline;
 }
 
 
@@ -66,28 +66,27 @@ body {
 }
 
 .product-name {
-    font-size: 18px;
+    font-size: 23px;
     font-weight: bold;
     margin-bottom: 4px;
 }
 
+.product-name a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+
 .product-desc {
-    font-size: 14px;
+    font-size: 15px;
     color: #777;
     margin-bottom: 10px;
 }
 
 .product-price {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
     color: #000;
-}
-
-.count-info {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: #666;
 }
 
 .pagination {
@@ -116,16 +115,18 @@ body {
     padding: 0 10px;
 }
 
-.sort-bar-wrapper .count-info {
-    font-size: 14px;
+.count-info {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
     color: #666;
 }
 
-.sort-bar-wrapper .sort-toolbar {
-    font-size: 14px;
+.sort-toolbar {
+    font-size: 16px;
 }
 
-.sort-bar-wrapper .sort-toolbar a {
+.sort-toolbar a {
     margin: 0 6px;
     text-decoration: none;
     color: #555;
@@ -134,5 +135,4 @@ body {
 .sort-bar-wrapper .sort-toolbar a.active-filter {
     font-weight: bold;
     color: #000;
-    text-decoration: underline;
 }
