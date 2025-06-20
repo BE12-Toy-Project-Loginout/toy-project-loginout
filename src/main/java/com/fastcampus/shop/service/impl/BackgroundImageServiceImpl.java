@@ -13,10 +13,6 @@ public class BackgroundImageServiceImpl implements BackgroundImageService {
     @Resource(name = "backgroundImageMapper")
     private BackgroundImageMapper backgroundImageMapper;
 
-    /**
-     * 메인 배경 이미지를 조회합니다
-     * @return 메인 배경 이미지 객체
-     */
     @Override
     public BackgroundImage getMainBackgroundImage() {
         return backgroundImageMapper.getMainBackgroundImage();
