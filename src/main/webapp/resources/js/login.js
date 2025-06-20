@@ -50,9 +50,18 @@ function login(){
             console.log(result);
             if (result.success === true) {
                 alert(result.message);
+                // Update the username in the welcome message if available
+                if (result.userName) {
+                    $('#userNameDisplay').text(result.userName);
+                }
                 // Show logout div and hide login div
                 $('#div_login').hide();
                 $('#div_logout').show();
+
+                // Update sidebar menu items
+                $('#login-link').hide();
+                $('#signup-link').hide();
+                $('#logout-link').show();
             } else {
                 showErrorMessage(result.message);
             }
@@ -76,6 +85,11 @@ function logout() {
             // Clear input fields
             $('#id').val('');
             $('#pwd').val('');
+
+            // Update sidebar menu items
+            $('#login-link').show();
+            $('#signup-link').show();
+            $('#logout-link').hide();
         },
         error: function(request, status, error) {
             console.log(error);
@@ -86,4 +100,18 @@ function logout() {
 
 function showErrorMessage(msg) {
     $('#msg').html('<i class="fa fa-exclamation-circle"> ' + msg + '</i>');
+}
+
+// Function to toggle sidebar
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const closeBtn = document.getElementById('closeBtn');
+
+    if (sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        closeBtn.style.display = 'none';
+    } else {
+        sidebar.classList.add('open');
+        closeBtn.style.display = 'block';
+    }
 }

@@ -6,11 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
     String findById(String userId);
-    int validateUser(User user);
+    User getUserByCredentials(User user);
     void updateLastLogin(String userLoginId);
     int getLoginFailCount(String userLoginId);
     void incrementLoginFailCount(String userLoginId);
     void resetLoginFailCount(String userLoginId);
-
+    void isUserLock(User user);
 
 }

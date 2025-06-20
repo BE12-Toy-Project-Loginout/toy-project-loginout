@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 public interface UserService {
 
-    public boolean validateUser(User user) throws Exception;
+    public User validateUser(User user) throws Exception;
 
     public void updateLastLogin(String userLoginId) throws Exception;
 
@@ -16,4 +16,5 @@ public interface UserService {
 
     void incrementLoginFailCount(String userLoginId) throws Exception;
 
+    void isLocked(User user) throws Exception;
 }

@@ -137,7 +137,7 @@
             <li><a href="#" style="text-decoration: none; color: inherit;">공지사항</a></li>
             <li><a href="#" style="text-decoration: none; color: inherit;">Q&A</a></li>
             <li><a href="${pageContext.request.contextPath}/login" id="login-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>로그인</a></li>
-            <li><a href="#" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
+            <li><a href="#" id="signup-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
             <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>
             <li><a href="#" style="text-decoration: none; color: inherit;">장바구니</a></li>
             <li><a href="#" style="text-decoration: none; color: inherit;">주문조회</a></li>
@@ -191,7 +191,7 @@
 
             <div id="div_logout" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>
                 <div style="text-align: center; padding: 20px 0;">
-                    <p style="font-size: 18px; margin-bottom: 20px;">로그인 되었습니다.</p>
+                    <p style="font-size: 18px; margin-bottom: 20px;"><b id="userNameDisplay">${userName}</b> 님, 로그인 되었습니다.</p>
                     <button type="button" id="btn_logout" style="width: 100%; background-color: #c084fc; color: white; padding: 0.5rem; border-radius: 0.375rem; border: none; cursor: pointer;">로그아웃</button>
                 </div>
             </div>
@@ -207,19 +207,5 @@
 
 </div>
 
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const closeBtn = document.getElementById('closeBtn');
-
-        if (sidebar.classList.contains('open')) {
-            sidebar.classList.remove('open');
-            closeBtn.style.display = 'none';
-        } else {
-            sidebar.classList.add('open');
-            closeBtn.style.display = 'block';
-        }
-    }
-</script>
 </body>
 </html>

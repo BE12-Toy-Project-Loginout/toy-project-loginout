@@ -24,6 +24,9 @@ public class LoginController {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("userLoginId") != null) {
             model.addAttribute("isLoggedIn", true);
+            String userName = (String) session.getAttribute("userName");
+            model.addAttribute("userName", userName);
+
         }
         return "login";
     }
@@ -45,17 +48,19 @@ public class LoginController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            boolean loginAt = userService.validateUser(user);
+            User validatedUser = userService.validateUser(user);
 
-            if (loginAt) {
+            if (validatedUser != null) {
                 // Create session
                 HttpSession session = request.getSession(true);
-                session.setAttribute("userLoginId", user.getUserLoginId());
-
+                session.setAttribute("userName", validatedUser.getUserName());
+                session.setAttribute("userLoginId", validatedUser.getUserLoginId());
+                System.out.println("userName = " + validatedUser.getUserName());
                 // Update last login timestamp
-                userService.updateLastLogin(user.getUserLoginId());
+                userService.updateLastLogin(validatedUser.getUserLoginId());
                 response.put("success", true);
                 response.put("message", "로그인 성공");
+                response.put("userName", validatedUser.getUserName());
 
             } else{
                 userService.incrementLoginFailCount(user.getUserLoginId());
@@ -64,6 +69,7 @@ public class LoginController {
                 if (failCount >= 3) {
                         response.put("success", false);
                         response.put("message", "경고: 로그인 시도 횟수 3회 초과! 계정이 잠겼습니다.");
+                        userService.isLocked(user);
                     }else {
                     response.put("success", false);
                     response.put("message", "로그인 실패. 남은 시도 횟수: " + (3 - failCount));

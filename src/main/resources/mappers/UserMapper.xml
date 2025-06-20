@@ -17,11 +17,15 @@
 
     </select>
 
-    <select id="validateUser"
+    <select id="getUserByCredentials"
             parameterType="com.fastcampus.shop.dto.User"
-            resultType="int">
+            resultType="com.fastcampus.shop.dto.User">
         SELECT
-            COUNT(*)
+            member_login_id as userLoginId,
+            member_password as userPassword,
+            member_name as userName,
+            member_login_fail_count as loginFailCount,
+            member_last_login_date as lastLogin
         FROM
             member
         WHERE
@@ -55,6 +59,12 @@
     <update id="resetLoginFailCount" parameterType="string">
         UPDATE member
         SET member_login_fail_count = 0
+        WHERE member_login_id = #{userLoginId}
+    </update>
+
+    <update id="isUserLock" parameterType="string">
+        UPDATE member
+        SET is_lock = 1
         WHERE member_login_id = #{userLoginId}
     </update>
 
