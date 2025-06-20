@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.BackgroundImageMapper">
+    <!-- 메인 배경 이미지를 조회하는 쿼리 -->
+    <select id="getMainBackgroundImage"
+            resultType="com.fastcampus.shop.dto.BackgroundImage">
+        SELECT
+            image_name as imageName,
+            image_path as imagePath
+        FROM
+            background_image
+        WHERE
+            image_name = 'bg_main.png'
+    </select>
+</mapper>
