@@ -31,7 +31,7 @@
 		<!-- 매퍼 XML 직접 로드: resources/mapper/*.xml -->
 		<property name="mapperLocations" value="classpath:mapper/*.xml"/>
 		<!-- VO 타입 자동 매핑 -->
-		<property name="typeAliasesPackage" value="com.fastcampus.shop.ProductVO"/>
+		<property name="typeAliasesPackage" value="com.fastcampus.shop.ProductDto"/>
 	</bean>
 
 	<!-- 3. MyBatis Mapper Scan (중복 없이 한 번만) -->
