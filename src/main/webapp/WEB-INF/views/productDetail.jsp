@@ -150,16 +150,18 @@
 
 <div class="product-area">
     <div class="image-box">
-        <!-- 네모로 대체된 이미지 -->
-        <div class="image-placeholder">이미지 없음</div>
+        <img src="${pageContext.request.contextPath}/product/image?productId=${productDetail.productId}"
+             onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.jpg'"
+             alt="상품 이미지"
+             style="max-width: 100%; height: auto;"
+             id="unitPrice"
+             data-price="${priceNum}" />
     </div>
 
     <div class="info-box">
-        <!-- 상품명 출력 -->
         <h1 class="product-name">${fn:escapeXml(productDetail.productName)}</h1>
         <hr>
 
-        <!-- 상품 설명 출력 -->
         <div class="description">
             <c:choose>
                 <c:when test="${not empty productDetail.productDetailDescription}">
@@ -169,50 +171,44 @@
             </c:choose>
         </div>
 
-        <!-- 가격 처리 -->
-        <fmt:parseNumber var="priceNum" value="${productDetail.productDetailPrice}" integerOnly="true"/>
+        <fmt:parseNumber var="priceNum" value="${productDetail.productDetailPrice}" integerOnly="true" />
         <ul class="info-list">
-            <!-- 판매가 -->
             <li>
                 <span class="label">판매가</span>
                 <span class="price">
-                        <c:choose>
-                            <c:when test="${priceNum != null}">
-                                <fmt:formatNumber value="${priceNum}" type="number" groupingUsed="true"/>원
-                            </c:when>
-                            <c:otherwise>가격 정보 없음</c:otherwise>
-                        </c:choose>
-                    </span>
+                    <c:choose>
+                        <c:when test="${priceNum != null}">
+                            <fmt:formatNumber value="${priceNum}" type="number" groupingUsed="true" />원
+                        </c:when>
+                        <c:otherwise>가격 정보 없음</c:otherwise>
+                    </c:choose>
+                </span>
             </li>
-            <!-- 배송비 -->
             <li>
                 <span class="label">배송비</span>
                 <span>
-                        <c:choose>
-                            <c:when test="${priceNum >= 20000}">무료배송</c:when>
-                            <c:when test="${priceNum > 0}">2만원 미만: 2,500원</c:when>
-                            <c:otherwise>배송비 정보 없음</c:otherwise>
-                        </c:choose>
-                    </span>
+                    <c:choose>
+                        <c:when test="${priceNum >= 20000}">무료배송</c:when>
+                        <c:when test="${priceNum > 0}">2만원 미만: 2,500원</c:when>
+                        <c:otherwise>배송비 정보 없음</c:otherwise>
+                    </c:choose>
+                </span>
             </li>
         </ul>
 
-        <!-- 수량 및 가격 계산 -->
         <div class="quantity-row">
             <div class="label-cell">수량</div>
             <div class="input-cell">
-                <input type="number" id="quantity" value="1" min="1" oninput="updateTotal()">
+                <input type="number" id="quantity" value="1" min="1" oninput="updateTotal()" />
             </div>
         </div>
 
-        <!-- 총 상품 금액 -->
         <div class="total-area">
             <span class="text">총 상품금액</span>
             <span id="productTotal" class="amount">0</span>
             <span id="totalQty" class="qty-info">1개</span>
         </div>
 
-        <!-- 버튼 그룹 -->
         <div class="button-group">
             <button type="button" class="primary">바로 구매하기</button>
             <button type="button" class="secondary">장바구니</button>
@@ -223,14 +219,14 @@
 
 <script>
     function updateTotal() {
-        var quantity = document.getElementById("quantity").value;
-        var unitPrice = document.getElementById("unitPrice") ? document.getElementById("unitPrice").dataset.price : 0;
-        var total = quantity * unitPrice;
-        document.getElementById("productTotal").innerText = total.toLocaleString();
+        const quantity = parseInt(document.getElementById("quantity").value || 1, 10);
+        const unitPriceEl = document.getElementById("unitPrice");
+        const unitPrice = parseInt(unitPriceEl.dataset.price || 0, 10);
+        const total = quantity * unitPrice;
+
+        document.getElementById("productTotal").innerText = total.toLocaleString() + "원";
         document.getElementById("totalQty").innerText = quantity + "개";
     }
 
     window.addEventListener('DOMContentLoaded', updateTotal);
 </script>
-</body>
-</html>
