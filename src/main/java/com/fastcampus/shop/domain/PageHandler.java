@@ -1,5 +1,8 @@
 package com.fastcampus.shop.domain;
 
+import lombok.Getter;
+
+@Getter
 public class PageHandler {
     private int totalCount;
     private int pageSize;
@@ -34,42 +37,6 @@ public class PageHandler {
             System.out.print(i + " ");
         }
         System.out.println(showNext ? "[NEXT]" : " ");
-    }
-
-    public int getTotalCount() {
-        return totalCount;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public int getNaviSize() {
-        return naviSize;
-    }
-
-    public int getTotalPage() {
-        return totalPage;
-    }
-
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    public int getBeginPage() {
-        return beginPage;
-    }
-
-    public int getEndPage() {
-        return endPage;
-    }
-
-    public boolean isShowPrevious() {
-        return showPrevious;
-    }
-
-    public boolean isShowNext() {
-        return showNext;
     }
 
     @Override
