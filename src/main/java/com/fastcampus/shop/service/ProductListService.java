@@ -1,6 +1,6 @@
 package com.fastcampus.shop.service;
 
-import com.fastcampus.shop.dao.ProductListDao;
+import com.fastcampus.shop.dao.ProductDao;
 import com.fastcampus.shop.domain.PageHandler;
 import com.fastcampus.shop.dto.ProductListDto;
 import com.fastcampus.shop.dto.ProductListImageDto;
@@ -15,27 +15,27 @@ import java.util.Map;
 public class ProductListService {
 
     @Autowired
-    ProductListDao productListDao;
+    ProductDao productDao;
 
     public int getCount()  throws Exception{
-        return productListDao.count();
+        return productDao.count();
     }
 
     public int getFilteredCount(Map<String, Object> countMap) throws Exception {
-        return productListDao.filteredCount(countMap);
+        return productDao.filteredCount(countMap);
     }
 
     public List<ProductListDto> getPage(Map countMap) throws Exception{
-        return productListDao.selectPage(countMap);
+        return productDao.selectAllProductList(countMap);
     }
 
     public List<ProductListDto> getFilteredSortedPage(Map<String, Object> countMap) throws Exception {
-        return productListDao.selectFilteredSortedPage(countMap);
+        return productDao.selectFilteredSortedPage(countMap);
     }
 
     // 대표 이미지 dto에 담아 온 다음에 byte타입으로 반환
     public byte[] getThumbnailImage(String productId) throws Exception {
-        ProductListImageDto dto = productListDao.selectThumbnailImage(productId);
+        ProductListImageDto dto = productDao.selectThumbnailImage(productId);
         return dto != null ? dto.getImage_data() : null;
     }
 

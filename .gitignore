@@ -10,10 +10,11 @@ target/
 .idea/libraries/
 .idea/dataSources.xml
 .idea/webContexts.xml
+.idea/
 src/main/resources/application.properties
 *.iws
 *.iml
-*.ipr
+*.ipr햣
 
 ### Eclipse ###
 .apt_generated
