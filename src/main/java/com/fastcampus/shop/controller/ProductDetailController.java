@@ -1,36 +1,28 @@
+// src/main/java/com/fastcampus/shop/controller/ProductDetailController.java
 package com.fastcampus.shop.controller;
 
-import com.fastcampus.shop.ProductDto.ProductDto;
-import com.fastcampus.shop.dao.ProductMapper;
+import com.fastcampus.shop.dao.ProductListDao;
+import com.fastcampus.shop.dto.ProductListDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Controller
 @RequestMapping("/product")
-public class ProductDetailController  {
+public class ProductDetailController {
 
-
-    private final ProductMapper productMapper;
-    public ProductDetailController(ProductMapper productMapper) {
-        this.productMapper = productMapper;
-    }
+    @Autowired
+    ProductListDao productListDao;
 
     @GetMapping("/detail/{productId}")
-    public String detail(@PathVariable("productId") String productId, HttpServletRequest request, Model model) {
-
-
-          ProductDto detailPage = productMapper.detailPage(productId);
-
-           model.addAttribute("productDetail", detailPage);
-
-
+    public String detail(@PathVariable String productId, Model model) {
+        ProductListDto detailPage = productListDao.detailPage(productId);
+        model.addAttribute("productDetail", detailPage);
         return "productDetail";
-
     }
+
 
 }

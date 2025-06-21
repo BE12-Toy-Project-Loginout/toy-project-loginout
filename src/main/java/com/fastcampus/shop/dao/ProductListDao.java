@@ -38,4 +38,24 @@ public class ProductListDao {
         return sqlSession.selectOne(namespace + "selectThumbnailImage", productId);
     }
 
+    public ProductListDto detailPage(String productId) {
+        return sqlSession.selectOne(namespace + "detailPage", productId);
+    }
+
+    public List<ProductListDto> list() {
+        return sqlSession.selectList(namespace + "list");
+    }
+
+    public int productInsert(ProductListDto productDetail) {
+        return sqlSession.insert(namespace + "insert", productDetail);
+    }
+
+    public int productUpdate(ProductListDto productDetail) {
+        return sqlSession.update(namespace + "update", productDetail);
+    }
+
+    public int productDelete(int productDetailId) {
+        return sqlSession.delete(namespace + "delete", productDetailId);
+    }
 }
+

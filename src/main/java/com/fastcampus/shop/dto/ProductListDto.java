@@ -1,12 +1,24 @@
 package com.fastcampus.shop.dto;
 
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.Date;
 import java.util.Objects;
 
-@Getter
+@Data
 public class ProductListDto {
+
+    private String productDetailId;
+    private String productId;
+    private String productDetailPrice;
+    private String productDetailQuantity;
+    private String productDetailDescription;
+    private String productCautionLevel;
+    private String productName;
+    private String productPrice;
+
+
     private Integer product_id;
     private String product_name;
     private String product_description;

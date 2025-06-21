@@ -60,4 +60,32 @@
     </select>
 
 
+    <!-- 상품 상세 -->
+
+
+        <select id="detailPage" parameterType="String" resultType="com.fastcampus.shop.dto.ProductListDto">
+            SELECT
+                PD.product_detail_id       AS productDetailId,
+                P.product_id               AS productId,
+                PD.product_detail_price    AS productDetailPrice,
+                PD.product_detail_quantity AS productDetailQuantity,
+                PD.product_detail_description AS productDetailDescription,
+                PD.product_caution_level   AS productCautionLevel,
+                P.product_name             AS productName,
+                P.product_price            AS productPrice
+
+            FROM loginout.product_detail PD
+                     INNER JOIN loginout.product P ON PD.product_id = P.product_id
+            WHERE PD.product_id = #{product_id}
+        </select>
+
+
+
+
+
+
+
+
+
+
 </mapper>

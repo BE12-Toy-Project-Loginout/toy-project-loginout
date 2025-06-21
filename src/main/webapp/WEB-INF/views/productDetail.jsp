@@ -8,197 +8,158 @@
     <meta charset="UTF-8">
     <title>상품 상세</title>
     <style>
-        /* 전체 레이아웃 */
-        html, body {
-            margin: 0; padding: 0; height: 100%; font-family: 'Arial', sans-serif;
-            background-color: #fff;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
         .product-area {
-            display: flex; flex: 1; padding: 20px; box-sizing: border-box;
-        }
-        @media (max-width: 900px) {
-            .product-area {
-                flex-direction: column; align-items: center; padding: 10px;
-            }
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #fff;
+            width: 80%;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
         }
         .image-box {
-            flex: 1; display: flex; justify-content: center; align-items: center;
-        }
-        .image-box .image-placeholder {
-            width: 100%; max-width: 500px; aspect-ratio: 1/1;
-            border: 2px solid #87AED9;
-            display: flex; justify-content: center; align-items: center;
-            color: #666; font-size: 14px; background-color: #f9f9f9;
-            box-sizing: border-box;
-        }
-        @media (max-width: 900px) {
-            .image-box .image-placeholder {
-                max-width: 90vw;
-            }
+            width: 40%;
+            height: 350px;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ccc;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 10px;
         }
         .info-box {
-            flex: 1; display: flex; flex-direction: column; padding-left: 40px;
-            box-sizing: border-box;
-        }
-        @media (max-width: 900px) {
-            .info-box { padding-left: 0; margin-top: 20px; width: 100%; }
+            width: 55%;
+            padding-left: 20px;
         }
         .info-box h1 {
-            margin: 0 0 10px; font-size: 26px; color: #111;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
         }
-        hr {
-            border: none;
-            border-top: 1px solid #E0E0E0;
-            margin: 10px 0;
-        }
-        .description {
-            font-size: 14px; color: #333; line-height: 1.5; white-space: pre-wrap;
-            margin-bottom: 20px; border-bottom: 1px solid #E0E0E0; padding-bottom: 20px;
+        .info-box .description {
+            font-size: 16px;
+            color: #777;
+            margin-top: 10px;
         }
         .info-list {
-            margin: 0; padding: 0; list-style: none;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
         }
         .info-list li {
-            display: flex; justify-content: space-between; padding: 10px 0;
-            font-size: 16px; color: #333;
-        }
-        .info-list li + li {
-            border-top: 1px solid #E0E0E0;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 16px;
         }
         .info-list .label {
+            color: #333;
+            font-weight: bold;
+        }
+        .quantity-row {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .quantity-row .label-cell {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .quantity-row .input-cell input {
+            width: 60px;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .total-area {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        .button-group button {
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .button-group .primary {
+            background-color: #5f78f3;
+            color: #fff;
+        }
+        .button-group .secondary {
+            background-color: #f1f1f1;
+            color: #5f78f3;
+        }
+
+        .header {
+            background-color: #262626;
+            color: #fff;
+            padding: 15px;
+            font-size: 20px;
+            text-align: center;
             font-weight: bold;
         }
 
-        /* 수량 + 단가 행 */
-        .quantity-row {
-            display: flex; align-items: center;
-            background-color: #F2F2F2;
-            padding: 10px; margin-top: 20px; box-sizing: border-box;
+        .logo {
+            width: 120px;
+            position: absolute;
+            left: 30px;
+            top: 30px;
         }
-        .quantity-row .label-cell {
-            flex: 1; font-size: 16px; color: #333;
-        }
-        .quantity-row .input-cell {
-            display: flex; align-items: center;
-        }
-        .quantity-row input[type="number"] {
-            width: 60px; padding: 5px; font-size: 16px;
-            border: 1px solid #CCC; border-radius: 4px; text-align: center;
-            margin: 0 10px;
-
-            /* --- 스피너 항상 보이도록: appearance auto --- */
-            appearance: auto;
-            -moz-appearance: number-input;
-        }
-        /* 스피너 아이콘 강제 노출 */
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: inner-spin-button;
-            display: block;
-            opacity: 1;
-            margin: 0;
-        }
-        input[type="number"] {
-            appearance: auto;
-            -moz-appearance: number-input;
-            /* 오른쪽 패딩으로 스피너와 텍스트 겹침 방지 */
-            padding-right: 24px;
-        }
-        .quantity-row .price-cell {
-            flex: 1; text-align: right; font-size: 16px; color: #333;
+        .logo img {
+            width: 100%;
         }
 
-        /* 합계 영역 */
-        .total-area {
-            display: flex; justify-content: flex-end; align-items: baseline;
-            margin-top: 20px;
+        .price {
+            color: #ff6f61;
         }
-        .total-area .text {
-            font-size: 16px; color: #333; margin-right: 10px;
-        }
-        .total-area .amount {
-            font-size: 28px; font-weight: bold; color: #000;
-        }
-        .total-area .qty-info {
-            font-size: 16px; color: #555; margin-left: 8px;
+        .price .currency {
+            font-weight: bold;
         }
 
-        /* 버튼 그룹 */
-        .button-group {
-            display: flex; gap: 10px; margin-top: 30px;
-        }
-        .button-group button {
-            flex: 1; padding: 12px 0; font-size: 16px; border: none;
-            border-radius: 4px; cursor: pointer; transition: opacity 0.2s;
-        }
-        .button-group button.primary {
-            background-color: #CFBCDE; color: #fff;
-        }
-        .button-group button.secondary {
-            background-color: #D9D9D9; color: #333;
-        }
-        .button-group button:hover {
-            opacity: 0.9;
+        .product-name {
+            font-size: 22px;
+            color: #333;
         }
     </style>
-    <script>
-        // 수량 변경 시, 단가×수량을 linePrice와 productTotal에 반영
-        function updateTotal() {
-            var unitPriceElem = document.getElementById('unitPrice');
-            var unitPrice = 0;
-            if (unitPriceElem) {
-                var unitPriceStr = unitPriceElem.dataset.price;
-                unitPrice = parseInt(unitPriceStr, 10) || 0;
-            }
-            var qtyInput = document.getElementById('quantity');
-            var qty = 1;
-            if (qtyInput) {
-                qty = parseInt(qtyInput.value, 10) || 1;
-                if (qty < 1) {
-                    qty = 1;
-                    qtyInput.value = 1;
-                }
-            }
-            var lineTotal = unitPrice * qty;
-            var linePriceElem = document.getElementById('linePrice');
-            if (linePriceElem) {
-                linePriceElem.textContent = lineTotal.toLocaleString() + "원";
-            }
-            var productTotalElem = document.getElementById('productTotal');
-            if (productTotalElem) {
-                productTotalElem.textContent = lineTotal.toLocaleString() + "원";
-            }
-            var totalQtyElem = document.getElementById('totalQty');
-            if (totalQtyElem) {
-                totalQtyElem.textContent = "(" + qty + "개)";
-            }
-            // (옵션) 배송비/최종결제금액 계산 후 업데이트 로직 삽입 가능
-        }
-        window.addEventListener('DOMContentLoaded', updateTotal);
-    </script>
 </head>
 <body>
+<div class="header">
+    LOGINOUT
+</div>
+
 <div class="product-area">
-    <!-- 이미지 placeholder -->
     <div class="image-box">
-        <div class="image-placeholder">이미지 영역</div>
+        <!-- 네모로 대체된 이미지 -->
+        <div class="image-placeholder">이미지 없음</div>
     </div>
 
-    <!-- 정보 박스 -->
     <div class="info-box">
-        <!-- 상품명 -->
-        <h1>
-            <c:choose>
-                <c:when test="${not empty productDetail.productName}">
-                    ${fn:escapeXml(productDetail.productName)}
-                </c:when>
-                <c:otherwise>상품명 없음</c:otherwise>
-            </c:choose>
-        </h1>
-
+        <!-- 상품명 출력 -->
+        <h1 class="product-name">${fn:escapeXml(productDetail.productName)}</h1>
         <hr>
 
-        <!-- 설명 -->
+        <!-- 상품 설명 출력 -->
         <div class="description">
             <c:choose>
                 <c:when test="${not empty productDetail.productDetailDescription}">
@@ -208,60 +169,47 @@
             </c:choose>
         </div>
 
-        <!-- 판매가/배송비 리스트 -->
+        <!-- 가격 처리 -->
+        <fmt:parseNumber var="priceNum" value="${productDetail.productDetailPrice}" integerOnly="true"/>
         <ul class="info-list">
+            <!-- 판매가 -->
             <li>
                 <span class="label">판매가</span>
-                <span>
-                    <c:choose>
-                        <c:when test="${productDetail.productDetailPrice != null}">
-                            <fmt:formatNumber value="${productDetail.productDetailPrice}" type="number" groupingUsed="true"/>원
-                        </c:when>
-                        <c:otherwise>가격 정보 없음</c:otherwise>
-                    </c:choose>
-                </span>
+                <span class="price">
+                        <c:choose>
+                            <c:when test="${priceNum != null}">
+                                <fmt:formatNumber value="${priceNum}" type="number" groupingUsed="true"/>원
+                            </c:when>
+                            <c:otherwise>가격 정보 없음</c:otherwise>
+                        </c:choose>
+                    </span>
             </li>
+            <!-- 배송비 -->
             <li>
                 <span class="label">배송비</span>
                 <span>
-                    <c:choose>
-                        <c:when test="${productDetail.productDetailPrice != null and productDetail.productDetailPrice >= 20000}">
-                            무료배송
-                        </c:when>
-                        <c:when test="${productDetail.productDetailPrice != null}">
-                            2500원 (실결제금액 2만원 이상 시 무료배송)
-                        </c:when>
-                        <c:otherwise>배송비 정보 없음</c:otherwise>
-                    </c:choose>
-                </span>
+                        <c:choose>
+                            <c:when test="${priceNum >= 20000}">무료배송</c:when>
+                            <c:when test="${priceNum > 0}">2만원 미만: 2,500원</c:when>
+                            <c:otherwise>배송비 정보 없음</c:otherwise>
+                        </c:choose>
+                    </span>
             </li>
         </ul>
 
-        <!-- 수량 + 단가 행 -->
+        <!-- 수량 및 가격 계산 -->
         <div class="quantity-row">
-            <div class="label-cell">
-                <c:choose>
-                    <c:when test="${not empty productDetail.productName}">
-                        ${fn:escapeXml(productDetail.productName)}
-                    </c:when>
-                    <c:otherwise>상품</c:otherwise>
-                </c:choose>
-            </div>
+            <div class="label-cell">수량</div>
             <div class="input-cell">
-                <!-- 기본 스피너만, 좌우 -/+ 버튼 없이 -->
                 <input type="number" id="quantity" value="1" min="1" oninput="updateTotal()">
             </div>
-            <!-- 단가 데이터 (보이지 않음) -->
-            <span id="unitPrice" data-price="${productDetail.productDetailPrice}" style="display:none;"></span>
-            <!-- 단가×수량 결과 표시 -->
-            <div class="price-cell" id="linePrice"></div>
         </div>
 
-        <!-- 총합계 -->
+        <!-- 총 상품 금액 -->
         <div class="total-area">
             <span class="text">총 상품금액</span>
-            <span id="productTotal" class="amount"></span>
-            <span id="totalQty" class="qty-info"></span>
+            <span id="productTotal" class="amount">0</span>
+            <span id="totalQty" class="qty-info">1개</span>
         </div>
 
         <!-- 버튼 그룹 -->
@@ -272,5 +220,17 @@
         </div>
     </div>
 </div>
+
+<script>
+    function updateTotal() {
+        var quantity = document.getElementById("quantity").value;
+        var unitPrice = document.getElementById("unitPrice") ? document.getElementById("unitPrice").dataset.price : 0;
+        var total = quantity * unitPrice;
+        document.getElementById("productTotal").innerText = total.toLocaleString();
+        document.getElementById("totalQty").innerText = quantity + "개";
+    }
+
+    window.addEventListener('DOMContentLoaded', updateTotal);
+</script>
 </body>
 </html>
