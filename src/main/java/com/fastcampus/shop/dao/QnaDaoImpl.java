@@ -41,10 +41,18 @@ public class QnaDaoImpl implements QnaDao {
         return sqlSession.update(NAMESPACE + ".update", qnaDto);
     }
 
-    @Override
+    /*@Override
     public int delete(Integer qnaId) {
         return sqlSession.delete(NAMESPACE + ".delete", qnaId);
+    }*/
+    @Override
+    public int delete(Integer qnaId, Integer memberId) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("qnaId", qnaId);             // 게시글 번호
+        map.put("memberId", memberId);   // 사용자 ID
+        return sqlSession.delete(NAMESPACE + ".delete", map);
     }
+
 
     @Override
     public int deleteAll(){

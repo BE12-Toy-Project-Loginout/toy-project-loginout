@@ -5,6 +5,10 @@ import com.fastcampus.shop.dto.QnaDto;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface QnaDao {
     List<QnaDto> findAll() throws Exception ;
 
@@ -16,7 +20,10 @@ public interface QnaDao {
 
     int update(QnaDto qnaDto) throws Exception ;
 
-    int delete(Integer qnaId) throws Exception ;
+    //int delete(Integer qnaId) throws Exception ;
+    // @Param 어노테이션 추가
+    int delete(@Param("qnaId") Integer qnaId, @Param("memberId") Integer memberId) throws Exception;
+
 
     int deleteAll() throws Exception ;
 

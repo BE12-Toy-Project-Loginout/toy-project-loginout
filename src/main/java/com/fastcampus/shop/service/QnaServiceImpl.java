@@ -32,7 +32,7 @@ public class QnaServiceImpl implements QnaService {
     }
 
     @Override
-    public QnaDto getDetail(int qnaId) throws Exception {
+    public QnaDto read(Integer qnaId) throws Exception {
         return qnaDao.findById(qnaId);
     }
     @Override
@@ -43,10 +43,12 @@ public class QnaServiceImpl implements QnaService {
     public int update(QnaDto dto) throws Exception {
         return qnaDao.update(dto);
     }
-    @Override
+    /*@Override
     public int delete(int qnaId) throws Exception {
         return qnaDao.delete(qnaId);
+    }*/
+    @Override
+    public int remove(Integer qnaId, Integer memberId) throws Exception {
+        return qnaDao.delete(qnaId, memberId);
     }
-
-
 }

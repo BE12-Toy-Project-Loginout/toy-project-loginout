@@ -4,6 +4,12 @@
                              http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
   <display-name>Spring Shopping Mall</display-name>
 
+  <!-- Absolute ordering for web fragments -->
+  <absolute-ordering>
+    <name>spring_web</name>
+    <others/>
+  </absolute-ordering>
+
   <!-- Root Context Configuration -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
