@@ -5,6 +5,7 @@ import com.fastcampus.shop.dto.QnaDto;
 import java.util.List;
 import java.util.Map;
 
+import com.fastcampus.shop.dto.SearchCondition;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +33,8 @@ public interface QnaDao {
     //List<QnaDto> findPage(Map<String, Object> params) throws Exception ;
 
     List<QnaDto> selectPage(Map map) throws Exception;
+
+    int searchResultCnt() throws Exception;
+
+    List<QnaDto> searchSelectPage(SearchCondition sc) throws Exception;
 }

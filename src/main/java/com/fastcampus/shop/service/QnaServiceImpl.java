@@ -37,10 +37,11 @@ public class QnaServiceImpl implements QnaService {
     }
     @Override
     public int write(QnaDto dto) throws Exception {
+        /*throw new Exception("test");*/
         return qnaDao.insert(dto);
     }
     @Override
-    public int update(QnaDto dto) throws Exception {
+    public int modify(QnaDto dto) throws Exception {
         return qnaDao.update(dto);
     }
     /*@Override

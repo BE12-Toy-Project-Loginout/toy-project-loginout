@@ -21,6 +21,60 @@ public class QnaController {
     @Autowired
     QnaService qnaService;
 
+    @PostMapping("/modify")
+    public String modify(QnaDto qnaDto, Model m, HttpSession session, RedirectAttributes rattr){
+        session.setAttribute("memberId", 1001);
+        Integer memberId = (Integer) session.getAttribute("memberId");
+        qnaDto.setMemberId(memberId);
+
+        try {
+            int rowCnt = qnaService.modify(qnaDto); //insert
+
+            if(rowCnt != 1)
+                throw new Exception("board modify error");
+
+            rattr.addFlashAttribute("msg", "MOD_OK");
+
+            return "redirect:/qna/list";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute(qnaDto);
+            m.addAttribute("msg", "MOD_ERR");
+            return "qna";
+        }
+    }
+
+    @PostMapping("/write")
+    public String write(QnaDto qnaDto, Model m, HttpSession session, RedirectAttributes rattr){
+        session.setAttribute("memberId", 1001);
+        Integer memberId = (Integer) session.getAttribute("memberId");
+        qnaDto.setMemberId(memberId);
+
+        try {
+            int rowCnt = qnaService.write(qnaDto); //insert
+
+            if(rowCnt != 1)
+                throw new Exception("board write error");
+
+            rattr.addFlashAttribute("msg", "WRT_OK");
+
+            return "redirect:/qna/list";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute(qnaDto);
+            m.addAttribute("msg", "WRT_ERR");
+            return "qna";
+        }
+    }
+
+    @GetMapping("/write")
+    public String write(Model m) {
+        m.addAttribute("mode", "new"); //읽기와 쓰기에 사용. 쓰기 사용할 때는 mode=new
+        return "qna";
+    }
+
     @PostMapping("/remove")
     public String remove(@RequestParam("qnaId") Integer qnaId,
                          @RequestParam("memberId") Integer memberId,

@@ -21,11 +21,12 @@
 </div>
 <script>
     let msg = "${msg}";
+    if(msg == "WRT_OK") alert("성공적으로 등록되었습니다.");
     if(msg == "DEL_OK") alert("성공적으로 삭제되었습니다.");
     if(msg == "DEL_ERR") alert("삭제에 실패했습니다.");
-
 </script>
 <div style="text-align:center">
+    <button type="button" id="writeBtn" onclick="location.href='<c:url value="/qna/write"/>'">글쓰기</button>
     <table border="1">
         <tr>
             <th> 번호 </th>

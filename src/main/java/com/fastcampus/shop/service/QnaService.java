@@ -11,7 +11,7 @@ public interface QnaService {
     List<QnaDto> getPage(Map map) throws Exception;
     QnaDto read(Integer qnaId) throws Exception ; // 게시글 상세
     int write(QnaDto dto) throws Exception ; // 게시글 등록
-    int update(QnaDto dto) throws Exception ; // 게시글 수정
+    int modify(QnaDto dto) throws Exception ; // 게시글 수정
     //int delete(int qnaId) throws Exception ; // 게시글 삭제
     int remove(Integer qnaId, Integer memberId) throws Exception;
 }

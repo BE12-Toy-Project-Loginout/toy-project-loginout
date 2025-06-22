@@ -20,14 +20,28 @@
         <li><a href=""><i class="fas fa-search small"></i></a></li>
     </ul>
 </div>
+<script>
+    let msg="${msg}";
+    if(msg == "WRT_ERR") alert("게시물 등록에 실패했습니다. 다시 시도해주세요.");
+</script>
 <div style="text-align:center">
-    <h2>게시물 읽기</h2>
+    <h2>게시물 ${mode == "new" ? "글쓰기" : "읽기"}</h2>
     <form action="" id="form">
         <input type="hidden" name="memberId" value="${qnaDto.memberId}">
-        <input type="text" name="qnaId" value="${qnaDto.qnaId}" readonly="readonly">
-        <input type="text" name="title" value="${qnaDto.title}" readonly="readonly">
-        <textarea name="content" id="" cols="30" rows="10" readonly="readonly">${qnaDto.content}</textarea>
-        <button type="button" id="writeBtn" class="btn">등록</button>
+        <input type="hidden" name="qnaId" value="${qnaDto.qnaId}">
+        <input type="text" name="title" value="${qnaDto.title}" ${mode == "new" ? '' : 'readonly="readonly"'}>
+        <textarea name="content" id="" cols="30" rows="10" ${mode == "new" ? '' : 'readonly="readonly"'}>${qnaDto.content}</textarea>
+
+        <%--<!-- 비밀글 여부 입력 (라디오 버튼) -->
+        <div>
+            <label>비밀글 여부: </label>
+            <input type="radio" name="isSecret" value="true"
+                ${qnaDto.isSecret ? 'checked' : ''} ${mode == "new" ? '' : 'disabled'}> 예
+            <input type="radio" name="isSecret" value="false"
+                ${qnaDto.isSecret == false ? 'checked' : ''} ${mode == "new" ? '' : 'disabled'}> 아니오
+        </div>--%>
+
+        <button type="button" id="writeBtn" class="btn">글쓰기</button>
         <button type="button" id="modifyBtn" class="btn">수정</button>
         <button type="button" id="removeBtn" class="btn">삭제</button>
         <button type="button" id="listBtn" class="btn">목록</button>
@@ -37,8 +51,34 @@
     $(document).ready(function () {
 
         $("#listBtn").on("click", function(){ //GET 방식
-            alert("ListBtn Clicked");
+            //alert("ListBtn Clicked");
             location.href="<c:url value='/qna/list'/>?currentPage=${currentPage}&pageSize=${pageSize}";
+        });
+
+        $("#modifyBtn").on("click", function(){ //POST 방식
+            // 1. 읽기 상태이면 수정 상태로 변경
+            let form = $("form");
+            let isReadOnly = $("input[name=title]").attr('readonly');
+
+            if(isReadOnly == 'readonly') {
+                $("input[name=title]").attr('readonly', false); //title
+                $("textarea").attr('readonly', false); //content
+                $("#modifyBtn").html("등록");
+                $("h2").html("게시물 수정");
+                return;
+            }
+
+            // 2. 수정 상태이면 수정된 내용을 서버로 전송
+            form.attr("action", "<c:url value='/qna/modify'/>");
+            form.attr("method", "post");
+            form.submit();
+        });
+
+        $("#writeBtn").on("click", function(){ //POST 방식
+            let form = $("#form"); //id가 form인 객체를 form 변수에 저장
+            form.attr("action", "<c:url value='/qna/write'/>");
+            form.attr("method", "post");
+            form.submit();
         });
 
         $("#removeBtn").on("click", function(){ //POST 방식
@@ -47,7 +87,6 @@
             form.attr("action", "<c:url value='/qna/remove'/>?currentPage=${currentPage}&pageSize=${pageSize}");
             form.attr("method", "post");
             form.submit();
-
         });
 
     }); //main함수

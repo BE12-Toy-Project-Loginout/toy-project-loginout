@@ -17,27 +17,27 @@ public class QnaDaoImpl implements QnaDao {
     private static String NAMESPACE = "com.fastcampus.shop.dao.QnaDao";
 
    @Override
-   public List<QnaDto> findAll() {
+   public List<QnaDto> findAll() throws Exception {
        return sqlSession.selectList(NAMESPACE + ".findAll");
    }
 
     @Override
-    public QnaDto findById(Integer qnaId) {
+    public QnaDto findById(Integer qnaId) throws Exception {
         return sqlSession.selectOne(NAMESPACE + ".findById", qnaId);
     }
 
     @Override
-    public List<QnaDto> findByMemberId(Integer memberId) {
+    public List<QnaDto> findByMemberId(Integer memberId) throws Exception {
         return sqlSession.selectList(NAMESPACE + ".findByMemberId", memberId);
     }
 
     @Override
-    public int insert(QnaDto qnaDto) {
+    public int insert(QnaDto qnaDto) throws Exception {
         return sqlSession.insert(NAMESPACE + ".insert", qnaDto);
     }
 
     @Override
-    public int update(QnaDto qnaDto) {
+    public int update(QnaDto qnaDto) throws Exception {
         return sqlSession.update(NAMESPACE + ".update", qnaDto);
     }
 
@@ -53,14 +53,13 @@ public class QnaDaoImpl implements QnaDao {
         return sqlSession.delete(NAMESPACE + ".delete", map);
     }
 
-
     @Override
-    public int deleteAll(){
+    public int deleteAll() throws Exception{
         return sqlSession.delete(NAMESPACE + ".deleteAll");
     }
 
     @Override
-    public int count() {
+    public int count() throws Exception{
         return sqlSession.selectOne(NAMESPACE + ".count");
     }
 
@@ -70,7 +69,17 @@ public class QnaDaoImpl implements QnaDao {
     }*/
 
     @Override
-    public List<QnaDto> selectPage(Map map) {
+    public List<QnaDto> selectPage(Map map) throws Exception{
         return sqlSession.selectList(NAMESPACE + ".selectPage", map);
+    }
+
+    @Override
+    public int searchResultCnt() throws Exception{
+        return sqlSession.selectOne(NAMESPACE + ".searchResultCnt");
+    }
+
+    @Override
+    public List<QnaDto> searchSelectPage(SearchCondition sc) throws Exception{
+        return sqlSession.selectList(NAMESPACE + ".searchSelectPage", sc);
     }
 }

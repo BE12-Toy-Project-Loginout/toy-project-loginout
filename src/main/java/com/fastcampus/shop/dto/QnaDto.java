@@ -13,6 +13,7 @@ public class QnaDto {
     private Boolean isSecret;
     private Integer productId;
     private String password;
+    private Date updateAt;
 
     public String getPassword() {
         return password;
@@ -62,6 +63,14 @@ public class QnaDto {
         this.createAt = createAt;
     }
 
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAtAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
     public String getQnaCategory() {
         return qnaCategory;
     }
@@ -86,29 +95,5 @@ public class QnaDto {
         this.productId = productId;
     }
 
-    @Override
-    public String toString() {
-        return "QnaDto{" +
-                "qnaId=" + qnaId +
-                ", memberId=" + memberId +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createAt=" + createAt +
-                ", qnaCategory='" + qnaCategory + '\'' +
-                ", isSecret=" + isSecret +
-                ", productId=" + productId +
-                '}';
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        QnaDto qnaDto = (QnaDto) o;
-        return Objects.equals(qnaId, qnaDto.qnaId) && Objects.equals(memberId, qnaDto.memberId) && Objects.equals(title, qnaDto.title) && Objects.equals(content, qnaDto.content) && Objects.equals(createAt, qnaDto.createAt) && Objects.equals(qnaCategory, qnaDto.qnaCategory) && Objects.equals(isSecret, qnaDto.isSecret) && Objects.equals(productId, qnaDto.productId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(qnaId, memberId, title, content, createAt, qnaCategory, isSecret, productId);
-    }
 }

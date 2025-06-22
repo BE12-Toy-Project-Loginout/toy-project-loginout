@@ -13,9 +13,8 @@
         <!--property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property-->
         <!--property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/springbasic?useUnicode=true&amp;characterEncoding=utf8"></property-->
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://192.168.130.35/loginout?useUnicode=true&amp;characterEncoding=utf8"></property>
-        <property name="username" value="alice7644"></property>
-        <property name="password" value="alice7644"></property>
+
+
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -36,6 +35,11 @@
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.fastcampus.shop.dao"/>
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.fastcampus.shop.mapper"/>
     </bean>
 
     <tx:annotation-driven/>
