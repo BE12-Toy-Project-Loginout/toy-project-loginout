@@ -17,27 +17,27 @@ body {
 .product-area {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
-    background-color: #ffffff;
-    margin: 50px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    flex-wrap: wrap; /* 줄바꿈 허용 */
+    gap: 40px;
     width: 80%;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #fff;
     border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-box {
-    width: 45%;
-    height: 350px;
-    background-color: #f1f1f1;
+    flex: 1 1 350px; /* 최소 350px, 필요시 줄어듦 */
+    max-width: 400px;
+    aspect-ratio: 3 / 4;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #ccc;
-    font-size: 20px;
-    font-weight: bold;
     border-radius: 10px;
-    margin-right: 30px;
-    background-color: #f8c8c8; /* 연한 핑크색 배경 */
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .image-box img {
@@ -47,11 +47,12 @@ body {
 }
 
 .info-box {
-    width: 50%;
+    flex: 2 1 400px; /* 여유 있게 설명 공간 확보 */
+    min-width: 400px;
 }
 
 .product-name {
-    font-size: 18px; /* 최상단 상품명*/
+    font-size: 30px; /* 최상단 상품명*/
     font-weight: bold;
     color: #000; /* 검은색 */
     margin-bottom: 10px;
@@ -97,32 +98,41 @@ body {
 /* Option bar style (상품명, 수량 선택, 가격) */
 .option-bar {
     display: flex;
-    justify-content: space-between;
-    background-color: #f1f1f1; /* 회색 배경 */
-    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 10px 16px;
     margin-top: 10px;
     border-radius: 8px;
+    gap: 20px;
+}
+
+.option-bar .product-name,
+.option-bar .quantity-row,
+.option-bar .price {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* 상품명 텍스트 정렬 */
 }
 
 .option-bar .product-name {
-    font-size: 14px; /* 상품명 크기 */
-    font-weight: bold;
-    color: #000; /* 검은색 */
     flex: 2;
-}
-
-.option-bar .quantity-row {
     display: flex;
+    justify-content: center;
     align-items: center;
-    flex: 1;
-    justify-content: flex-end; /* 수량과 금액을 오른쪽 끝으로 밀기 */
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    /*text-align: center;*/
+    height: 100%;
 }
 
 .option-bar .quantity-row .input-cell {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
 }
 
 .option-bar .quantity-row .input-cell input {
@@ -137,9 +147,7 @@ body {
 .option-bar .price {
     font-size: 18px;
     font-weight: bold;
-    color: #000; /* 붉은색 가격 */
-    flex: 2;
-    text-align: right; /* 가격을 오른쪽 끝으로 배치 */
+    color: #000;
 }
 
 .total-area {
@@ -159,6 +167,7 @@ body {
 .button-group button {
     padding: 12px 20px;
     font-size: 16px;
+    font-weight: bold;
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -167,12 +176,12 @@ body {
 
 /* Primary button */
 .button-group .primary {
-    background-color: #5f78f3; /* 보라색 */
+    background-color: #CFBCDF; /* 보라색 */
     color: #fff;
 }
 
 /* Secondary buttons */
 .button-group .secondary {
     background-color: #f1f1f1; /* 연한 회색 */
-    color: #5f78f3; /* 보라색 */
+    color: #000000;
 }
