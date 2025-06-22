@@ -33,7 +33,7 @@
         <div class="description">
             <c:choose>
                 <c:when test="${not empty productDetail.productDetailDescription}">
-                    ${fn:escapeXml(productDetail.productDetailDescription)}
+                    <c:out value="${productDetail.productDetailDescription}" escapeXml="false" />
                 </c:when>
                 <c:otherwise>설명 없음</c:otherwise>
             </c:choose>

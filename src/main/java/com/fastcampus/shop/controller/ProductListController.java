@@ -36,8 +36,15 @@ public class ProductListController {
         HttpSession session = request.getSession();
         String prevCategory = (String) session.getAttribute("prevCategory");
 
+        // 처음 접근 시 기본값 설정
+        if ((category == null || category.isEmpty()) && (sort == null || sort.isEmpty())) {
+            category = "전체보기";
+            sort = "인기상품";
+        }
+
+        // 카테고리 변경 시 정렬 초기화
         if (category != null && !category.equals(prevCategory)) {
-            sort = "신상품";
+            sort = "인기상품";
         }
 
         // 현재 카테고리를 세션에 저장 (다음 요청 대비)
