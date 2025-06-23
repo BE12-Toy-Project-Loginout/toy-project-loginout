@@ -49,13 +49,7 @@
             </li>
             <li>
                 <span class="label">배송비</span>
-                <span>
-                    <c:choose>
-                        <c:when test="${priceNum >= 20000}">무료배송</c:when>
-                        <c:when test="${priceNum > 0}">2만원 미만: 2,500원</c:when>
-                        <c:otherwise>2500원 (실 결제금액 2만원 이상 시, 무료배송)</c:otherwise>
-                    </c:choose>
-                </span>
+                <span>2500원 (실 결제금액 2만원 이상 시, 무료배송)</span>
             </li>
         </div>
 
@@ -92,10 +86,16 @@
         <div class="line"></div>
 
         <div class="button-group">
-            <button type="button" class="primary">바로 구매하기</button>
-            <button type="button" class="secondary">장바구니</button>
+            <button type="button" class="primary" onclick="sendProductData('${pageContext.request.contextPath}/order')">바로 구매하기</button>
+            <button type="button" class="secondary" onclick="sendProductData('${pageContext.request.contextPath}/cart')">장바구니</button>
             <button type="button" class="secondary">관심상품</button>
         </div>
+
+        <!-- 숨겨진 폼 -->
+        <form id="actionForm" method="post" style="display: none;">
+            <input type="hidden" name="productId" value="${productDetail.productId}">
+            <input type="hidden" name="quantity" id="formQuantity" value="1">
+        </form>
     </div>
 </div>
 
@@ -110,6 +110,16 @@
 
         // 수량 옵션 선택합계
         document.getElementById("priceDisplay").innerText = total.toLocaleString() + "원";  // 갱신된 총 금액 표시
+    }
+
+    function sendProductData(actionUrl) {
+        const form = document.getElementById('actionForm');
+        const quantityInput = document.getElementById('quantity');
+        const formQuantity = document.getElementById('formQuantity');
+
+        formQuantity.value = quantityInput.value || 1;
+        form.action = actionUrl;
+        form.submit();
     }
 
     window.addEventListener('DOMContentLoaded', updateTotal);  // 페이지 로딩 후 바로 계산 시작
