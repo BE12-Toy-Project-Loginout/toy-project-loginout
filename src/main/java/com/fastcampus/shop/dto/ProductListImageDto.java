@@ -7,45 +7,45 @@ import java.util.Objects;
 
 @Getter
 public class ProductListImageDto {
-    private Integer image_id;
-    private Integer product_id;
+    private Integer imageId;
+    private Integer productId;
     private String filename;
-    private String content_type;
-    private byte[] image_data;
-    private boolean is_thumbnail;
+    private String contentType;
+    private byte[] imageData;
+    private boolean isThumbnail;
 
     public ProductListImageDto() {}
-    public ProductListImageDto(Integer image_id, Integer product_id, String filename,
-                               String content_type, byte[] image_data, boolean is_thumbnail) {
-        this.image_id = image_id;
-        this.product_id = product_id;
+    public ProductListImageDto(Integer imageId, Integer productId, String filename,
+                               String contentType, byte[] imageData, boolean isThumbnail) {
+        this.imageId = imageId;
+        this.productId = productId;
         this.filename = filename;
-        this.content_type = content_type;
-        this.image_data = image_data;
-        this.is_thumbnail = is_thumbnail;
+        this.contentType = contentType;
+        this.imageData = imageData;
+        this.isThumbnail = isThumbnail;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ProductListImageDto that = (ProductListImageDto) o;
-        return Objects.equals(image_id, that.image_id) && Objects.equals(product_id, that.product_id);
+        return Objects.equals(imageId, that.imageId) && Objects.equals(productId, that.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(image_id, product_id);
+        return Objects.hash(imageId, productId);
     }
 
     @Override
     public String toString() {
         return "ProductImageDto{" +
-                "image_id=" + image_id +
-                ", product_id=" + product_id +
+                "imageId=" + imageId +
+                ", productId=" + productId +
                 ", filename='" + filename + '\'' +
-                ", content_type='" + content_type + '\'' +
-                ", image_data=" + Arrays.toString(image_data) +
-                ", is_thumbnail=" + is_thumbnail +
+                ", contentType='" + contentType + '\'' +
+                ", imageData=" + Arrays.toString(imageData) +
+                ", isThumbnail=" + isThumbnail +
                 '}';
     }
 }

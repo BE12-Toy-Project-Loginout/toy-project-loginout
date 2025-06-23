@@ -33,10 +33,14 @@ public class ProductListService {
         return productDao.selectFilteredSortedPage(countMap);
     }
 
+    public ProductListDto getProductById(Long productId) {
+        return productDao.selectProductById(productId);
+    }
+
     // 대표 이미지 dto에 담아 온 다음에 byte타입으로 반환
     public byte[] getThumbnailImage(String productId) throws Exception {
         ProductListImageDto dto = productDao.selectThumbnailImage(productId);
-        return dto != null ? dto.getImage_data() : null;
+        return dto != null ? dto.getImageData() : null;
     }
 
     // 상품 가져와서 정렬

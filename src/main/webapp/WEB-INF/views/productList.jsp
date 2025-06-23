@@ -62,17 +62,17 @@
 <div class="grid">
   <c:forEach var="product" items="${productList}" varStatus="status">
     <div class="product">
-      <a href="${pageContext.request.contextPath}/product/detail/${product.product_id}">
-        <img src="${pageContext.request.contextPath}/product/image?productId=${product.product_id}" />
+      <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
+        <img src="${pageContext.request.contextPath}/product/image?productId=${product.productId}" />
       </a>
       <div class="product-name">
-        <a href="${pageContext.request.contextPath}/product/detail/${product.product_id}">
-            ${product.product_name}
+        <a href="${pageContext.request.contextPath}/product/detail/${product.productId}">
+            ${product.productName}
         </a>
       </div>
-      <div class="product-desc">${product.product_description}</div>
+      <div class="product-desc">${product.productDescription}</div>
       <div class="product-price">
-        <fmt:formatNumber value="${product.product_price}" type="number" />원
+        <fmt:formatNumber value="${product.productPrice}" type="number" />원
       </div>
     </div>
   </c:forEach>
