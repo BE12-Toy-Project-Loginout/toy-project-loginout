@@ -39,6 +39,11 @@ public class ProductDaoImpl implements ProductDao {
         return sqlSession.selectList(namespace+"selectFilteredSortedPage", map);
     }
 
+    @Override
+    public ProductListDto selectProductById(Long productId){
+        return sqlSession.selectOne(namespace+"selectProductById", productId);
+    }
+
     // 대표 이미지 ProductListImageDto에 담아서 가져오기
     @Override
     public ProductListImageDto selectThumbnailImage(String productId) throws Exception {

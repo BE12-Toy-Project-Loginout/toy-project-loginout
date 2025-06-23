@@ -1,0 +1,104 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #000;
+}
+
+.order-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.address-tabs .tab {
+    padding: 8px 12px;
+    margin-right: 8px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+}
+
+.address-tabs .tab.active {
+    background: #ddd;
+    font-weight: bold;
+}
+
+.form-row {
+    margin-bottom: 16px;
+}
+
+input, select, button {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.address-box,
+.phone-box,
+.email-box {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.price-summary {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.price-summary li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.price-summary .total {
+    font-weight: bold;
+    border-top: 2px solid #000;
+    padding-top: 12px;
+}
+
+.highlight {
+    color: #0073ff;
+}
+
+.payment-methods ul {
+    list-style: none;
+    padding: 0;
+}
+
+.payment-methods li {
+    padding: 8px 0;
+}
+
+.pay-button {
+    width: 100%;
+    padding: 14px;
+    background: #c7b4dc;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
