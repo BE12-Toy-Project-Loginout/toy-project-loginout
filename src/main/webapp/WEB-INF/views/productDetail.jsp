@@ -7,17 +7,9 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 상세</title>
-    <link rel="<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <title>상품 상세</title>
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/productDetail.css"> <!-- CSS 파일 링크 추가 -->
-    </head>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/productDetail.css">
+</head>
+
 <body>
 
 
@@ -41,6 +33,8 @@
 
         <!-- First Line: 정보 및 가격 -->
         <div class="line"></div>
+
+        <fmt:parseNumber var="priceNum" value="${productDetail.productPrice}" integerOnly="true" />
         <div class="info-list">
             <li>
                 <span class="label">판매가</span>
