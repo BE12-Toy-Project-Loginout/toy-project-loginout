@@ -60,7 +60,7 @@
 
     <update id="resetLoginFailCount" parameterType="string">
         UPDATE member
-        SET member_login_fail_count = 0
+        SET member_login_fail_count = 0, is_lock = 0
         WHERE member_login_id = #{userLoginId}
     </update>
 
@@ -81,7 +81,7 @@
         FROM
             member
         WHERE
-            member_login_fail_count >= 3 OR is_lock = 1
+            is_lock = 1
     </select>
 
 

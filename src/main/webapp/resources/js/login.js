@@ -54,19 +54,15 @@ function login(){
                 // 관리자인 경우 관리자 페이지로 리다이렉트
                 if (result.isAdmin === true) {
                     window.location.href = contextPath + '/admin';
-                    return;
+                } else {
+                    // 일반 사용자는 홈페이지로 리다이렉트
+                    window.location.href = contextPath + '/home';
                 }
+                return;
 
-                // Update the username in the welcome message if available
-                if (result.userName) {
-                    $('#userNameDisplay').text(result.userName);
-                    // Show the user welcome message
-                    $('#userWelcome').show();
-                }
-                // Show logout div and hide login div
-                $('#div_login').hide();
-                $('#div_logout').show();
-
+                // This code is unreachable due to the return statement above
+                // Keeping the sidebar menu update logic for reference
+                /*
                 // Update sidebar menu items
                 $('#login-link').hide();
                 $('#signup-link').hide();
@@ -78,6 +74,7 @@ function login(){
                 } else {
                     $('#admin-link').hide();
                 }
+                */
             } else {
                 showErrorMessage(result.message);
             }
@@ -108,8 +105,7 @@ function logout() {
             $('#logout-link').hide();
             $('#admin-link').hide();
 
-            // Hide the user welcome message
-            $('#userWelcome').hide();
+            // No need to hide user welcome message as it's been removed
         },
         error: function(request, status, error) {
             console.log(error);
@@ -122,16 +118,4 @@ function showErrorMessage(msg) {
     $('#msg').html('<i class="fa fa-exclamation-circle"> ' + msg + '</i>');
 }
 
-// Function to toggle sidebar
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const closeBtn = document.getElementById('closeBtn');
-
-    if (sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-        closeBtn.style.display = 'none';
-    } else {
-        sidebar.classList.add('open');
-        closeBtn.style.display = 'block';
-    }
-}
+// Sidebar functions moved to sidebar.js

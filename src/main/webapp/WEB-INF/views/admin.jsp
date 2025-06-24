@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>LOGINOUT ADMIN</title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
@@ -78,7 +79,7 @@
 
         body, html {
             height: 100%;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
         .container {
@@ -192,45 +193,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- 메뉴 열기 버튼 -->
-        <div class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</div>
-
-        <!-- 사이드바 -->
-        <div class="sidebar" id="sidebar">
-            <div class="close-btn" id="closeBtn" onclick="toggleSidebar()">✖</div>
-
-            <ul>
-                <li><a href="#" style="text-decoration: none; color: inherit;">SHOP</a></li>
-                <li><a href="#" style="text-decoration: none; color: inherit;">공지사항</a></li>
-                <li><a href="#" style="text-decoration: none; color: inherit;">Q&A</a></li>
-                <li><a href="${pageContext.request.contextPath}/login" id="login-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>로그인</a></li>
-                <li><a href="#" id="signup-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
-                <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>
-                <li><a href="${pageContext.request.contextPath}/admin" id="admin-link" <c:if test="${!isAdmin}">style="display: none;"</c:if>>관리자 페이지</a></li>
-                <li><a href="#" style="text-decoration: none; color: inherit;">장바구니</a></li>
-                <li><a href="#" style="text-decoration: none; color: inherit;">주문조회</a></li>
-                <li><a href="#" style="text-decoration: none; color: inherit;">마이페이지</a></li>
-            </ul>
-
-            <!-- 로그인된 사용자 이름 표시 -->
-            <div id="userWelcome" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>
-                <p style="margin-top: 20px; font-size: 14px; text-align: center;">
-                    <b id="userNameDisplay">${userName}</b> 님, 환영합니다!
-                </p>
-            </div>
-        </div>
-
-        <!-- 세로 텍스트 (쇼핑몰 로고) -->
-        <div class="vertical-text">
-            <span style="color: #c084fc;">LOGINOUT</span>
-        </div>
-
-        <!-- 고정 하단 아이콘 -->
-        <div class="icon-bar">
-            <img src="${pageContext.request.contextPath}/resources/images/icon_mypage.png" alt="mypage">
-            <img src="${pageContext.request.contextPath}/resources/images/icon_cart.png" alt="cart">
-            <img src="${pageContext.request.contextPath}/resources/images/icon_search.png" alt="search">
-        </div>
+        <%@ include file="fragments/sidebar.jsp" %>
 
         <div class="admin-content">
             <h1>Admin Page</h1>

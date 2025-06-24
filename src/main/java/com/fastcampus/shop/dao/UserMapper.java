@@ -12,6 +12,6 @@ public interface UserMapper {
     int getLoginFailCount(String userLoginId);
     void incrementLoginFailCount(String userLoginId);
     void resetLoginFailCount(String userLoginId);
-    void isUserLock(User user);
+    void isUserLock(String userLoginId);
     List<User> getLockedUsers();
 }

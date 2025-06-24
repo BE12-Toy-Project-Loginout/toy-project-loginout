@@ -27,7 +27,7 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public void incrementLoginFailCount() {
+   /* public void incrementLoginFailCount() {
         this.loginFailCount++;
-    }
+    }*/
 }

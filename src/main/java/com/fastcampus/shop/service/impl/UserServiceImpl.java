@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public User validateUser(User user) throws Exception {
         User validatedUser = userMapper.getUserByCredentials(user);
         if (validatedUser != null) {
-            userMapper.resetLoginFailCount(user.getUserLoginId());
+            userMapper.resetLoginFailCount(validatedUser.getUserLoginId());
             return validatedUser;
         }
         return null;
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void isLocked(User user) throws Exception {
-        userMapper.isUserLock(user);
+        userMapper.isUserLock(user.getUserLoginId());
     }
 
     @Override
@@ -99,10 +99,11 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> processLogin(User user, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
 
+        User validatedUser = null;
         try {
-            User validatedUser = validateUser(user);
+            validatedUser = validateUser(user);
 
-            if (validatedUser != null) {
+            if (validatedUser != null && !validatedUser.isLock()) {
                 // 세션 생성
                 HttpSession session = request.getSession(true);
                 session.setAttribute("userName", validatedUser.getUserName());
@@ -119,25 +120,31 @@ public class UserServiceImpl implements UserService {
                 // 관리자 여부 추가
                 boolean isAdmin = "ADMIN".equals(status);
                 response.put("isAdmin", isAdmin);
+
             } else {
                 incrementLoginFailCount(user.getUserLoginId());
 
-                int failCount = getLoginFailCount(user);
+                int failCount = (validatedUser != null) ? getLoginFailCount(validatedUser) : getLoginFailCount(user);
+
                 if (failCount >= 3) {
                     response.put("success", false);
                     response.put("message", "경고: 로그인 시도 횟수 3회 초과! 계정이 잠겼습니다.");
                     isLocked(user);
                 } else {
                     response.put("success", false);
-                    response.put("message", "로그인 실패. 남은 시도 횟수: " + (3 - failCount));
+                    response.put("message", "비밀번호를 잘못 입력하셨습니다. 남은 시도 횟수: " + (3 - failCount));
                 }
             }
         } catch (Exception e) {
             System.err.println("로그인 오류: " + e.getMessage());
             e.printStackTrace();
-
-            response.put("success", false);
-            response.put("message", "로그인 처리 중 오류가 발생했습니다.");
+            if (user.getUserLoginId() != null) {
+                response.put("success", false);
+                response.put("message", "ID를 잘못 입력하셨습니다.");
+            }else {
+                response.put("success", false);
+                response.put("message", "로그인 처리 중 오류가 발생했습니다.");
+            }
         }
         return response;
     }

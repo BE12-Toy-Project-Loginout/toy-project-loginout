@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -8,9 +8,34 @@
     <meta charset="UTF-8">
     <title>상품 상세</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/productDetail.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // Define contextPath for login.js
+        var contextPath = '${pageContext.request.contextPath}';
+    </script>
+    <script src="${pageContext.request.contextPath}/resources/js/login.js" type="text/javascript"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .product-area {
+            margin-left: 50px;
+            padding-top: 50px;
+        }
+    </style>
 </head>
 
 <body>
+
+<%@ include file="fragments/sidebar.jsp" %>
 
 
 <div class="product-area">
@@ -102,14 +127,14 @@
 <script>
     function updateTotal() {
         const quantity = parseInt(document.getElementById("quantity").value || 1, 10);
-        const unitPrice = ${productDetail.productPrice};  // 단가를 페이지에서 바로 가져옴
+        const unitPrice = ${productDetail.productPrice != null ? productDetail.productPrice : 0};  // 단가를 페이지에서 바로 가져옴
         const total = quantity * unitPrice;
 
         document.getElementById("productTotal").innerText = total.toLocaleString() + "원";  // 총 금액 표시
         document.getElementById("totalQty").innerText = quantity + "개";  // 수량 표시
 
         // 수량 옵션 선택합계
-        document.getElementById("priceDisplay").innerText = total.toLocaleString() + "원";  // 갱신된 총 금액 표시
+        document.getElementById("priceDi  splay").innerText = total.toLocaleString() + "원";  // 갱신된 총 금액 표시
     }
 
     function sendProductData(actionUrl) {
