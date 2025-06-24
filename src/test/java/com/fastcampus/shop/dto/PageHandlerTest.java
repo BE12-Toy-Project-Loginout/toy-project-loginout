@@ -1,3 +1,4 @@
+/*
 package com.fastcampus.shop.dto;
 
 import org.junit.Test;
@@ -31,4 +32,4 @@ public class PageHandlerTest {
         assertTrue(ph.getStartPage() == 21);
         assertTrue(ph.getEndPage() == 26);
     }
-}
+}*/

@@ -34,7 +34,11 @@ public interface QnaDao {
 
     List<QnaDto> selectPage(Map map) throws Exception;
 
-    int searchResultCnt() throws Exception;
+    int searchResultCnt(SearchCondition sc) throws Exception;
 
     List<QnaDto> searchSelectPage(SearchCondition sc) throws Exception;
+
+    int increaseViewCnt(Integer bno) throws Exception;
+
+    int updateCommentCnt(@Param("qnaId") Integer qnaId, @Param("commentCnt") Integer commentCnt) throws Exception;
 }

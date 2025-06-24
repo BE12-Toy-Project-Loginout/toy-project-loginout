@@ -11,7 +11,9 @@
 
     <typeAliases>
         <typeAlias alias="QnaDto" type="com.fastcampus.shop.dto.QnaDto"/>
+        <typeAlias alias="QnaCommentDto" type="com.fastcampus.shop.dto.QnaCommentDto"/>
         <typeAlias alias="SearchCondition" type="com.fastcampus.shop.dto.SearchCondition"/>
+
     </typeAliases>
 
 </configuration>

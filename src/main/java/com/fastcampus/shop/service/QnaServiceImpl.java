@@ -1,6 +1,7 @@
 package com.fastcampus.shop.service;
 import com.fastcampus.shop.dao.QnaDao;
 import com.fastcampus.shop.dto.QnaDto;
+import com.fastcampus.shop.dto.SearchCondition;
 import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,12 @@ public class QnaServiceImpl implements QnaService {
 
     @Override
     public QnaDto read(Integer qnaId) throws Exception {
-        return qnaDao.findById(qnaId);
+        System.out.println("Service에서 받은 qnaId: " + qnaId); // 1번 로그
+        QnaDto dto = qnaDao.findById(qnaId);
+        System.out.println("DAO에서 반환된 dto: " + dto); // 2번 로그
+        return dto;
+
+        /*return qnaDao.findById(qnaId);*/
     }
     @Override
     public int write(QnaDto dto) throws Exception {
@@ -51,5 +57,15 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public int remove(Integer qnaId, Integer memberId) throws Exception {
         return qnaDao.delete(qnaId, memberId);
+    }
+
+    @Override
+    public List<QnaDto> getSearchResultPage(SearchCondition sc) throws Exception {
+        return qnaDao.searchSelectPage(sc);
+    }
+
+    @Override
+    public int getSearchResultCnt(SearchCondition sc) throws Exception {
+        return qnaDao.searchResultCnt(sc);
     }
 }

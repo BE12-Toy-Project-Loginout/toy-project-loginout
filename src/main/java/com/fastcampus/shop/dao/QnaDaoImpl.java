@@ -1,6 +1,7 @@
 package com.fastcampus.shop.dao;
 
 import com.fastcampus.shop.dto.QnaDto;
+import com.fastcampus.shop.dto.SearchCondition;
 import org.apache.ibatis.session.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -74,12 +75,25 @@ public class QnaDaoImpl implements QnaDao {
     }
 
     @Override
-    public int searchResultCnt() throws Exception{
-        return sqlSession.selectOne(NAMESPACE + ".searchResultCnt");
+    public int searchResultCnt(SearchCondition sc) throws Exception{
+        return sqlSession.selectOne(NAMESPACE + ".searchResultCnt", sc);
     }
 
     @Override
     public List<QnaDto> searchSelectPage(SearchCondition sc) throws Exception{
         return sqlSession.selectList(NAMESPACE + ".searchSelectPage", sc);
     }
+
+    @Override
+    public int updateCommentCnt(Integer qnaId, Integer commentCnt) throws Exception {
+        Map  map = new HashMap<>();
+        map.put("commentCnt", commentCnt);
+        map.put("qnaId", qnaId);
+        return sqlSession.update(NAMESPACE + ".updateComment", map);
+    }
+
+    @Override
+    public int increaseViewCnt(Integer bno) throws Exception {
+        return sqlSession.update(NAMESPACE+".increaseViewCnt", bno);
+    } // int update(String statement, Object parameter)
 }

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
+<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
 
 <!DOCTYPE html>
 <html>
@@ -19,6 +22,89 @@
         <li><a href=""><i class="fas fa-search small"></i></a></li>
     </ul>
 </div>
+<script>
+    let msg = "${msg}";
+    if(msg=="LIST_ERR")  alert("QnA 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.");
+    if(msg=="READ_ERR")  alert("삭제되었거나 없는 QnA 게시물입니다.");
+    if(msg=="DEL_ERR")   alert("QnA 삭제에 실패했습니다.");
+    if(msg=="DEL_OK")    alert("성공적으로 삭제되었습니다.");
+    if(msg=="WRT_OK")    alert("성공적으로 등록되었습니다.");
+    if(msg=="MOD_OK")    alert("성공적으로 수정되었습니다.");
+</script>
+<div style="text-align:center">
+    <div class="qna-container">
+        <div class="search-container">
+            <form action="<c:url value='/qna/list'/>" class="search-form" method="get">
+                <select class="search-option" name="option">
+                    <option value="A" ${ph.sc.option=='A' || ph.sc.option=='' ? "selected" : ""}>제목+내용</option>
+                    <option value="T" ${ph.sc.option=='T' ? "selected" : ""}>제목만</option>
+                    <option value="W" ${ph.sc.option=='W' ? "selected" : ""}>작성자</option>
+                </select>
+                <input type="text" name="keyword" class="search-input" value="${ph.sc.keyword}" placeholder="검색어를 입력해주세요">
+                <input type="submit" class="search-button" value="검색">
+            </form>
+            <button id="writeBtn" class="btn-write" onclick="location.href='<c:url value="/qna/write"/>'"><i class="fa fa-pencil"></i> 글쓰기</button>
+        </div>
+        <table border="1" style="margin:0 auto;">
+            <tr>
+                <th class="no">번호</th>
+                <th class="title">제목</th>
+                <th class="writer">이름</th>
+                <th class="createAt">등록일</th>
+                <th class="viewCnt">조회수</th>
+            </tr>
+            <c:forEach var="qnaDto" items="${list}">
+                <tr>
+                    <td class="no">${qnaDto.qnaId}</td>
+                    <td class="title">
+                        <a href="<c:url value='/qna/read${ph.sc.queryString}&qnaId=${qnaDto.qnaId}'/>">
+                                <c:out value='${qnaDto.title}'/>
+                        </a>
+                    </td>
+                    <td class="writer">${qnaDto.memberId}</td>
+                    <%--<td class="createAt">
+                        <fmt:formatDate value="${qnaDto.createAt}" pattern="yyyy-MM-dd" />
+                    </td>--%>
+                    <c:choose>
+                        <c:when test="${qnaDto.createAt.time >= startOfToday}">
+                            <td class="regdate"><fmt:formatDate value="${qnaDto.createAt}" pattern="HH:mm" type="time"/></td>
+                        </c:when>
+                        <c:otherwise>
+                            <td class="regdate"><fmt:formatDate value="${qnaDto.createAt}" pattern="yyyy-MM-dd" type="date"/></td>
+                        </c:otherwise>
+                    </c:choose>
+                    <td class="viewcnt">${qnaDto.viewCnt}</td>
+                </tr>
+            </c:forEach>
+            <c:if test="${empty list}">
+                <tr><td colspan="4">게시물이 없습니다.</td></tr>
+            </c:if>
+        </table>
+        <br>
+        <div class="paging-container">
+            <div class="paging">
+                <c:if test="${totalCnt==null || totalCnt==0}">
+                    <div> 게시물이 없습니다. </div>
+                </c:if>
+                <c:if test="${totalCnt!=null && totalCnt!=0}">
+                    <c:if test="${ph.showPrev}">
+                        <a class="page" href="<c:url value="/qna/list${ph.sc.getQueryString(ph.startPage-1)}"/>">&lt;</a>
+                    </c:if>
+                    <c:forEach var="i" begin="${ph.startPage}" end="${ph.endPage}">
+                        <a class="page ${i==ph.sc.currentPage? "paging-active" : ""}" href="<c:url value="/qna/list${ph.sc.getQueryString(i)}"/>">${i}</a>
+                    </c:forEach>
+                    <c:if test="${ph.showNext}">
+                        <a class="page" href="<c:url value="/qna/list${ph.sc.getQueryString(ph.endPage+1)}"/>">&gt;</a>
+                    </c:if>
+                </c:if>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<%--
 <script>
     let msg = "${msg}";
     if(msg == "WRT_OK") alert("성공적으로 등록되었습니다.");
@@ -60,4 +146,4 @@
     </div>
 </div>
 </body>
-</html>
+</html>--%>

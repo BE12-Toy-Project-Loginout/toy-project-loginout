@@ -14,14 +14,8 @@ public class QnaDto {
     private Integer productId;
     private String password;
     private Date updateAt;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private int viewCnt;
+    private int commentCnt;
 
     public Integer getQnaId() {
         return qnaId;
@@ -63,14 +57,6 @@ public class QnaDto {
         this.createAt = createAt;
     }
 
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAtAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
     public String getQnaCategory() {
         return qnaCategory;
     }
@@ -95,5 +81,65 @@ public class QnaDto {
         this.productId = productId;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public int getViewCnt() {
+        return viewCnt;
+    }
+
+    public void setViewCnt(int viewCnt) {
+        this.viewCnt = viewCnt;
+    }
+
+    public int getCommentCnt() {
+        return commentCnt;
+    }
+
+    public void setCommentCnt(int commentCnt) {
+        this.commentCnt = commentCnt;
+    }
+
+    @Override
+    public String toString() {
+        return "QnaDto{" +
+                "qnaId=" + qnaId +
+                ", memberId=" + memberId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", createAt=" + createAt +
+                ", qnaCategory='" + qnaCategory + '\'' +
+                ", isSecret=" + isSecret +
+                ", productId=" + productId +
+                ", password='" + password + '\'' +
+                ", updateAt=" + updateAt +
+                ", viewCnt=" + viewCnt +
+                ", commentCnt=" + commentCnt +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        QnaDto qnaDto = (QnaDto) o;
+        return Objects.equals(qnaId, qnaDto.qnaId) && Objects.equals(memberId, qnaDto.memberId) && Objects.equals(title, qnaDto.title) && Objects.equals(content, qnaDto.content) && Objects.equals(qnaCategory, qnaDto.qnaCategory) && Objects.equals(isSecret, qnaDto.isSecret) && Objects.equals(productId, qnaDto.productId) && Objects.equals(password, qnaDto.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(qnaId, memberId, title, content, qnaCategory, isSecret, productId, password);
+    }
 }

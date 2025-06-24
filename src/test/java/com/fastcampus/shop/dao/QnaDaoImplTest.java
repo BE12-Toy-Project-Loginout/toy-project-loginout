@@ -1,6 +1,7 @@
 package com.fastcampus.shop.dao;
 
 import com.fastcampus.shop.dto.QnaDto;
+import com.fastcampus.shop.dto.SearchCondition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,68 @@ public class QnaDaoImplTest {
 
     @Autowired
     QnaDao qnaDao;
+
+    @Test
+    @Rollback(true)
+    public void searchSelectPageTest() throws Exception {
+        qnaDao.deleteAll();
+        for (int i = 1; i <= 20; i++) {
+            QnaDto dto = new QnaDto();
+            dto.setQnaCategory("상품");
+            dto.setTitle("title" + i);
+            dto.setContent("content" + i);
+            boolean isSecret = i % 2 == 0;
+            dto.setIsSecret(isSecret);
+            dto.setPassword(isSecret ? "1234" : null);  // 비밀번호 확인용
+            System.out.println("[" + i + "] password = " + dto.getPassword());
+
+            dto.setMemberId(1000 + ((i - 1) % 10) + 1);
+            dto.setProductId(((i - 1) % 10) + 1);
+
+            qnaDao.insert(dto);
+        }
+
+        SearchCondition sc = new SearchCondition(1, 10, "title2", "T");
+        List<QnaDto> list = qnaDao.searchSelectPage(sc);
+        System.out.println("list = " + list);
+        assertTrue(list.size() == 2);
+
+        sc = new SearchCondition(1, 10, "1001", "W");
+        list = qnaDao.searchSelectPage(sc);
+        System.out.println("list = " + list);
+        assertTrue(list.size() == 2);
+    }
+
+    @Test
+    @Rollback(true)
+    public void searchResultCntTest() throws Exception {
+        qnaDao.deleteAll();
+        for (int i = 1; i <= 20; i++) {
+            QnaDto dto = new QnaDto();
+            dto.setQnaCategory("상품");
+            dto.setTitle("문의 제목 " + i);
+            dto.setContent("문의 내용 " + i);
+            boolean isSecret = i % 2 == 0;
+            dto.setIsSecret(isSecret);
+            dto.setPassword(isSecret ? "1234" : null);  // 비밀번호 확인용
+            System.out.println("[" + i + "] password = " + dto.getPassword());
+
+            dto.setMemberId(1000 + ((i - 1) % 10) + 1);
+            dto.setProductId(((i - 1) % 10) + 1);
+
+            qnaDao.insert(dto);
+        }
+
+        SearchCondition sc = new SearchCondition(1, 10, "문의 제목 2", "T");
+        int cnt = qnaDao.searchResultCnt(sc);
+        System.out.println("cnt = " + cnt);
+        assertTrue(cnt == 2);
+
+        sc = new SearchCondition(1, 10, "1001", "W");
+        cnt = qnaDao.searchResultCnt(sc);
+        System.out.println("cnt = " + cnt);
+        assertTrue(cnt == 2);
+    }
 
     /*@Test
     @Transactional
@@ -121,7 +184,7 @@ public class QnaDaoImplTest {
     @Rollback(false)// DB에 실제 반영할 경우 false, 테스트 후 롤백할 경우 true
     public void insert240QnasWithAllFields() throws Exception {
         qnaDao.deleteAll();
-        for (int i = 1; i <= 240; i++) {
+        for (int i = 1; i <= 255; i++) {
             QnaDto dto = new QnaDto();
             dto.setQnaCategory("상품");
             dto.setTitle("문의 제목 " + i);
@@ -139,7 +202,31 @@ public class QnaDaoImplTest {
 
         int total = qnaDao.count();
         System.out.println("총 등록된 QnA 개수 = " + total);
-        assertEquals(240, total);
+        assertEquals(255, total);
     }
 
+    @Test
+    @Rollback(false)
+    public void increaseViewCntTest() throws Exception {
+        QnaDto dto = new QnaDto();
+        dto.setQnaCategory("상품");
+        dto.setTitle("조회수 테스트");
+        dto.setContent("조회수 테스트 내용");
+        dto.setIsSecret(false);
+        dto.setMemberId(1001);
+        dto.setProductId(1);
+
+        qnaDao.insert(dto);
+        Integer qnaId = dto.getQnaId();
+
+        QnaDto beforeDto = qnaDao.findById(qnaId);
+        Integer beforeViewCnt = beforeDto.getViewCnt();
+
+        qnaDao.increaseViewCnt(qnaId);
+
+        QnaDto afterDto = qnaDao.findById(qnaId);
+        Integer afterViewCnt = afterDto.getViewCnt();
+        System.out.println("afterViewCnt = " + afterViewCnt);
+        assertTrue(afterViewCnt == beforeViewCnt + 1);
+    }
 }

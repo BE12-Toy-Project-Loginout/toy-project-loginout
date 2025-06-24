@@ -2,6 +2,7 @@ package com.fastcampus.shop.controller;
 
 import com.fastcampus.shop.dto.PageHandler;
 import com.fastcampus.shop.dto.QnaDto;
+import com.fastcampus.shop.dto.SearchCondition;
 import com.fastcampus.shop.service.QnaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Controller
 @RequestMapping("/qna")
@@ -58,8 +60,9 @@ public class QnaController {
                 throw new Exception("board write error");
 
             rattr.addFlashAttribute("msg", "WRT_OK");
+            return "redirect:/qna/read?qnaId=" + qnaDto.getQnaId();
 
-            return "redirect:/qna/list";
+            //return "redirect:/qna/list";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,23 +80,19 @@ public class QnaController {
 
     @PostMapping("/remove")
     public String remove(@RequestParam("qnaId") Integer qnaId,
-                         @RequestParam("memberId") Integer memberId,
-                         @RequestParam("currentPage") Integer currentPage,
-                         @RequestParam("pageSize") Integer pageSize, Model m, HttpSession session, RedirectAttributes rattr) {
+                         /*@RequestParam("memberId") Integer memberId,*/
+                         SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
         // 테스트용 memberId 하드코딩
         //Integer memberId = 1001; // ← 실제 존재하는 FK 값
 
-        /*// 로그인 없이 세션을 가짜로 채우고 싶다면
+        // 로그인 없이 세션을 가짜로 채우고 싶다면
         session.setAttribute("memberId", 1001);
-        Integer memberId = (Integer) session.getAttribute("memberId");*/
+        Integer memberId = (Integer) session.getAttribute("memberId");
 
         //String writer = (String)session.getAttribute("memberId");
 
 
         try {
-            m.addAttribute("currentPage", currentPage);
-            m.addAttribute("pageSize", pageSize);
-
             int rowCnt = qnaService.remove(qnaId, memberId);
 
             if(rowCnt != 1) {
@@ -107,54 +106,58 @@ public class QnaController {
 
         }
 
-        return "redirect:/qna/list"; //모델사용하면 url뒤에 따로 붙여줄 필요 없음
+        return "redirect:/qna/list"+sc.getQueryString(); //모델사용하면 url뒤에 따로 붙여줄 필요 없음
     }
 
     @GetMapping("/read")
-    public String read(Integer qnaId, Integer currentPage, Integer pageSize, Model m) {
+    public String read(Integer qnaId, SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
+        System.out.println("조회하려는 QnA ID: " + qnaId);
+
+        session.setAttribute("memberId", 1001);
+        Integer memberId = (Integer) session.getAttribute("memberId");
+
         try {
             QnaDto qnaDto = qnaService.read(qnaId);
+            System.out.println("Service에서 받아온 QnaDto: " + qnaDto);
+
             m.addAttribute(qnaDto);
-            m.addAttribute("currentPage", currentPage);
-            m.addAttribute("pageSize", pageSize);
+            m.addAttribute("sc", sc);
+            m.addAttribute("mode", "view");          // <== 여기 추가!!
+            m.addAttribute("loginId", memberId);
+
 
         } catch (Exception e) {
             e.printStackTrace();
+            rattr.addFlashAttribute("msg", "READ_ERR");
+            return "redirect:/qna/list"+sc.getQueryString();
         }
         return "qna";
     }
 
     @GetMapping("/list")
-    public String list(Integer currentPage, Integer pageSize, Model m, HttpServletRequest request) {
+    public String list(SearchCondition sc, Model m, HttpServletRequest request) {
         if (!loginCheck(request))
             return "redirect:/login/login?toURL=" + request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
-
-        // null 체크 및 기본값 할당
-        if (currentPage == null || currentPage < 1) {
-            currentPage = 1;
-        }
-        if (pageSize == null || pageSize < 1) {
-            pageSize = 10; // 원하는 기본 페이지 사이즈 값으로 변경 가능
-        }
+        System.out.println("### sc.getCurrentPage() = " + sc.getCurrentPage());
 
         try {
 
-            int totalCnt = qnaService.getCount();
-            PageHandler pageHandler = new PageHandler(totalCnt, currentPage, pageSize);
+            int totalCnt = qnaService.getSearchResultCnt(sc);
+            m.addAttribute("totalCnt", totalCnt);
 
-            Map<String, Object> map = new HashMap<>();
-            map.put("offset", (currentPage - 1) * pageSize);
-            map.put("pageSize", pageSize);
+            PageHandler pageHandler = new PageHandler(totalCnt, sc);
 
-            List<QnaDto> list = qnaService.getPage(map);
+            List<QnaDto> list = qnaService.getSearchResultPage(sc);
             m.addAttribute("list", list);
             m.addAttribute("ph", pageHandler);
-            m.addAttribute("currentPage", currentPage);
-            m.addAttribute("pageSize", pageSize);
 
+            Instant startOfToday = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant();
+            m.addAttribute("startOfToday", startOfToday.toEpochMilli());
 
         } catch (Exception e) {
             e.printStackTrace();
+            m.addAttribute("msg", "LIST_ERR");
+            m.addAttribute("totalCnt", 0);
         }
 
         // 로그인을 한 상태이면...

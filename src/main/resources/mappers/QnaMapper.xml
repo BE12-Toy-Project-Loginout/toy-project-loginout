@@ -6,25 +6,24 @@
 
     <!-- 전체 조회 -->
     <select id="findAll" resultType="com.fastcampus.shop.dto.QnaDto">
-        SELECT qna_id, member_id, title, content, create_at
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
         FROM qna
-        <!-- ORDER BY qna_id -->
-        ORDER BY create_at DESC<!-- 최신순으로 정렬 -->
+        ORDER BY create_at DESC, qna_id DESC <!-- 최신순으로 정렬 -->
     </select>
     <!-- 상세 조회 -->
     <select id="findById" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
-        SELECT qna_id, member_id, title, content, create_at
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
         FROM qna
         WHERE qna_id = #{qnaId}
     </select>
     <!-- 사용자별 상세 조회 -->
     <select id="findByMemberId" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
-        SELECT qna_id, member_id, title, content, create_at
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
         FROM qna
         WHERE member_id = #{memberId}
     </select>
     <!-- 등록 -->
-    <insert id="insert" parameterType="com.fastcampus.shop.dto.QnaDto">
+    <insert id="insert" parameterType="com.fastcampus.shop.dto.QnaDto" useGeneratedKeys="true" keyProperty="qnaId">
         INSERT INTO qna (qna_category, title, content, is_secret, member_id, product_id, password, create_at)
         VALUES (#{qnaCategory}, #{title}, #{content}, #{isSecret}, #{memberId}, #{productId}, #{password}, NOW())
     </insert>
@@ -64,29 +63,51 @@
     <select id="selectPage" parameterType="map" resultType="com.fastcampus.shop.dto.QnaDto">
         SELECT qna_id, member_id, title, content, create_at
         FROM qna
-        ORDER BY  <!--qna_id ASC-->
-            create_at DESC
+        ORDER BY create_at DESC, qna_id DESC
         LIMIT #{offset}, #{pageSize}
     </select>
+
+    <sql id="searchCondition">
+        <choose>
+            <when test='option=="T"'>
+                AND title LIKE concat('%', #{keyword}, '%')
+            </when>
+            <when test='option=="W"'>
+                AND member_id LIKE concat('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                AND (title LIKE concat('%', #{keyword}, '%')
+                OR content LIKE concat('%', #{keyword}, '%'))
+            </otherwise>
+        </choose>
+    </sql>
 
     <select id="searchSelectPage" parameterType="SearchCondition" resultType="com.fastcampus.shop.dto.QnaDto">
-        SELECT qna_id, member_id, title, content, create_at
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
         FROM qna
         WHERE true
-        AND title LIKE concat('%', #{keyword}, '%')
-        ORDER BY  <!--qna_id ASC-->
-        create_at DESC
+        <include refid="searchCondition"/>
+        ORDER BY create_at DESC, qna_id DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
-    <select id="searchResultCnt" parameterType="SearchCondition" resultType="com.fastcampus.shop.dto.QnaDto">
+    <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
         SELECT count(*)
         FROM qna
         WHERE true
-        AND title LIKE concat('%', #{keyword}, '%')
-        ORDER BY  <!--qna_id ASC-->
-        create_at DESC
-        LIMIT #{offset}, #{pageSize}
+        <include refid="searchCondition"/>
     </select>
+
+    <update id="updateCommentCnt" parameterType="map">
+        UPDATE  qna
+        SET comment_cnt = comment_cnt + #{commentCnt}
+        WHERE qna_id = #{qnaId}
+    </update>
+
+    <update id="increaseViewCnt" parameterType="int">
+        UPDATE qna
+        SET   view_cnt = view_cnt + 1
+        WHERE qna_id = #{qnaId}
+    </update>
 
 </mapper>
