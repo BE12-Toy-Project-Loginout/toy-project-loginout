@@ -1,104 +1,156 @@
 body {
+    background-color: #f2f2f2;
     font-family: 'Noto Sans KR', sans-serif;
     margin: 0;
     padding: 0;
-    background: #fff;
-    color: #000;
 }
 
 .order-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 24px;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 32px 24px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
 }
 
 .page-title {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
-.section {
-    margin-bottom: 30px;
-}
-
-.section-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
-
-.address-tabs .tab {
-    padding: 8px 12px;
-    margin-right: 8px;
-    border: none;
-    background: #eee;
-    cursor: pointer;
-}
-
-.address-tabs .tab.active {
-    background: #ddd;
-    font-weight: bold;
-}
-
-.form-row {
+/* 탭 버튼 */
+.address-tabs {
+    display: flex;
+    background-color: #e6e6e6;
+    border-radius: 24px;
+    overflow: hidden;
     margin-bottom: 16px;
 }
 
-input, select, button {
-    padding: 8px;
+.address-tabs .tab {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 14px;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-weight: 500;
+}
+
+.address-tabs .tab.active {
+    background-color: #fff;
+    color: #007aff;
+    border: 2px solid #007aff;
+    border-radius: 24px;
+}
+
+/* 배송지 라디오 */
+.address-options {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
     font-size: 14px;
 }
 
+/* 입력 필드 */
+.form-row {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+select {
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 15px;
+    background-color: #fff;
+}
+
+/* 주소 박스 */
 .address-box,
 .phone-box,
 .email-box {
     display: flex;
     gap: 8px;
-    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
 }
 
+.address-box input,
+.address-box button,
+.phone-box input,
+.phone-box select,
+.email-box input,
+.email-box select {
+    flex: 1;
+}
+
+/* 주소검색 버튼 */
+button[type="button"] {
+    background-color: #eee;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #444;
+}
+
+/* 결제 버튼 */
+.pay-button {
+    width: 100%;
+    padding: 16px;
+    background-color: #CFBCDF;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 14px;
+    margin-top: 32px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.pay-button:hover {
+    background-color: #BA8F95;
+}
 .price-summary {
     list-style: none;
     padding: 0;
+    margin-top: 16px;
     border-top: 1px solid #ddd;
-    margin-bottom: 20px;
+    font-size: 14px;
 }
 
 .price-summary li {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    padding: 12px 0;
+    color: #333;
+}
+
+.price-summary li:nth-child(3) {
+    color: #d93025; /* 할인/부가결제 빨간색 */
 }
 
 .price-summary .total {
+    background-color: #f5f8ff;
     font-weight: bold;
-    border-top: 2px solid #000;
-    padding-top: 12px;
-}
-
-.highlight {
-    color: #0073ff;
-}
-
-.payment-methods ul {
-    list-style: none;
-    padding: 0;
-}
-
-.payment-methods li {
-    padding: 8px 0;
-}
-
-.pay-button {
-    width: 100%;
-    padding: 14px;
-    background: #c7b4dc;
-    border: none;
-    color: white;
-    font-weight: bold;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 16px 0;
     font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
+}
+
+.price-summary .highlight {
+    color: #000000;
+    font-weight: 700;
 }
