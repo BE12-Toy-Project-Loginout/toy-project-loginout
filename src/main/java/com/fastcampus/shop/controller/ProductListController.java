@@ -3,6 +3,7 @@ package com.fastcampus.shop.controller;
 import com.fastcampus.shop.domain.PageHandler;
 import com.fastcampus.shop.dto.ProductListDto;
 import com.fastcampus.shop.service.ProductListService;
+import com.fastcampus.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -24,6 +26,9 @@ import java.util.Map;
 public class ProductListController {
     @Autowired
     ProductListService productListService;
+
+    @Resource(name = "userService")
+    private UserService userService;
 
     @GetMapping
     public String productList(Integer page, Integer pageSize, String category, String sort,
@@ -63,6 +68,9 @@ public class ProductListController {
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        // Set user attributes in model for sidebar login/logout button
+        userService.setUserAttributesInModel(request, m);
 
         return "productList";
     }

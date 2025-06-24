@@ -73,7 +73,7 @@
             P.product_price            AS productPrice
             FROM loginout.product_detail PD
                      INNER JOIN loginout.product P ON PD.product_id = P.product_id
-            WHERE PD.product_id = #{product_id}
+            WHERE PD.product_id = #{productId}
         </select>
 
 </mapper>
