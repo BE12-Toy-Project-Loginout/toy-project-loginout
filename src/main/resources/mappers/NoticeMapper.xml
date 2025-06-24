@@ -35,6 +35,7 @@
         FROM
             notice
         ORDER BY
+             is_pinned DESC,
              notice_id DESC
     </select>
 </mapper>
