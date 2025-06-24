@@ -20,6 +20,7 @@ public interface QnaService {
     int modify(QnaDto dto) throws Exception ; // 게시글 수정
 
     //int delete(int qnaId) throws Exception ; // 게시글 삭제
+    //int remove(Integer qnaId, Integer memberId) throws Exception;
     int remove(Integer qnaId, Integer memberId) throws Exception;
 
     List<QnaDto> getSearchResultPage(SearchCondition sc) throws Exception;

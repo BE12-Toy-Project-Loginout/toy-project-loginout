@@ -1,8 +1,10 @@
 package com.fastcampus.shop.controller;
 
 import com.fastcampus.shop.dto.PageHandler;
+import com.fastcampus.shop.dto.QnaCommentDto;
 import com.fastcampus.shop.dto.QnaDto;
 import com.fastcampus.shop.dto.SearchCondition;
+import com.fastcampus.shop.service.QnaCommentService;
 import com.fastcampus.shop.service.QnaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -111,15 +113,13 @@ public class QnaController {
 
     @GetMapping("/read")
     public String read(Integer qnaId, SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
-        System.out.println("조회하려는 QnA ID: " + qnaId);
 
         session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
 
+
         try {
             QnaDto qnaDto = qnaService.read(qnaId);
-            System.out.println("Service에서 받아온 QnaDto: " + qnaDto);
-
             m.addAttribute(qnaDto);
             m.addAttribute("sc", sc);
             m.addAttribute("mode", "view");          // <== 여기 추가!!
