@@ -23,9 +23,6 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeService;
 
-    @Resource
-    private NoticeMapper noticeMapper;
-
 
     @GetMapping("/notice")
     public String noticeView(Model model) {
@@ -37,7 +34,6 @@ public class NoticeController {
     @GetMapping("/notice/{noticeId}")
     public String noticeDetail(Model model, @PathVariable int noticeId) {
         NoticeDto notice = noticeService.noticeDetail(noticeId);
-        model.addAttribute("noticeId", noticeId);
         model.addAttribute("notice", notice);
         return "noticeDetail";
     }
