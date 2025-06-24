@@ -22,13 +22,4 @@ public class TestController {
     }
 }
 
-/*@Controller
-public class TestController {
 
-    @GetMapping("/db-check")
-    public void check(HttpServletResponse response) throws IOException {
-        System.out.println(">>>>> /db-check 컨트롤러 호출됨");
-        response.setContentType("text/plain;charset=UTF-8");
-        response.getWriter().write("컨트롤러 정상작동");
-    }
-}*/
