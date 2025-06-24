@@ -5,11 +5,11 @@
 <mapper namespace="com.fastcampus.shop.dao.QnaCommentDao">
 
     <!-- 전체 조회 -->
-    <select id="findAll" resultType="com.fastcampus.shop.dto.QnaCommentDto">
-        SELECT answer_id, answer_content, member_id, qna_id, create_at, update_at, panswer_id
+    <select id="findAll" parameterType="int" resultType="com.fastcampus.shop.dto.QnaCommentDto">
+        SELECT answer_id, answer_content, member_id, qna_id, create_at, update_at, ifnull(panswer_id, answer_id) as panswer_id
         FROM qna_answer
         WHERE qna_id = #{qnaId}
-        ORDER BY create_at ASC, answer_id ASC <!-- 최신순으로 정렬 -->
+        ORDER BY panswer_id ASC, answer_id ASC <!-- 최신순으로 정렬 -->
     </select>
     <!-- 상세 조회 -->
     <select id="findById" parameterType="int" resultType="com.fastcampus.shop.dto.QnaCommentDto">

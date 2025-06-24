@@ -52,7 +52,7 @@ public class QnaCommentServiceImplTest {
     @Test
     @Rollback(true)
     public void write() throws Exception {
-        QnaCommentDto qnaCommentDto = new QnaCommentDto(0, 1001, 2063, "new answer content");
+        QnaCommentDto qnaCommentDto = new QnaCommentDto(null, 1001, 2063, "new answer content");
         int rowCnt = qnaCommentService.write(qnaCommentDto);
         System.out.println("rowCnt = " + rowCnt);
         assertTrue(rowCnt == 1);

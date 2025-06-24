@@ -12,6 +12,11 @@ comment: <input type="text" name="answerContent" id="comment"><br>
 <button id="modBtn" type="button">수정</button>
 
 <div id="commentList"></div>
+<div id="replyForm" style="display: none">
+    <input type="text" name="replyContent">
+    <button id="wrtRepBtn" type="button">등록</button>
+</div>
+
 <script>
     let qnaId = 2063;
 
@@ -22,11 +27,14 @@ comment: <input type="text" name="answerContent" id="comment"><br>
             tmp += '<li data-answerId=' + comment.answerId
             tmp += ' data-panswerId=' + comment.panswerId
             tmp += ' data-qnaId=' + comment.qnaId + '>'
+        if (comment.answerId != comment.panswerId)
+            tmp += 'ㄴ'
             tmp += ' commenter=<span class="commenter">' + comment.memberId + '</span>'
             tmp += ' content=<span class="content">' + comment.answerContent + '</span>'
             tmp += ' update_at=' + comment.updateAt
             tmp += '<button class="delBtn">삭제</button>'
             tmp += '<button class="modBtn">수정</button>'
+            tmp += '<button class="replyBtn">답글</button>'
             tmp += '</li>'
         })
         return tmp + "</ul>";
@@ -95,6 +103,37 @@ comment: <input type="text" name="answerContent" id="comment"><br>
             }); // $.ajax()
         });
 
+        $("#wrtRepBtn").click(function () {
+            let answerContent = $("input[name=replyContent]").val();
+            let panswerId = $("#replyForm").parent().attr("data-panswerId");
+
+            if (answerContent.trim() == '') {
+                alert("댓글을 입력해주세요.");
+                $("input[name=replyContent]").focus();
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',       // 요청 메서드
+                url: '/toyproject/comments?qnaId=' + qnaId,  // 요청 URI
+                headers: {"content-type": "application/json"}, // 요청 헤더
+                data: JSON.stringify({panswerId:panswerId, qnaId: qnaId, answerContent: answerContent}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
+                success: function (result) {
+                    alert(result);
+                    showList(qnaId);
+                },
+                error: function () {
+                    alert("error")
+                } // 에러가 발생했을 때, 호출될 함수
+            }); // $.ajax()
+
+            $("#replyForm").css("display", "none")
+            $("input[name=replyContent]").val('')
+            $("replyForm").appendTo("body");
+            //답글 폼 위치를 원래대로 되돌린다
+        });
+
+
         $("#commentList").on("click", ".modBtn", function () {
             let answerId = $(this).parent().attr("data-answerId");
             let answerContent = $("span.content", $(this).parent()).text();
@@ -103,25 +142,34 @@ comment: <input type="text" name="answerContent" id="comment"><br>
             $("input[name=answerContent]").val(answerContent);
             //2.answerId  전달하기
             $("#modBtn").attr("data-answerId", answerId);
-
-            //$(".delBtn").click(function(){
-            $("#commentList").on("click", ".delBtn", function () {
-                let answerId = $(this).parent().attr("data-answerId");
-                let qnaId = $(this).parent().attr("data-qnaId");
-                $.ajax({
-                    type: 'DELETE',       // 요청 메서드
-                    url: '/toyproject/comments/' + answerId + '?qnaId=' + qnaId,  // 요청 URI
-                    success: function (result) {
-                        alert(result)
-                        showList(qnaId);
-                    },
-                    error: function () {
-                        alert("error")
-                    } // 에러가 발생했을 때, 호출될 함수
-                });
-            });
         });
 
+        $("#commentList").on("click", ".replyBtn", function () {
+            //1. replyForm을 옮기고
+            $("#replyForm").appendTo($(this).parent());
+
+            //2. 답글을 입력할 폼을 보여주고
+            $("#replyForm").css("display", "block");
+
+        });
+
+
+        //$(".delBtn").click(function(){
+        $("#commentList").on("click", ".delBtn", function () {
+            let answerId = $(this).parent().attr("data-answerId");
+            let qnaId = $(this).parent().attr("data-qnaId");
+            $.ajax({
+                type: 'DELETE',       // 요청 메서드
+                url: '/toyproject/comments/' + answerId + '?qnaId=' + qnaId,  // 요청 URI
+                success: function (result) {
+                    alert(result)
+                    showList(qnaId);
+                },
+                error: function () {
+                    alert("error")
+                } // 에러가 발생했을 때, 호출될 함수
+            });
+        });
 
     });
 </script>
