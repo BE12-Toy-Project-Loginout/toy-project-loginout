@@ -12,4 +12,5 @@ public class BoardController {
         return "boardList";  // /WEB-INF/views/testBoard.jsp로 forward됨
     }
 }
+//테스트용
 */
