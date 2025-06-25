@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface NoticeService {
 
-     NoticeDto noticeDetail(int noticeId);
+     NoticeDto getNoticeDetail(int noticeId);
 
      List<NoticeDto> getAllNotices();
 

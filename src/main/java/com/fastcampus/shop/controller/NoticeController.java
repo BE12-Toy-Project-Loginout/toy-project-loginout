@@ -33,7 +33,7 @@ public class NoticeController {
 
     @GetMapping("/notice/{noticeId}")
     public String noticeDetail(Model model, @PathVariable int noticeId) {
-        NoticeDto notice = noticeService.noticeDetail(noticeId);
+        NoticeDto notice = noticeService.getNoticeDetail(noticeId);
         model.addAttribute("notice", notice);
         return "noticeDetail";
     }

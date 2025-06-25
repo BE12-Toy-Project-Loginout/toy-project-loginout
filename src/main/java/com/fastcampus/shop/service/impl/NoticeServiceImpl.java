@@ -20,7 +20,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 
     @Override
-    public NoticeDto noticeDetail(int noticeId) {
+    public NoticeDto getNoticeDetail(int noticeId) {
         return NoticeMapper.getNoticeDetail(noticeId);
     }
 
