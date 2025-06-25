@@ -252,6 +252,8 @@ public class QnaCommentController {
     // 따로 지정하고 상태까지 같이 넘겨준다
     @ResponseBody public ResponseEntity<List<QnaCommentDto>> list(Integer qnaId) {
         List<QnaCommentDto> list = null;
+        System.out.println("QnaCommentController.list() 호출");
+
         try {
             list = qnaCommentService.getListByQnaId(qnaId);
             return new ResponseEntity<List<QnaCommentDto>>(list, HttpStatus.OK); //200
