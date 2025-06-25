@@ -1,12 +1,15 @@
 package com.fastcampus.shop.dto;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.Objects;
 
 @Getter
+@ToString
+@EqualsAndHashCode(of = "productId")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductListDto {
 
     private Integer productId;
@@ -17,45 +20,6 @@ public class ProductListDto {
     private byte[] productImage;
     private Integer productSalesVolume;
     private Date productPostedAt;
+    private String imagePath;
 
-    public ProductListDto() {}
-    public ProductListDto(Integer productId, String productName,
-                          String productDescription, String productCategory,
-                          Integer productPrice, byte[] productImage,
-                          Integer productSalesVolume, Date productPostedAt) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.productCategory = productCategory;
-        this.productPrice = productPrice;
-        this.productImage = productImage;
-        this.productSalesVolume = productSalesVolume;
-        this.productPostedAt = productPostedAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductListDto that = (ProductListDto) o;
-        return Objects.equals(productId, that.productId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(productId);
-    }
-
-    @Override
-    public String toString() {
-        return "ProductListDto{" +
-                "productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", productDescription='" + productDescription + '\'' +
-                ", productCategory='" + productCategory + '\'' +
-                ", productPrice=" + productPrice +
-                ", productImage='" + productImage + '\'' +
-                ", productSalesVolume=" + productSalesVolume +
-                ", productPostedAt=" + productPostedAt +
-                '}';
-    }
 }
