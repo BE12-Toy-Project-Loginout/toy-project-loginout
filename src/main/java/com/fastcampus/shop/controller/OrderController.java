@@ -31,13 +31,13 @@ public class OrderController {
 
     @PostMapping
     public String orderProduct(
-            @RequestParam("productId") int productId,
-            @RequestParam("quantity") int quantity,
+            @RequestParam("productId") List<Integer> productIds,
+            @RequestParam("quantity") List<Integer> quantities,
             @RequestParam(value = "addrType", defaultValue = "member") String addrType,
             HttpSession session,
             Model m) {
-        System.out.println("productId = " + productId);
-        System.out.println("quantity = " + quantity);
+        System.out.println("productId = " + productIds);
+        System.out.println("quantity = " + quantities);
 
         // 세션에 가짜 로그인 정보 삽입
         MemberDto mockLoginMember = new MemberDto();
@@ -77,21 +77,27 @@ public class OrderController {
             receiver.setReceiverAddressDetail(member.getMemberAddressDetail());
         }
 
-        ProductListDto product = productListService.getProductById(productId);
+        List<ProductListDto> products = new ArrayList<>();
+        for (Integer productId : productIds) {
+            ProductListDto product = productListService.getProductById(productId);
+            products.add(product);
+        }
 
         m.addAttribute("member", member);
         m.addAttribute("receiverInfo", receiver);
-        m.addAttribute("product", product);
-        m.addAttribute("quantity", quantity);
+        m.addAttribute("products", products);
+        m.addAttribute("quantities", quantities);
+        m.addAttribute("productsIds", productIds);
+        m.addAttribute("addrType", addrType);
 
         return "order";
     }
 
     @PostMapping("/complete")
     public String completeOrder(
-            @RequestParam("productId") List<Integer> productIds,
-            @RequestParam("quantity") List<Integer> quantities,
-            @RequestParam("receiver") String recieverName,
+            @RequestParam("productIds") List<Integer> productIds,
+            @RequestParam("quantities") List<Integer> quantities,
+            @RequestParam("receiver") String receiverName,
             @RequestParam("zipcode") String zipcode,
             @RequestParam("address1") String address1,
             @RequestParam("address2") String addressDetail,
@@ -106,7 +112,7 @@ public class OrderController {
         MemberDto member = (MemberDto) session.getAttribute("loginMember");
 
         ReceiverInfoDto receiver = new ReceiverInfoDto();
-        receiver.setReceiverName(recieverName);
+        receiver.setReceiverName(receiverName);
         receiver.setReceiverZipcode(zipcode);
         receiver.setReceiverAddress(address1);
         receiver.setReceiverAddressDetail(addressDetail);

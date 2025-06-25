@@ -25,15 +25,14 @@
     <section class="section">
         <h2 class="section-title">배송지</h2>
 
-        <div class="address-tabs">
-            <button class="tab">최근 배송지</button>
-            <button class="tab active">직접입력</button>
-        </div>
+        <div class="direct-input-tab">직접입력</div>
 
         <div class="address-options">
             <form method="post" action="">
-                <input type="hidden" name="productId" value="${product.productId}"/>
-                <input type="hidden" name="quantity" value="${quantity}"/>
+                <c:forEach var="product" items="${products}" varStatus="status">
+                    <input type="hidden" name="productId" value="${product.productId}"/>
+                    <input type="hidden" name="quantity" value="${quantities[status.index]}"/>
+                </c:forEach>
                 <label>
                     <input type="radio" name="addrType" value="member"
                     ${addrType == 'member' ? 'checked' : ''} onchange="this.form.submit()"> 회원 정보와 동일
@@ -46,8 +45,10 @@
         </div>
 
         <form id="orderForm" action="${pageContext.request.contextPath}/order/complete" method="post">
-            <input type="hidden" name="productId" value="${product.productId}"/>
-            <input type="hidden" name="quantity" value="${quantity}"/>
+            <c:forEach var="product" items="${products}" varStatus="status">
+            <input type="hidden" name="productIds" value="${product.productId}"/>
+            <input type="hidden" name="quantities" value="${quantities[status.index]}"/>
+            </c:forEach>
 
             <div class="form-row">
                 <label>받는사람 *</label>
@@ -90,7 +91,9 @@
                         <option value="">선택하세요</option>
                         <option value="naver.com" ${email2 == 'naver.com' ? 'selected' : ''}>naver.com</option>
                         <option value="gmail.com" ${email2 == 'gmail.com' ? 'selected' : ''}>gmail.com</option>
-                        <option value="custom" ${email2 != 'naver.com' and email2 != 'gmail.com' ? 'selected' : ''}>직접입력</option>
+                        <option value="custom" ${email2 != 'naver.com' and email2 != 'gmail.com' ? 'selected' : ''}>
+                            직접입력
+                        </option>
                     </select>
                 </div>
             </div>
@@ -108,23 +111,29 @@
             <section class="section">
                 <h2 class="section-title">주문상품</h2>
                 <ul class="order-items">
-                    <li>
-                        <span>${product.productName} x ${quantity}개</span>
-                        <span><fmt:formatNumber value="${product.productPrice * quantity}" type="number"/>원</span>
-                    </li>
+                    <c:set var="totalPrice" value="0"/>
+                    <c:forEach var="product" items="${products}" varStatus="status">
+                        <c:set var="qty" value="${quantities[status.index]}"/>
+                        <c:set var="subtotal" value="${product.productPrice * qty}"/>
+                        <li>
+                            <span>${product.productName} x ${qty}개</span>
+                            <span><fmt:formatNumber value="${subtotal}" type="number"/>원</span>
+                        </li>
+                        <c:set var="totalPrice" value="${totalPrice + subtotal}"/>
+                    </c:forEach>
                 </ul>
             </section>
 
             <section class="section">
                 <h2 class="section-title">결제정보</h2>
                 <ul class="price-summary">
-                    <li>주문상품 <span><fmt:formatNumber value="${product.productPrice * quantity}" type="number"/>원</span></li>
+                    <li>주문상품 <span><fmt:formatNumber value="${totalPrice}" type="number"/>원</span></li>
                     <li>배송비 <span>+0원</span></li>
                     <li>할인/부가결제 <span>-0원</span></li>
-                    <li class="total">최종 결제 금액 <span class="highlight"><fmt:formatNumber value="${product.productPrice * quantity}" type="number"/>원</span></li>
+                    <li class="total">최종 결제 금액 <span class="highlight"><fmt:formatNumber value="${totalPrice}"
+                                                                                         type="number"/>원</span></li>
                 </ul>
             </section>
-
             <button class="pay-button" type="button">주문하기</button>
         </form>
     </section>
@@ -138,7 +147,7 @@
             inputEl.value = "";
             inputEl.focus();
         } else {
-            inputEl.disabled = true;
+            inputEl.readOnly = true; // ✅ 바뀐 부분
             inputEl.value = selectEl.value;
         }
     }
