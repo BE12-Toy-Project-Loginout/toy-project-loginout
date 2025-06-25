@@ -2,6 +2,7 @@ package com.fastcampus.shop.controller;
 
 import com.fastcampus.shop.dto.QnaCommentDto;
 import com.fastcampus.shop.dto.QnaDto;
+import com.fastcampus.shop.service.AdminService;
 import com.fastcampus.shop.service.QnaCommentService;
 import com.fastcampus.shop.service.QnaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class QnaCommentController {
 
     @Autowired
     QnaService qnaService;
+
+    @Autowired
+    private AdminService adminService;
+
     // 댓글을 등록하는 메서드
     @PostMapping("/comments") //comments?qnaId=2063 POST 방식
     public ResponseEntity<String> write(@RequestBody QnaCommentDto qnaCommentDto, @RequestParam Integer qnaId, HttpSession session) {
@@ -43,9 +48,15 @@ public class QnaCommentController {
             if (qnaDto == null) {
                 return new ResponseEntity<>("존재하지 않는 글입니다.", headers, HttpStatus.BAD_REQUEST);
             }
-            if (!memberId.equals(qnaDto.getMemberId())) {
+            /*if (!memberId.equals(qnaDto.getMemberId())) {
                 return new ResponseEntity<>("글 작성자만 댓글을 작성할 수 있습니다.", headers, HttpStatus.FORBIDDEN);
+            }*/
+            // 관리자이거나 글 작성자만 댓글(답변) 작성 가능
+            boolean isAdmin = adminService.isAdmin(memberId);
+            if (!memberId.equals(qnaDto.getMemberId()) && !isAdmin) {
+                return new ResponseEntity<>("댓글(답변) 작성 권한이 없습니다.", headers, HttpStatus.FORBIDDEN);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("서버 오류", headers, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -80,6 +91,10 @@ public class QnaCommentController {
             return new ResponseEntity<>("로그인이 필요합니다.", headers, HttpStatus.UNAUTHORIZED);
         }
 
+        // 관리자 권한 체크
+        boolean isAdmin = adminService.isAdmin(memberId);
+
+
         // 작성자 본인만 댓글 수정 가능 (댓글 작성자 검증)
         QnaCommentDto originComment;
         try {
@@ -87,9 +102,14 @@ public class QnaCommentController {
             if (originComment == null) {
                 return new ResponseEntity<>("존재하지 않는 댓글입니다.", headers, HttpStatus.NOT_FOUND);
             }
-            if (!memberId.equals(originComment.getMemberId())) {
+            /*if (!memberId.equals(originComment.getMemberId())) {
                 return new ResponseEntity<>("본인이 작성한 댓글만 수정할 수 있습니다.", headers, HttpStatus.FORBIDDEN);
+            }*/
+            // 작성자 또는 관리자만 수정 가능하도록 변경
+            if (!memberId.equals(originComment.getMemberId()) && !isAdmin) {
+                return new ResponseEntity<>("수정 권한이 없습니다.", headers, HttpStatus.FORBIDDEN);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("서버 오류", headers, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -97,6 +117,7 @@ public class QnaCommentController {
 
         qnaCommentDto.setMemberId(memberId);
         qnaCommentDto.setAnswerId(answerId);
+
         System.out.println("qnaCommentDto = " + qnaCommentDto);
 
         try {
@@ -123,6 +144,10 @@ public class QnaCommentController {
             return new ResponseEntity<>("로그인이 필요합니다.", headers, HttpStatus.UNAUTHORIZED);
         }
 
+        // 관리자 권한 체크
+        boolean isAdmin = adminService.isAdmin(memberId);
+
+
         // 댓글 작성자 본인만 삭제 가능
         QnaCommentDto originComment;
         try {
@@ -130,9 +155,14 @@ public class QnaCommentController {
             if (originComment == null) {
                 return new ResponseEntity<>("존재하지 않는 댓글입니다.", headers, HttpStatus.NOT_FOUND);
             }
-            if (!memberId.equals(originComment.getMemberId())) {
+            /*if (!memberId.equals(originComment.getMemberId())) {
                 return new ResponseEntity<>("본인이 작성한 댓글만 삭제할 수 있습니다.", headers, HttpStatus.FORBIDDEN);
+            }*/
+            // 작성자 또는 관리자만 수정 가능하도록 변경
+            if (!memberId.equals(originComment.getMemberId()) && !isAdmin) {
+                return new ResponseEntity<>("삭제 권한이 없습니다.", headers, HttpStatus.FORBIDDEN);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("서버 오류", headers, HttpStatus.INTERNAL_SERVER_ERROR);
