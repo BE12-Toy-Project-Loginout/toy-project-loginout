@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.UserMapper">
+    <select id="findById"
+            parameterType="string"
+            resultType="com.fastcampus.shop.dto.User">
+        SELECT
+            member_login_id as userLoginId,
+            member_password as userPassword
+        FROM
+            member
+        WHERE
+            member_login_id = #{userLoginId}
+
+
+    </select>
+
+    <select id="getUserByCredentials"
+            parameterType="com.fastcampus.shop.dto.User"
+            resultType="com.fastcampus.shop.dto.User">
+        SELECT
+            member_login_id as userLoginId,
+            member_password as userPassword,
+            member_name as userName,
+            member_login_fail_count as loginFailCount,
+            member_last_login_date as lastLogin,
+            member_status_type as statusType,
+            is_lock as isLock
+        FROM
+            member
+        WHERE
+            member_login_id = #{userLoginId}
+            AND member_password = #{userPassword}
+            AND member_login_fail_count &lt; 3
+
+    </select>
+
+    <update id="updateLastLogin" parameterType="string">
+        UPDATE
+            member
+        SET
+            member_last_login_date = NOW()
+        WHERE
+            member_login_id = #{userLoginId}
+    </update>
+
+    <select id="getLoginFailCount" parameterType="string" resultType="int">
+        SELECT member_login_fail_count
+        FROM member
+        WHERE member_login_id = #{userLoginId}
+    </select>
+
+    <update id="incrementLoginFailCount" parameterType="string">
+        UPDATE member
+        SET member_login_fail_count = member_login_fail_count + 1
+        WHERE member_login_id = #{userLoginId}
+    </update>
+
+    <update id="resetLoginFailCount" parameterType="string">
+        UPDATE member
+        SET member_login_fail_count = 0, is_lock = 0
+        WHERE member_login_id = #{userLoginId}
+    </update>
+
+    <update id="isUserLock" parameterType="string">
+        UPDATE member
+        SET is_lock = 1
+        WHERE member_login_id = #{userLoginId}
+    </update>
+
+    <select id="getLockedUsers" resultType="com.fastcampus.shop.dto.User">
+        SELECT
+            member_login_id as userLoginId,
+            member_name as userName,
+            member_login_fail_count as loginFailCount,
+            member_last_login_date as lastLogin,
+            member_status_type as statusType,
+            is_lock as isLock
+        FROM
+            member
+        WHERE
+            is_lock = 1
+    </select>
+
+
+</mapper>

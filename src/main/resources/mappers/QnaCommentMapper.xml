@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.QnaCommentDao">
+
+    <!-- 전체 조회 -->
+    <select id="findAll" parameterType="int" resultType="com.fastcampus.shop.dto.QnaCommentDto">
+        SELECT answer_id, answer_content, member_id, qna_id, create_at, update_at, ifnull(panswer_id, answer_id) as panswer_id
+        FROM qna_answer
+        WHERE qna_id = #{qnaId}
+        ORDER BY panswer_id ASC, answer_id ASC <!-- 최신순으로 정렬 -->
+    </select>
+    <!-- 상세 조회 -->
+    <select id="findById" parameterType="int" resultType="com.fastcampus.shop.dto.QnaCommentDto">
+        SELECT answer_id, answer_content, member_id, qna_id, create_at, update_at, panswer_id
+        FROM qna_answer
+        WHERE answer_id = #{answerId}
+    </select>
+
+    <!-- 등록 -->
+    <insert id="insert" parameterType="com.fastcampus.shop.dto.QnaCommentDto" useGeneratedKeys="true" keyProperty="qnaId">
+        INSERT INTO qna_answer (qna_id, panswer_id, answer_content, member_id, create_at, update_at)
+        VALUES (#{qnaId}, #{panswerId}, #{answerContent}, #{memberId}, NOW(),NOW())
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="com.fastcampus.shop.dto.QnaCommentDto">
+        UPDATE qna_answer
+        SET answer_content = #{answerContent},
+            update_at = NOW()
+        WHERE answer_id = #{answerId}
+          AND member_id = #{memberId}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="delete" parameterType="map">
+        DELETE FROM qna_answer
+        WHERE answer_id = #{answerId}
+          AND member_id = #{memberId}
+    </delete>
+
+
+    <!-- 전체 삭제 -->
+    <delete id="deleteAll" parameterType="int">
+        DELETE FROM qna_answer
+        WHERE qna_id = #{qnaId}
+    </delete>
+
+    <!-- 전체 글 개수 조회 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM qna_answer
+        WHERE qna_id = #{qnaId}
+    </select>
+
+</mapper>
