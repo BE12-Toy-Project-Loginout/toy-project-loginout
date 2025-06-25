@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.NoticeMapper">
+    <select id="getNoticeDetail"
+            parameterType="int"
+            resultType="com.fastcampus.shop.dto.NoticeDto">
+        SELECT
+            notice_id       AS noticeId,
+            title           AS title,
+            content         AS content,
+            view_count      AS viewCount,
+            create_at       AS createAt,
+            admin_id        AS adminId,
+            notice_order    AS noticeOrder,
+            is_pinned       AS pinned
+        FROM
+            notice
+        WHERE
+            notice_id = #{noticeId}
+    </select>
+
+    <select id="getAllNotices"
+            resultType="com.fastcampus.shop.dto.NoticeDto">
+        SELECT
+            notice_id       AS noticeId,
+            title           AS title,
+            content         AS content,
+            view_count      AS viewCount,
+            create_at       AS createAt,
+            admin_id        AS adminId,
+            notice_order    AS noticeOrder,
+            is_pinned       AS pinned
+        FROM
+            notice
+        ORDER BY
+             is_pinned DESC,
+             notice_id DESC
+    </select>
+</mapper>

@@ -146,8 +146,8 @@
                 <li><a href="${pageContext.request.contextPath}/product?category=스타일링" class="${category == '스타일링' ? 'active-filter' : ''}">스타일링</a></li>
             </ul>
         </li>
-        <li><a href="#" style="text-decoration: none; color: inherit;">공지사항</a></li>
-        <li><a href="#" style="text-decoration: none; color: inherit;">Q&A</a></li>
+        <li><a href="${pageContext.request.contextPath}/notice">공지사항</a></li>
+        <li><a href="${pageContext.request.contextPath}/qna">Q&A</a></li>
         <li><a href="${pageContext.request.contextPath}/login" id="login-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>로그인</a></li>
         <li><a href="#" id="signup-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
         <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.QnaMapper">
+    <select id="getQnaDetail"
+            parameterType="int"
+            resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT
+            qna_id         AS qnaId,
+            qna_category   AS qnaCategory,
+            title          AS title,
+            content        AS content,
+            is_secret      AS isSecret,
+            password       AS password,
+            create_at      AS createAt,
+            view_cnt       AS viewCnt,
+            comment_cnt    AS commentCnt,
+            qna_image      AS qnaImage,
+            member_id      AS memberId,
+            product_id     AS productId,
+            update_at      AS updateAt
+        FROM
+            qna
+        WHERE
+            qna_id = #{qnaId}
+    </select>
+
+    <select id="getAllQna"
+            resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT
+            qna_id         AS qnaId,
+            qna_category   AS qnaCategory,
+            title          AS title,
+            content        AS content,
+            is_secret      AS isSecret,
+            password       AS password,
+            create_at      AS createAt,
+            view_cnt       AS viewCnt,
+            comment_cnt    AS commentCnt,
+            qna_image      AS qnaImage,
+            member_id      AS memberId,
+            product_id     AS productId,
+            update_at      AS updateAt
+        FROM
+            qna
+        ORDER BY
+            qna_id DESC
+    </select>
+</mapper>

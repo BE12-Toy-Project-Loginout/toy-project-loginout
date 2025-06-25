@@ -49,8 +49,6 @@ function login(){
         success : function(result) { // 결과 성공 콜백함수
             console.log(result);
             if (result.success === true) {
-                alert(result.message);
-
                 // 관리자인 경우 관리자 페이지로 리다이렉트
                 if (result.isAdmin === true) {
                     window.location.href = contextPath + '/admin';
