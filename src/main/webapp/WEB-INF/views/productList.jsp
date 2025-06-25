@@ -3,11 +3,33 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>SHOP</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/productList.css" />
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    // Define contextPath for login.js
+    var contextPath = '${pageContext.request.contextPath}';
+  </script>
+  <script src="${pageContext.request.contextPath}/resources/js/login.js" type="text/javascript"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+  </style>
 </head>
 <body>
 
+<%@ include file="fragments/sidebar.jsp" %>
+
+<div style="margin-left: 50px; padding-top: 50px;">
 <%-- page/pageSize 기본값 안전 처리 --%>
 <c:set var="safePage" value="${empty page ? 1 : page}" />
 <c:set var="safePageSize" value="${empty pageSize ? 6 : pageSize}" />

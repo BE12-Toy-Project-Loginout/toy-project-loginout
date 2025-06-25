@@ -7,7 +7,9 @@
     <title>About Page</title>
 </head>
 <body>
-    <h1>About Page</h1>
-    <p>This is a placeholder for the about page.</p>
+<h1>About Page</h1>
+<p>This is a placeholder for the about page.</p>
+
+
 </body>
 </html>

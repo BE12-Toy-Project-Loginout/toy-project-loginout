@@ -7,5 +7,5 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ShopApplication {
-    // This class can be used for Java-based configuration if needed
+
 }

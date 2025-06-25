@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.QnaDao">
+
+    <!-- 전체 조회 -->
+    <select id="findAll" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt, update_at
+        FROM qna
+        ORDER BY create_at DESC, qna_id DESC <!-- 최신순으로 정렬 -->
+    </select>
+    <!-- 상세 조회 -->
+    <select id="findById" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt, update_at
+        FROM qna
+        WHERE qna_id = #{qnaId}
+    </select>
+    <!-- 사용자별 상세 조회 -->
+    <select id="findByMemberId" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt, update_at
+        FROM qna
+        WHERE member_id = #{memberId}
+    </select>
+    <!-- 등록 -->
+    <insert id="insert" parameterType="com.fastcampus.shop.dto.QnaDto" useGeneratedKeys="true" keyProperty="qnaId">
+        INSERT INTO qna (qna_category, title, content, is_secret, member_id, product_id, password, create_at, update_at)
+        VALUES (#{qnaCategory}, #{title}, #{content}, #{isSecret}, #{memberId}, #{productId}, #{password}, NOW(), NOW())
+    </insert>
+
+    <!-- 수정 -->
+    <update id="update" parameterType="com.fastcampus.shop.dto.QnaDto">
+        UPDATE qna
+        SET title = #{title},
+            content = #{content},
+            qna_category = #{qnaCategory},
+            is_secret = #{isSecret},
+            password = #{password},
+            update_at = NOW()
+        WHERE qna_id = #{qnaId}
+        AND member_id = #{memberId}
+    </update>
+
+    <!-- 삭제 -->
+    <delete id="delete" parameterType="map">
+        DELETE FROM qna
+        WHERE qna_id = #{qnaId}
+        AND member_id = #{memberId}
+    </delete>
+
+
+    <!-- 전체 삭제 -->
+    <delete id="deleteAll">
+        DELETE FROM qna
+    </delete>
+
+    <!-- 전체 글 개수 조회 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM qna
+    </select>
+
+    <!-- 페이징된 게시글 목록 조회 -->
+    <select id="selectPage" parameterType="map" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at
+        FROM qna
+        ORDER BY create_at DESC, qna_id DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <sql id="searchCondition">
+        <choose>
+            <when test='option=="T"'>
+                AND title LIKE concat('%', #{keyword}, '%')
+            </when>
+            <when test='option=="W"'>
+                AND member_id LIKE concat('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                AND (title LIKE concat('%', #{keyword}, '%')
+                OR content LIKE concat('%', #{keyword}, '%'))
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="searchSelectPage" parameterType="SearchCondition" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
+        FROM qna
+        WHERE true
+        <include refid="searchCondition"/>
+        ORDER BY create_at DESC, qna_id DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
+        SELECT count(*)
+        FROM qna
+        WHERE true
+        <include refid="searchCondition"/>
+    </select>
+
+    <!--<update id="updateCommentCnt" parameterType="map">
+        UPDATE  qna
+        SET comment_cnt = comment_cnt + #{commentCnt}
+        WHERE qna_id = #{qnaId}
+    </update>-->
+
+    <update id="updateCommentCnt" parameterType="map">
+        UPDATE qna
+        SET comment_cnt = GREATEST(CAST(comment_cnt AS SIGNED) + IFNULL(#{commentCnt}, 0), 0)
+        WHERE qna_id = #{qnaId}
+    </update>
+
+
+    <update id="increaseViewCnt" parameterType="int">
+        UPDATE qna
+        SET   view_cnt = view_cnt + 1
+        WHERE qna_id = #{qnaId}
+    </update>
+
+    <!-- QnaMapper.xml -->
+    <delete id="deleteByAdmin" parameterType="int">
+        DELETE FROM qna WHERE qna_id = #{qnaId}
+    </delete>
+
+</mapper>

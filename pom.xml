@@ -14,6 +14,12 @@
     <org.slf4j-version>1.7.36</org.slf4j-version>
   </properties>
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->
+    <dependency>
+      <groupId>org.bgee.log4jdbc-log4j2</groupId>
+      <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+      <version>1.16</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
     <dependency>
       <groupId>org.mybatis</groupId>
@@ -118,16 +124,23 @@
       <version>${org.slf4j-version}</version>
       <scope>runtime</scope>
     </dependency>
+    <!-- SLF4J Log4j Implementation -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${org.slf4j-version}</version>
       <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-reload4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.15</version>
+      <version>1.2.17</version>
       <exclusions>
         <exclusion>
           <groupId>javax.mail</groupId>
@@ -147,6 +160,14 @@
         </exclusion>
       </exclusions>
       <scope>runtime</scope>
+    </dependency>
+
+    <!-- Explicitly exclude slf4j-reload4j to prevent multiple SLF4J bindings -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-reload4j</artifactId>
+      <version>${org.slf4j-version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- @Inject -->
@@ -202,7 +223,18 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.30</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
+
+
   <build>
     <plugins>
       <plugin>
