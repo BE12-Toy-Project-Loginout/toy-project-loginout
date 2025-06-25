@@ -23,4 +23,6 @@ public interface ProductDao {
 
     ProductDetailDto detailPage(String productId);
 
+
+
 }

@@ -1,133 +1,125 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>상품 상세</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/productDetail.css">
+    <title>장바구니</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css">
 </head>
-
 <body>
+<h2>장바구니</h2>
 
+<form id="cartForm" method="post" action="${pageContext.request.contextPath}/cart">
+    <table>
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="selectAll"/></th>
+            <th>이미지</th>
+            <th>상품 정보</th>
+            <th>판매가</th>
+            <th>수량</th>
+            <th>배송구분</th>
+            <th>배송비</th>
+            <th>합계</th>
+            <th>선택</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="item" items="${cartList}">
+            <tr>
+                <td><input type="checkbox" name="selected" value="${item.cartId}"/></td>
+                <td><div class="placeholder-img"></div></td>
+                <td><strong>${item.productName}</strong></td>
+                <td class="unit-price">${fn:replace(item.productPrice, ',', '')}</td>
+                <td>
+                    <input
+                            type="number"
+                            class="qty-input"
+                            name="quantity_${item.cartId}"
+                            value="${item.quantity}"
+                            min="1"
+                            oninput="updateCart()"
+                    />
+                </td>
+                <td>택배</td>
+                <td class="shipping">2500</td>
+                <td class="row-sum"></td>
+                <td>
+                    <form action="${pageContext.request.contextPath}/order" method="post" style="display:inline">
+                        <input type="hidden" name="cartId"    value="${item.cartId}"/>
+                        <input type="hidden" name="productId" value="${item.productId}"/>
+                        <input type="hidden" name="quantity"  value="${item.quantity}"/>
+                        <button type="submit" class="btn btn-order">주문하기</button>
+                    </form>
+                    <form action="${pageContext.request.contextPath}/wishlist/add" method="post" style="display:inline">
+                        <input type="hidden" name="productId" value="${item.productId}"/>
+                        <button type="submit" class="btn">관심상품등록</button>
+                    </form>
+                    <form action="${pageContext.request.contextPath}/cart/delete" method="post" style="display:inline">
+                        <input type="hidden" name="cartId" value="${item.cartId}"/>
+                        <button type="submit" class="btn btn-delete">X 삭제</button>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</form>
 
-
-
-
-
-<div class="product-area">
-    <div class="image-box">
-        <img src="${pageContext.request.contextPath}/product/image?productId=${productDetail.productId}"
-             onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.jpg'"
-             alt="상품 이미지" />
-    </div>
-
-    <div class="info-box">
-        <h1 class="product-name">${fn:escapeXml(productDetail.productName)}</h1>
-        <div class="description">
-            <c:choose>
-                <c:when test="${not empty productDetail.productDetailDescription}">
-                    <c:out value="${productDetail.productDetailDescription}" escapeXml="false" />
-                </c:when>
-                <c:otherwise>설명 없음</c:otherwise>
-            </c:choose>
-        </div>
-
-        <!-- First Line: 정보 및 가격 -->
-        <div class="line"></div>
-
-        <fmt:parseNumber var="priceNum" value="${productDetail.productPrice}" integerOnly="true" />
-        <div class="info-list">
-            <li>
-                <span class="label">판매가</span>
-                <span class="price">
-                    <c:choose>
-                        <c:when test="${priceNum != null}">
-                            <fmt:formatNumber value="${priceNum}" type="number" groupingUsed="true" />원
-                        </c:when>
-                        <c:otherwise>${productDetail.productPrice} 원 </c:otherwise>
-                    </c:choose>
-                </span>
-            </li>
-            <li>
-                <span class="label">배송비</span>
-                <span>2500원 (실 결제금액 2만원 이상 시, 무료배송)</span>
-            </li>
-        </div>
-
-        <!-- Second Line: 상품명, 수량 선택, 가격 (옵션 바)-->
-        <div class="option-bar">
-            <span class="product-name">${fn:escapeXml(productDetail.productName)}</span>
-
-            <div class="quantity-row">
-                <div class="input-cell">
-                    <input type="number" id="quantity" value="1" min="1" oninput="updateTotal()" />
-                </div>
-            </div>
-
-            <span class="price" id="priceDisplay">
-                <fmt:parseNumber var="priceNum" value="${productDetail.productPrice}" integerOnly="true" />
-                <c:choose>
-                    <c:when test="${priceNum != null}">
-                        <fmt:formatNumber value="${priceNum}" type="number" groupingUsed="true" />원
-                    </c:when>
-                    <c:otherwise>가격 정보 없음</c:otherwise>
-                </c:choose>
-            </span>
-        </div>
-
-        <div class="line"></div>
-
-        <!-- Third Line: 총 상품 금액 바로 위에-->
-        <div class="total-area">
-            <span class="text">총 상품금액</span>
-            <span id="productTotal" class="amount">0</span>
-            <span id="totalQty" class="qty-info">1개</span>
-        </div>
-
-        <div class="line"></div>
-
-        <div class="button-group">
-            <button type="button" class="primary" onclick="sendProductData('${pageContext.request.contextPath}/order')">바로 구매하기</button>
-            <button type="button" class="secondary" onclick="sendProductData('${pageContext.request.contextPath}/cart')">장바구니</button>
-            <button type="button" class="secondary">관심상품</button>
-        </div>
-
-        <!-- 숨겨진 폼 -->
-        <form id="actionForm" method="post" style="display: none;">
-            <input type="hidden" name="productId" value="${productDetail.productId}">
-            <input type="hidden" name="quantity" id="formQuantity" value="1">
-        </form>
+<div class="summary">
+    <div>
+        총 상품 구매 금액: <strong id="totalProducts">0원</strong>
+        &nbsp;+ 배송비: <strong id="totalShipping">0원</strong>
+        &nbsp;= 결제 예정 금액: <strong id="grandTotal">0원</strong>
     </div>
 </div>
 
+<div class="footer-summary">
+    <form id="orderAllForm" method="post" action="${pageContext.request.contextPath}/order">
+        <c:forEach var="item" items="${cartList}">
+            <input type="hidden" name="productId" value="${item.productId}" />
+            <input type="hidden" name="quantity"  value="${item.quantity}" />
+        </c:forEach>
+        <button type="submit" class="btn btn-order">전체 상품 구매</button>
+    </form>
+
+    <form id="orderSelectedForm" method="post" action="${pageContext.request.contextPath}/order/selected">
+        <button type="submit" class="btn">선택 상품 주문</button>
+    </form>
+</div>
+
 <script>
-    function updateTotal() {
-        const quantity = parseInt(document.getElementById("quantity").value || 1, 10);
-        const unitPrice = ${productDetail.productPrice};  // 단가를 페이지에서 바로 가져옴
-        const total = quantity * unitPrice;
+    const SHIPPING_FEE = 2500;
 
-        document.getElementById("productTotal").innerText = total.toLocaleString() + "원";  // 총 금액 표시
-        document.getElementById("totalQty").innerText = quantity + "개";  // 수량 표시
-
-        // 수량 옵션 선택합계
-        document.getElementById("priceDisplay").innerText = total.toLocaleString() + "원";  // 갱신된 총 금액 표시
+    function updateCart() {
+        let totalProd = 0;
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const unit = parseInt(row.querySelector('.unit-price').innerText, 10) || 0;
+            let qty = parseInt(row.querySelector('.qty-input').value, 10);
+            if (isNaN(qty) || qty < 1) qty = 1;
+            const rowSum = unit * qty + SHIPPING_FEE;
+            row.querySelector('.row-sum').innerText = rowSum.toLocaleString() + '원';
+            totalProd += unit * qty;
+        });
+        const totalShip = SHIPPING_FEE * rows.length;
+        document.getElementById('totalProducts').innerText  = totalProd.toLocaleString()  + '원';
+        document.getElementById('totalShipping').innerText = totalShip.toLocaleString() + '원';
+        document.getElementById('grandTotal').innerText    = (totalProd + totalShip).toLocaleString() + '원';
     }
 
-    function sendProductData(actionUrl) {
-        const form = document.getElementById('actionForm');
-        const quantityInput = document.getElementById('quantity');
-        const formQuantity = document.getElementById('formQuantity');
+    document.querySelectorAll('.qty-input').forEach(input =>
+        input.addEventListener('input', updateCart)
+    );
+    updateCart();
 
-        formQuantity.value = quantityInput.value || 1;
-        form.action = actionUrl;
-        form.submit();
-    }
-
-    window.addEventListener('DOMContentLoaded', updateTotal);  // 페이지 로딩 후 바로 계산 시작
+    document.getElementById('selectAll').addEventListener('change', e => {
+        document.querySelectorAll('input[name="selected"]').forEach(cb =>
+            cb.checked = e.target.checked
+        );
+    });
 </script>
-
 </body>
 </html>

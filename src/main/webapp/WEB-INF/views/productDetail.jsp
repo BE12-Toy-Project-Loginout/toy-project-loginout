@@ -7,17 +7,27 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 상세</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/productDetail.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/resources/css/productDetail.css">
+    <style>
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            display: block !important;
+            opacity: 1 !important;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+    </style>
 </head>
 
 <body>
-
-
 <div class="product-area">
     <div class="image-box">
         <img src="${pageContext.request.contextPath}/product/image?productId=${productDetail.productId}"
              onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.jpg'"
-             alt="상품 이미지" />
+             alt="상품 이미지"/>
     </div>
 
     <div class="info-box">
@@ -25,25 +35,29 @@
         <div class="description">
             <c:choose>
                 <c:when test="${not empty productDetail.productDetailDescription}">
-                    <c:out value="${productDetail.productDetailDescription}" escapeXml="false" />
+                    <c:out value="${productDetail.productDetailDescription}"
+                           escapeXml="false"/>
                 </c:when>
                 <c:otherwise>설명 없음</c:otherwise>
             </c:choose>
         </div>
 
-        <!-- First Line: 정보 및 가격 -->
         <div class="line"></div>
 
-        <fmt:parseNumber var="priceNum" value="${productDetail.productPrice}" integerOnly="true" />
+        <fmt:parseNumber var="priceNum"
+                         value="${productDetail.productPrice}"
+                         integerOnly="true"/>
         <div class="info-list">
             <li>
                 <span class="label">판매가</span>
                 <span class="price">
                     <c:choose>
                         <c:when test="${priceNum != null}">
-                            <fmt:formatNumber value="${priceNum}" type="number" groupingUsed="true" />원
+                            <fmt:formatNumber value="${priceNum}"
+                                              type="number"
+                                              groupingUsed="true"/>원
                         </c:when>
-                        <c:otherwise>${productDetail.productPrice} 원 </c:otherwise>
+                        <c:otherwise>${productDetail.productPrice} 원</c:otherwise>
                     </c:choose>
                 </span>
             </li>
@@ -53,76 +67,103 @@
             </li>
         </div>
 
-        <!-- Second Line: 상품명, 수량 선택, 가격 (옵션 바)-->
         <div class="option-bar">
             <span class="product-name">${fn:escapeXml(productDetail.productName)}</span>
-
             <div class="quantity-row">
                 <div class="input-cell">
-                    <input type="number" id="quantity" value="1" min="1" oninput="updateTotal()" />
+                    <input type="number" id="quantity" value="1" min="1"
+                           oninput="updateTotal()"/>
                 </div>
             </div>
-
             <span class="price" id="priceDisplay">
-                <fmt:parseNumber var="priceNum" value="${productDetail.productPrice}" integerOnly="true" />
-                <c:choose>
-                    <c:when test="${priceNum != null}">
-                        <fmt:formatNumber value="${priceNum}" type="number" groupingUsed="true" />원
-                    </c:when>
-                    <c:otherwise>가격 정보 없음</c:otherwise>
-                </c:choose>
+                <fmt:formatNumber value="${priceNum}"
+                                  type="number"
+                                  groupingUsed="true"/>원
             </span>
         </div>
 
         <div class="line"></div>
 
-        <!-- Third Line: 총 상품 금액 바로 위에-->
         <div class="total-area">
             <span class="text">총 상품금액</span>
-            <span id="productTotal" class="amount">0</span>
+            <span id="productTotal" class="amount">0원</span>
             <span id="totalQty" class="qty-info">1개</span>
         </div>
 
         <div class="line"></div>
 
         <div class="button-group">
-            <button type="button" class="primary" onclick="sendProductData('${pageContext.request.contextPath}/order')">바로 구매하기</button>
-            <button type="button" class="secondary" onclick="sendProductData('${pageContext.request.contextPath}/cart')">장바구니</button>
-            <button type="button" class="secondary">관심상품</button>
+            <button type="button" class="primary"
+                    onclick="sendProductData('${pageContext.request.contextPath}/order')">
+                바로 구매하기
+            </button>
+            <button type="button" class="secondary"
+                    onclick="sendProductData('${pageContext.request.contextPath}/cart')">
+                장바구니
+            </button>
+            <input type="hidden" name="productDetailId"
+                   value="${productDetail.productDetailId}"/>
+            <button type="submit">장바구니 담기</button>
         </div>
 
-        <!-- 숨겨진 폼 -->
-        <form id="actionForm" method="post" style="display: none;">
-            <input type="hidden" name="productId" value="${productDetail.productId}">
-            <input type="hidden" name="quantity" id="formQuantity" value="1">
+        <!-- 숨겨진 폼: 실제 POST 할 필드들 -->
+        <form id="actionForm" method="post"
+              action="${pageContext.request.contextPath}/cart"
+              style="display:none;">
+            <input type="hidden" name="productId"
+                   value="${productDetail.productId}"/>
+            <input type="hidden" name="productName"
+                   value="${productDetail.productName}"/>
+
+            <!-- 쉼표 제거된 단가를 JS 에서도 읽기 쉽게 숨김 필드로 -->
+
+            <fmt:parseNumber var="priceNum"
+                             value="${productDetail.productPrice}"
+                             integerOnly="true"/>
+            <input type="hidden" name="productPrice"
+                   value="${priceNum}" />
+
+            <input type="hidden" name="quantity"
+                   id="formQuantity"
+                   value="1" />
+
+            <!-- 수량 & 최종 합계 -->
+
+            <input type="hidden" name="totalPrice" id="formTotalPrice"
+                   value="${fn:replace(productDetail.productPrice, ',', '')}"/>
         </form>
     </div>
 </div>
 
 <script>
+    // 단가 (숫자)
+    const unitPrice = ${priceNum};
+
     function updateTotal() {
-        const quantity = parseInt(document.getElementById("quantity").value || 1, 10);
-        const unitPrice = ${productDetail.productPrice};  // 단가를 페이지에서 바로 가져옴
-        const total = quantity * unitPrice;
+        const qty = parseInt(document.getElementById("quantity").value || '1', 10);
+        const total = unitPrice * qty;
 
-        document.getElementById("productTotal").innerText = total.toLocaleString() + "원";  // 총 금액 표시
-        document.getElementById("totalQty").innerText = quantity + "개";  // 수량 표시
+        // 화면에 표시
+        document.getElementById("productTotal")
+            .innerText = total.toLocaleString() + "원";
+        document.getElementById("totalQty")
+            .innerText = qty + "개";
+        document.getElementById("priceDisplay")
+            .innerText = total.toLocaleString() + "원";
 
-        // 수량 옵션 선택합계
-        document.getElementById("priceDisplay").innerText = total.toLocaleString() + "원";  // 갱신된 총 금액 표시
+        // hidden 필드 갱신
+        document.getElementById("formQuantity").value = qty;
+        document.getElementById("formTotalPrice").value    = total;
     }
 
     function sendProductData(actionUrl) {
+        updateTotal();  // 먼저 hidden quantity 를 최신화
         const form = document.getElementById('actionForm');
-        const quantityInput = document.getElementById('quantity');
-        const formQuantity = document.getElementById('formQuantity');
-
-        formQuantity.value = quantityInput.value || 1;
         form.action = actionUrl;
         form.submit();
     }
 
-    window.addEventListener('DOMContentLoaded', updateTotal);  // 페이지 로딩 후 바로 계산 시작
+    window.addEventListener('DOMContentLoaded', updateTotal);
 </script>
 
 </body>
