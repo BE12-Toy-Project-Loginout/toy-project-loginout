@@ -1,6 +1,6 @@
 package com.fastcampus.shop.controller;
 
-import com.fastcampus.shop.mapper.TestMapper;
+import com.fastcampus.shop.dao.TestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +22,4 @@ public class TestController {
     }
 }
 
-/*@Controller
-public class TestController {
 
-    @GetMapping("/db-check")
-    public void check(HttpServletResponse response) throws IOException {
-        System.out.println(">>>>> /db-check 컨트롤러 호출됨");
-        response.setContentType("text/plain;charset=UTF-8");
-        response.getWriter().write("컨트롤러 정상작동");
-    }
-}*/
