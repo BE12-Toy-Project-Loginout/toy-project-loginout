@@ -28,9 +28,22 @@
         </thead>
         <tbody>
         <c:forEach var="item" items="${cartList}">
-            <tr>
-                <td><input type="checkbox" name="selected" value="${item.cartId}"/></td>
-                <td><div class="placeholder-img"></div></td>
+            <tr data-cart-id="${item.cartId}">
+
+        <!-- 기존 체크박스 칸 -->
+        <td>
+            <input type="checkbox" name="selected" value="${item.cartId}"/>
+        </td>
+
+        <!-- 1) 이미지 셀 -->
+        <td>
+        <img class="cart-img"
+             src="${pageContext.request.contextPath}/product/image?productId=${item.productId}"
+             onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.jpg'"
+             alt="${fn:escapeXml(item.productName)} 이미지" />
+
+        </td>
+
                 <td><strong>${item.productName}</strong></td>
                 <td class="unit-price">${fn:replace(item.productPrice, ',', '')}</td>
                 <td>
@@ -48,9 +61,8 @@
                 <td class="row-sum"></td>
                 <td>
                     <form action="${pageContext.request.contextPath}/order" method="post" style="display:inline">
-                        <input type="hidden" name="cartId"    value="${item.cartId}"/>
-                        <input type="hidden" name="productId" value="${item.productId}"/>
-                        <input type="hidden" name="quantity"  value="${item.quantity}"/>
+                        <input type="hidden" name="productId" value="${item.productId}" />
+                        <input type="hidden" name="quantity"  value="${item.quantity}" />
                         <button type="submit" class="btn btn-order">주문하기</button>
                     </form>
                     <form action="${pageContext.request.contextPath}/wishlist/add" method="post" style="display:inline">
