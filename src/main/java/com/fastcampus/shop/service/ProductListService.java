@@ -48,7 +48,7 @@ public class ProductListService {
         // 페이지 count
         Map<String, Object> result = new HashMap<>();
         if (category != null && !"전체보기".equals(category)) {
-            result.put("product_category", category);
+            result.put("productCategory", category);
         }
 
         int totalCount = (category != null && !"전체보기".equals(category))
@@ -63,7 +63,7 @@ public class ProductListService {
         map.put("pageSize", pageSize);
 
         if (category != null && !"전체보기".equals(category)) {
-            map.put("product_category", category);
+            map.put("productCategory", category);
         }
 
         if (sort != null){

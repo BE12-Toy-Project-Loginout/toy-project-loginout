@@ -15,7 +15,7 @@
         product_image, product_sales_volume, product_posted_at
         FROM product
         <where>
-            <if test="product_category != null and product_category != ''">
+            <if test="productCategory != null and productCategory != ''">
                 product_category = #{productCategory}
             </if>
         </where>
@@ -44,14 +44,14 @@
     <select id="filteredCount" resultType="int" parameterType="java.util.Map">
         SELECT COUNT(*) FROM product
         <where>
-            <if test="product_category != null and product_category != ''">
+            <if test="productCategory != null and productCategory != ''">
                 product_category = #{productCategory}
             </if>
         </where>
     </select>
 
 
-    <select id="selectProductById" resultType="ProductListDto" parameterType="long">
+    <select id="selectProductById" resultType="ProductListDto" parameterType="int">
         SELECT product_id, product_name, product_description, product_category,
                product_price, product_image, product_sales_volume, product_posted_at
         FROM product
