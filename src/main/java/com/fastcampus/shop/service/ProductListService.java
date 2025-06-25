@@ -18,7 +18,7 @@ public class ProductListService {
     ProductDao productDao;
 
     public int getCount()  throws Exception{
-        return productDao.count();
+             return productDao.count();
     }
 
     public int getFilteredCount(Map<String, Object> countMap) throws Exception {
