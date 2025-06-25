@@ -23,6 +23,5 @@ public interface ProductDao {
 
     ProductDetailDto detailPage(String productId);
 
-
-
+    ProductListDto selectProductById(int productId);
 }

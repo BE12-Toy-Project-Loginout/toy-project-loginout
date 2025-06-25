@@ -33,10 +33,14 @@ public class ProductListService {
         return productDao.selectFilteredSortedPage(countMap);
     }
 
+    public ProductListDto getProductById(Integer productId) {
+        return productDao.selectProductById(productId);
+    }
+
     // 대표 이미지 dto에 담아 온 다음에 byte타입으로 반환
     public byte[] getThumbnailImage(String productId) throws Exception {
         ProductListImageDto dto = productDao.selectThumbnailImage(productId);
-        return dto != null ? dto.getImage_data() : null;
+        return dto != null ? dto.getImageData() : null;
     }
 
     // 상품 가져와서 정렬
@@ -44,7 +48,7 @@ public class ProductListService {
         // 페이지 count
         Map<String, Object> result = new HashMap<>();
         if (category != null && !"전체보기".equals(category)) {
-            result.put("product_category", category);
+            result.put("productCategory", category);
         }
 
         int totalCount = (category != null && !"전체보기".equals(category))
@@ -59,7 +63,7 @@ public class ProductListService {
         map.put("pageSize", pageSize);
 
         if (category != null && !"전체보기".equals(category)) {
-            map.put("product_category", category);
+            map.put("productCategory", category);
         }
 
         if (sort != null){

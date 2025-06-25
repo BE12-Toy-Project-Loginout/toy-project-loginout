@@ -3,8 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
-    <!-- ✅ 자동 camelCase 매핑 설정 추가 -->
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
@@ -14,6 +12,6 @@
         <typeAlias alias="QnaCommentDto" type="com.fastcampus.shop.dto.QnaCommentDto"/>
         <typeAlias alias="SearchCondition" type="com.fastcampus.shop.dto.SearchCondition"/>
         <typeAlias alias="ProductListDto" type="com.fastcampus.shop.dto.ProductListDto"/>
+        <typeAlias alias="MemberDto" type="com.fastcampus.shop.dto.MemberDto"/>
     </typeAliases>
-
 </configuration>

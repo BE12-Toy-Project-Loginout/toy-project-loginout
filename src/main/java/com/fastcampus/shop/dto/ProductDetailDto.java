@@ -1,14 +1,18 @@
 package com.fastcampus.shop.dto;
 
 
-import lombok.Data;
+import lombok.*;
 
-//ProductListDto에서 분리 함 .
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = "productDetailId")
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductDetailDto {
 
-    private String productDetailId;
-    private String productId;
+    private Integer productDetailId;
+    private Integer productId;
     private String productDetailPrice;
     private String productDetailQuantity;
     private String productDetailDescription;
