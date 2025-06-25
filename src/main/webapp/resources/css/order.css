@@ -224,7 +224,7 @@ button[type="button"] {
     padding: 0;
     margin-top: 16px;
     border-top: 1px solid #ddd;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .price-summary li {
@@ -244,7 +244,7 @@ button[type="button"] {
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     padding: 16px 0;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .price-summary .highlight {
