@@ -25,22 +25,25 @@
     <section class="section">
         <h2 class="section-title">배송지</h2>
 
-        <div class="direct-input-tab">직접입력</div>
+        <!-- 직접입력 + 라디오 버튼을 가로 정렬 -->
+        <div class="address-selection-row">
+            <div class="direct-input-tab">직접입력</div>
 
-        <div class="address-options">
-            <form method="post" action="">
+            <form method="post" action="" class="address-options-form">
                 <c:forEach var="product" items="${products}" varStatus="status">
                     <input type="hidden" name="productId" value="${product.productId}"/>
                     <input type="hidden" name="quantity" value="${quantities[status.index]}"/>
                 </c:forEach>
-                <label>
-                    <input type="radio" name="addrType" value="member"
-                    ${addrType == 'member' ? 'checked' : ''} onchange="this.form.submit()"> 회원 정보와 동일
-                </label>
-                <label>
-                    <input type="radio" name="addrType" value="new"
-                    ${addrType == 'new' ? 'checked' : ''} onchange="this.form.submit()"> 새로운 배송지
-                </label>
+
+                <div class="radio-button-group">
+                    <input type="radio" id="addrMember" name="addrType" value="member"
+                    ${addrType == 'member' ? 'checked' : ''} onchange="this.form.submit()"/>
+                    <label for="addrMember" class="${addrType == 'member' ? 'active' : ''}">회원 정보와 동일</label>
+
+                    <input type="radio" id="addrNew" name="addrType" value="new"
+                    ${addrType == 'new' ? 'checked' : ''} onchange="this.form.submit()"/>
+                    <label for="addrNew" class="${addrType == 'new' ? 'active' : ''}">새로운 배송지</label>
+                </div>
             </form>
         </div>
 
@@ -98,16 +101,6 @@
                 </div>
             </div>
 
-            <div class="form-row">
-                <select name="deliveryMsg">
-                    <option>-- 메시지 선택 (선택사항) --</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <label><input type="checkbox" name="saveDefault"> 기본 배송지로 저장</label>
-            </div>
-
             <section class="section">
                 <h2 class="section-title">주문상품</h2>
                 <ul class="order-items">
@@ -115,10 +108,13 @@
                     <c:forEach var="product" items="${products}" varStatus="status">
                         <c:set var="qty" value="${quantities[status.index]}"/>
                         <c:set var="subtotal" value="${product.productPrice * qty}"/>
-                        <li>
-                            <span>${product.productName} x ${qty}개</span>
-                            <span><fmt:formatNumber value="${subtotal}" type="number"/>원</span>
-                        </li>
+
+                        <div class="order-item-row">
+                            <span class="item-name">${product.productName}</span>
+                            <span class="item-price"><fmt:formatNumber value="${subtotal}" type="number"/>원</span>
+                            <span class="item-qty">${qty}개</span>
+                        </div>
+
                         <c:set var="totalPrice" value="${totalPrice + subtotal}"/>
                     </c:forEach>
                 </ul>
