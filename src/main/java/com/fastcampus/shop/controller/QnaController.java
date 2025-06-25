@@ -32,10 +32,21 @@ public class QnaController {
     @Autowired
     AdminService adminService;
 
+    @GetMapping
+    public String qnaRootRedirect() {
+        return "redirect:/qna/list";
+    }
+
+
     @PostMapping("/modify")
     public String modify(QnaDto qnaDto, Model m, HttpSession session, RedirectAttributes rattr){
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
+        if (memberId == null) {
+            rattr.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
         qnaDto.setMemberId(memberId);
 
         boolean isAdmin = adminService.isAdmin(memberId);
@@ -71,9 +82,15 @@ public class QnaController {
 
     @PostMapping("/write")
     public String write(QnaDto qnaDto, Model m, HttpSession session, RedirectAttributes rattr){
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
-        qnaDto.setMemberId(memberId);
+        if (memberId == null) {
+            // 로그인 안된 경우 처리
+            rattr.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
+        qnaDto.setMemberId(memberId);// 세션에서 가져온 memberId 세팅
 
         try {
             int rowCnt = qnaService.write(qnaDto); //insert
@@ -108,8 +125,13 @@ public class QnaController {
         //Integer memberId = 1001; // ← 실제 존재하는 FK 값
 
         // 로그인 없이 세션을 가짜로 채우고 싶다면
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
+        if (memberId == null) {
+            rattr.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
         boolean isAdmin = adminService.isAdmin(memberId);
 
         //String writer = (String)session.getAttribute("memberId");
@@ -150,7 +172,7 @@ public class QnaController {
     @GetMapping("/read")
     public String read(Integer qnaId, SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
 
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
         boolean isAdmin = adminService.isAdmin(memberId);
 
@@ -186,6 +208,8 @@ public class QnaController {
             PageHandler pageHandler = new PageHandler(totalCnt, sc);
 
             List<QnaDto> list = qnaService.getSearchResultPage(sc);
+            //List<QnaDto> list = qnaService.getSearchResultPageWithMemberName(sc);
+
             m.addAttribute("list", list);
             m.addAttribute("ph", pageHandler);
 

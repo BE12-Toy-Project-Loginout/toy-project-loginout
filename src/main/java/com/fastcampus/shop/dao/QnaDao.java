@@ -43,4 +43,6 @@ public interface QnaDao {
     int updateCommentCnt(@Param("qnaId") Integer qnaId, @Param("commentCnt") Integer commentCnt) throws Exception;
 
     int deleteByAdmin(@Param("qnaId") Integer qnaId) throws Exception;
+
+    //List<QnaDto> findAllWithMemberName() throws Exception;
 }
