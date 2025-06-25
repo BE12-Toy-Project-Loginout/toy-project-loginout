@@ -4,11 +4,7 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
   <display-name>Spring Shopping Mall</display-name>
 
-<<<<<<< HEAD
-  <!-- Absolute ordering for web fragments -->
-=======
   <!-- Configure absolute ordering for web fragments -->
->>>>>>> develop
   <absolute-ordering>
     <name>spring_web</name>
     <others/>
@@ -18,10 +14,6 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/spring/root-context.xml</param-value>
-<<<<<<< HEAD
-=======
-<!--    <param-value>/WEB-INF/spring/applicationContext.xml</param-value>-->
->>>>>>> develop
   </context-param>
 
   <!-- ContextLoaderListener to load the root application context -->

@@ -124,15 +124,12 @@
       <version>${org.slf4j-version}</version>
       <scope>runtime</scope>
     </dependency>
-    <!-- Removed duplicate SLF4J binding -->
-    <!-- <dependency>
+    <!-- SLF4J Log4j Implementation -->
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${org.slf4j-version}</version>
       <scope>runtime</scope>
-<<<<<<< HEAD
-    </dependency> -->
-=======
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -140,7 +137,6 @@
         </exclusion>
       </exclusions>
     </dependency>
->>>>>>> develop
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>

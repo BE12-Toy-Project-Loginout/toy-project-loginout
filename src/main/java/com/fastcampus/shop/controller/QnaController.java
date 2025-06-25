@@ -1,6 +1,6 @@
 package com.fastcampus.shop.controller;
 
-<<<<<<< HEAD
+
 import com.fastcampus.shop.dto.PageHandler;
 import com.fastcampus.shop.dto.QnaCommentDto;
 import com.fastcampus.shop.dto.QnaDto;
@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.Instant;
@@ -206,35 +207,5 @@ public class QnaController {
         return true;  // 로그인 했다고 가정
     }
 }
-=======
 
-import com.fastcampus.shop.dto.QnaDto;
-import com.fastcampus.shop.service.QnaService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.annotation.Resource;
-
-@Controller
-public class QnaController {
-
-    @Resource
-    private QnaService qnaService;
-
-    @GetMapping("/qna")
-    public String qnaView(Model model) {
-        model.addAttribute("qnaList", qnaService.getAllQna());
-
-        return "qna";
-    }
-
-    @GetMapping("/qna/{qnaId}")
-    public String qnaDetail(Model model, @PathVariable int qnaId) {
-        QnaDto qna = qnaService.getQnaDetail(qnaId);
-        model.addAttribute("qna", qna);
-        return "qnaDetail";
-    }
-}
->>>>>>> develop
