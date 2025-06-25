@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MemberDao {
-    MemberDto selectMemberById(Long memberId);
+    MemberDto selectMemberById(int memberId);
 }

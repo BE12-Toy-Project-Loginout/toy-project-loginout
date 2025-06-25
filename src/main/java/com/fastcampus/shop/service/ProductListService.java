@@ -33,7 +33,7 @@ public class ProductListService {
         return productDao.selectFilteredSortedPage(countMap);
     }
 
-    public ProductListDto getProductById(Long productId) {
+    public ProductListDto getProductById(Integer productId) {
         return productDao.selectProductById(productId);
     }
 

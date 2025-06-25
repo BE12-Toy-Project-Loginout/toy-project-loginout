@@ -4,15 +4,19 @@ import com.fastcampus.shop.dto.MemberDto;
 import com.fastcampus.shop.dto.ProductListDto;
 import com.fastcampus.shop.dto.ReceiverInfoDto;
 import com.fastcampus.shop.service.MemberService;
+import com.fastcampus.shop.service.OrderService;
 import com.fastcampus.shop.service.ProductListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/order")
@@ -22,10 +26,12 @@ public class OrderController {
     ProductListService productListService;
     @Autowired
     MemberService memberService;
+    @Autowired
+    OrderService orderService;
 
     @PostMapping
     public String orderProduct(
-            @RequestParam("productId") Long productId,
+            @RequestParam("productId") int productId,
             @RequestParam("quantity") int quantity,
             @RequestParam(value = "addrType", defaultValue = "member") String addrType,
             HttpSession session,
@@ -35,7 +41,7 @@ public class OrderController {
 
         // 세션에 가짜 로그인 정보 삽입
         MemberDto mockLoginMember = new MemberDto();
-        mockLoginMember.setMemberId(1002L); // 실제 DB에 있는 회원 ID
+        mockLoginMember.setMemberId(1001); // 실제 DB에 있는 회원 ID
         session.setAttribute("loginMember", mockLoginMember);
 
         MemberDto sessionMember = (MemberDto) session.getAttribute("loginMember");
@@ -80,4 +86,63 @@ public class OrderController {
 
         return "order";
     }
+
+    @PostMapping("/complete")
+    public String completeOrder(
+            @RequestParam("productId") List<Integer> productIds,
+            @RequestParam("quantity") List<Integer> quantities,
+            @RequestParam("receiver") String recieverName,
+            @RequestParam("zipcode") String zipcode,
+            @RequestParam("address1") String address1,
+            @RequestParam("address2") String addressDetail,
+            @RequestParam("phone1") String phone1,
+            @RequestParam("phone2") String phone2,
+            @RequestParam("phone3") String phone3,
+            @RequestParam("email1") String email1,
+            @RequestParam("email2") String email2,
+            HttpSession session, RedirectAttributes redirectAttributes
+    ) {
+
+        MemberDto member = (MemberDto) session.getAttribute("loginMember");
+
+        ReceiverInfoDto receiver = new ReceiverInfoDto();
+        receiver.setReceiverName(recieverName);
+        receiver.setReceiverZipcode(zipcode);
+        receiver.setReceiverAddress(address1);
+        receiver.setReceiverAddressDetail(addressDetail);
+        receiver.setReceiverEmail(email1+"@"+email2);
+        receiver.setReceiverPhoneNumber(phone1+"-"+phone2+"-"+phone3);
+
+        // 주문 저장
+        try {
+            orderService.saveOrder(member, productIds, quantities, receiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        redirectAttributes.addFlashAttribute("productIds", productIds);
+        redirectAttributes.addFlashAttribute("quantities", quantities);
+
+        return "redirect:/order/complete";
+    }
+
+    @GetMapping("/complete")
+    public String showCompletePage(@ModelAttribute("productIds") List<Integer> productIds,
+                                   @ModelAttribute("quantities") List<Integer> quantities,
+                                   Model model) {
+        List<Map<String, Object>> orderedItems = new ArrayList<>();
+
+        for (int i = 0; i < productIds.size(); i++) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("id", productIds.get(i));
+            item.put("name", productListService.getProductById(productIds.get(i)).getProductName());
+            item.put("quantity", quantities.get(i));
+            orderedItems.add(item);
+        }
+
+        model.addAttribute("orderedItems", orderedItems);
+        return "orderComplete";
+    }
+
+
 }

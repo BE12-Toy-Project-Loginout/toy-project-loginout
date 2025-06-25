@@ -1,12 +1,15 @@
 package com.fastcampus.shop.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = "memberId")
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class MemberDto {
-    private Long memberId;
+    private Integer memberId;
     private String memberLoginId;
     private String memberName;
     private String memberEmail;

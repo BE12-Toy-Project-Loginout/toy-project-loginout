@@ -4,7 +4,7 @@
 
 <mapper namespace="com.fastcampus.shop.dao.MemberDao">
 
-    <select id="selectMemberById" resultType="MemberDto" parameterType="long">
+    <select id="selectMemberById" resultType="MemberDto" parameterType="int">
         SELECT member_id, member_name, member_email, member_phonenumber,
                member_zipcode, member_address, member_address_detail
         FROM member

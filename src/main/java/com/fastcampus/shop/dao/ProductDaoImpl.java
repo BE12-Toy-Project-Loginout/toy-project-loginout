@@ -40,7 +40,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public ProductListDto selectProductById(Long productId){
+    public ProductListDto selectProductById(int productId){
         return sqlSession.selectOne(namespace+"selectProductById", productId);
     }
 
