@@ -106,14 +106,20 @@
 
     <update id="updateCommentCnt" parameterType="map">
         UPDATE qna
-        SET comment_cnt = GREATEST(comment_cnt + #{commentCnt}, 0)
+        SET comment_cnt = GREATEST(CAST(comment_cnt AS SIGNED) + IFNULL(#{commentCnt}, 0), 0)
         WHERE qna_id = #{qnaId}
     </update>
+
 
     <update id="increaseViewCnt" parameterType="int">
         UPDATE qna
         SET   view_cnt = view_cnt + 1
         WHERE qna_id = #{qnaId}
     </update>
+
+    <!-- QnaMapper.xml -->
+    <delete id="deleteByAdmin" parameterType="int">
+        DELETE FROM qna WHERE qna_id = #{qnaId}
+    </delete>
 
 </mapper>

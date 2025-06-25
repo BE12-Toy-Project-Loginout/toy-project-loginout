@@ -91,7 +91,10 @@
             <c:if test="${mode ne 'new'}">
                 <button type="button" id="writeNewBtn" class="btn btn-write"><i class="fa fa-pencil"></i> 새글</button>
             </c:if>
-            <c:if test="${mode eq 'view' and qnaDto.memberId eq loginId}">
+            <%--<c:if test="${mode eq 'view' and qnaDto.memberId eq loginId}">--%>
+            <!-- 관리자 계정이거나 글쓴이이면 수정/삭제 노출 -->
+            <c:if test="${mode eq 'view' and (qnaDto.memberId eq loginId or isAdmin)}">
+
                 <button type="button" id="modifyBtn" class="btn btn-modify"><i class="fa fa-edit"></i> 수정</button>
                 <button type="button" id="removeBtn" class="btn btn-remove"><i class="fa fa-trash"></i> 삭제</button>
             </c:if>
@@ -104,7 +107,7 @@
     <div style="width:600px; margin:0 auto;">
         <h3>댓글</h3>
         comment: <input type="text" name="answerContent" id="comment">
-        <button id="sendBtn" type="button">SEND</button>
+        <button id="sendBtn" type="button">등록</button>
         <button id="modBtn" type="button">수정</button>
 
         <div id="commentList"></div>

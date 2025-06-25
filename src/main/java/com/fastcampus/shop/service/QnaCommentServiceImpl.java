@@ -18,6 +18,10 @@ public class QnaCommentServiceImpl implements QnaCommentService {
     @Autowired
     QnaCommentDao qnaCommentDao;
 
+    // 클래스 상단에 AdminService 주입 추가
+    @Autowired
+    private AdminService adminService;
+
 //    @Autowired
 //    public QnaCommentServiceImpl(QnaCommentDao qnaCommentDao, QnaDao qnaDao) {
 //        this.qnaCommentDao = qnaCommentDao;
@@ -46,8 +50,17 @@ public class QnaCommentServiceImpl implements QnaCommentService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int write(QnaCommentDto qnaCommentDto) throws Exception {
-        qnaDao.updateCommentCnt(qnaCommentDto.getQnaId(), 1);
-        //throw new Exception("test");
+        Integer qnaId = qnaCommentDto.getQnaId();
+        QnaDto qnaDto = qnaDao.findById(qnaId);
+        Integer writerId = qnaDto.getMemberId();
+        Integer commentWriterId = qnaCommentDto.getMemberId();
+
+        // 글 작성자 또는 관리자만 댓글 작성 가능
+        if (!Objects.equals(writerId, commentWriterId) && !adminService.isAdmin(commentWriterId)) {
+            return -1; // 실패
+        }
+
+        qnaDao.updateCommentCnt(qnaId, 1);
         return qnaCommentDao.insert(qnaCommentDto);
     }
 

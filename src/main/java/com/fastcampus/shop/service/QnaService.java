@@ -26,4 +26,6 @@ public interface QnaService {
     List<QnaDto> getSearchResultPage(SearchCondition sc) throws Exception;
 
     int getSearchResultCnt(SearchCondition sc) throws Exception;
+
+    int removeByAdmin(Integer qnaId) throws Exception;
 }

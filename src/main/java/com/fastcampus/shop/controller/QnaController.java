@@ -4,8 +4,10 @@ import com.fastcampus.shop.dto.PageHandler;
 import com.fastcampus.shop.dto.QnaCommentDto;
 import com.fastcampus.shop.dto.QnaDto;
 import com.fastcampus.shop.dto.SearchCondition;
+import com.fastcampus.shop.service.AdminService;
 import com.fastcampus.shop.service.QnaCommentService;
 import com.fastcampus.shop.service.QnaService;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,13 +27,29 @@ public class QnaController {
     @Autowired
     QnaService qnaService;
 
+    @Autowired
+    AdminService adminService;
+
     @PostMapping("/modify")
     public String modify(QnaDto qnaDto, Model m, HttpSession session, RedirectAttributes rattr){
         session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
         qnaDto.setMemberId(memberId);
 
+        boolean isAdmin = adminService.isAdmin(memberId);
+
+
         try {
+
+            QnaDto before = qnaService.read(qnaDto.getQnaId());
+            // 관리자이거나 글쓴이만 수정 가능
+            if (!isAdmin && !before.getMemberId().equals(memberId)) {
+                rattr.addFlashAttribute("msg", "MOD_AUTH_ERR");
+                return "redirect:/qna/read?qnaId=" + qnaDto.getQnaId();
+            }
+            // 수정 시 원래 글쓴이 유지
+            qnaDto.setMemberId(before.getMemberId());
+
             int rowCnt = qnaService.modify(qnaDto); //insert
 
             if(rowCnt != 1)
@@ -90,12 +108,28 @@ public class QnaController {
         // 로그인 없이 세션을 가짜로 채우고 싶다면
         session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
+        boolean isAdmin = adminService.isAdmin(memberId);
 
         //String writer = (String)session.getAttribute("memberId");
 
 
         try {
-            int rowCnt = qnaService.remove(qnaId, memberId);
+            QnaDto qnaDto = qnaService.read(qnaId);
+
+            // 본인 또는 관리자만 삭제 가능
+            if (!isAdmin && !qnaDto.getMemberId().equals(memberId)) {
+                rattr.addFlashAttribute("msg", "DEL_AUTH_ERR");
+                return "redirect:/qna/read?qnaId=" + qnaId;
+            }
+
+            //int rowCnt = qnaService.remove(qnaId, memberId);
+            int rowCnt;
+            if (isAdmin) {
+                rowCnt = qnaService.removeByAdmin(qnaId);
+            } else {
+                rowCnt = qnaService.remove(qnaId, memberId);
+            }
+
 
             if(rowCnt != 1) {
                 throw new Exception("board remove error");
@@ -116,6 +150,7 @@ public class QnaController {
 
         session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
+        boolean isAdmin = adminService.isAdmin(memberId);
 
 
         try {
@@ -124,6 +159,7 @@ public class QnaController {
             m.addAttribute("sc", sc);
             m.addAttribute("mode", "view");          // <== 여기 추가!!
             m.addAttribute("loginId", memberId);
+            m.addAttribute("isAdmin", isAdmin);
 
 
         } catch (Exception e) {

@@ -96,4 +96,10 @@ public class QnaDaoImpl implements QnaDao {
     public int increaseViewCnt(Integer bno) throws Exception {
         return sqlSession.update(NAMESPACE+".increaseViewCnt", bno);
     } // int update(String statement, Object parameter)
+
+    @Override
+    public int deleteByAdmin(Integer qnaId) throws Exception {
+        return sqlSession.delete(NAMESPACE + ".deleteByAdmin", qnaId);
+    }
+
 }

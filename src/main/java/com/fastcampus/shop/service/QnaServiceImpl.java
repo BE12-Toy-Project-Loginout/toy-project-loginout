@@ -85,4 +85,10 @@ public class QnaServiceImpl implements QnaService {
     public int getSearchResultCnt(SearchCondition sc) throws Exception {
         return qnaDao.searchResultCnt(sc);
     }
+
+    @Override
+    public int removeByAdmin(Integer qnaId) throws Exception {
+        return qnaDao.deleteByAdmin(qnaId);
+    }
+
 }

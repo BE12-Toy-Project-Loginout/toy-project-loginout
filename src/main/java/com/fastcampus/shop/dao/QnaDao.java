@@ -41,4 +41,6 @@ public interface QnaDao {
     int increaseViewCnt(Integer bno) throws Exception;
 
     int updateCommentCnt(@Param("qnaId") Integer qnaId, @Param("commentCnt") Integer commentCnt) throws Exception;
+
+    int deleteByAdmin(@Param("qnaId") Integer qnaId) throws Exception;
 }
