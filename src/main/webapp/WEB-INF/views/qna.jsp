@@ -185,7 +185,7 @@
         });
     });
 </script>
-
+<!-- 댓글 영역 -->
 <script>
     //let qnaId = 2063;
     let qnaId = '${qnaDto.qnaId}';
@@ -244,9 +244,14 @@
                     alert(result);
                     showList(qnaId);
                 },
-                error: function () {
+                /*error: function () {
                     alert("error")
-                } // 에러가 발생했을 때, 호출될 함수
+                } // 에러가 발생했을 때, 호출될 함수*/
+                error: function (xhr) {
+                    // 서버에서 받은 에러 메시지를 경고창에 출력
+                    alert(xhr.responseText);
+                }
+
             }); // $.ajax()
         });
 
@@ -268,9 +273,14 @@
                     alert(result);
                     showList(qnaId);
                 },
-                error: function () {
+               /* error: function () {
                     alert("error")
-                } // 에러가 발생했을 때, 호출될 함수
+                } // 에러가 발생했을 때, 호출될 함수*/
+                error: function (xhr) {
+                    // 서버에서 받은 에러 메시지를 경고창에 출력
+                    alert(xhr.responseText);
+                }
+
             }); // $.ajax()
         });
 
@@ -293,9 +303,14 @@
                     alert(result);
                     showList(qnaId);
                 },
-                error: function () {
+                /*error: function () {
                     alert("error")
-                } // 에러가 발생했을 때, 호출될 함수
+                } // 에러가 발생했을 때, 호출될 함수*/
+                error: function (xhr) {
+                    // 서버에서 받은 에러 메시지를 경고창에 출력
+                    alert(xhr.responseText);
+                }
+
             }); // $.ajax()
 
             $("#replyForm").css("display", "none")
@@ -336,9 +351,14 @@
                     alert(result)
                     showList(qnaId);
                 },
-                error: function () {
+                /*error: function () {
                     alert("error")
-                } // 에러가 발생했을 때, 호출될 함수
+                } // 에러가 발생했을 때, 호출될 함수*/
+                error: function (xhr) {
+                    // 서버에서 받은 에러 메시지를 경고창에 출력
+                    alert(xhr.responseText);
+                }
+
             });
         });
 

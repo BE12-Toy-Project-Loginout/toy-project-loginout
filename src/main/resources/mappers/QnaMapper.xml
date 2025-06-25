@@ -6,26 +6,26 @@
 
     <!-- 전체 조회 -->
     <select id="findAll" resultType="com.fastcampus.shop.dto.QnaDto">
-        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt, update_at
         FROM qna
         ORDER BY create_at DESC, qna_id DESC <!-- 최신순으로 정렬 -->
     </select>
     <!-- 상세 조회 -->
     <select id="findById" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
-        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt, update_at
         FROM qna
         WHERE qna_id = #{qnaId}
     </select>
     <!-- 사용자별 상세 조회 -->
     <select id="findByMemberId" parameterType="int" resultType="com.fastcampus.shop.dto.QnaDto">
-        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt
+        SELECT qna_id, member_id, title, content, create_at, view_cnt, comment_cnt, update_at
         FROM qna
         WHERE member_id = #{memberId}
     </select>
     <!-- 등록 -->
     <insert id="insert" parameterType="com.fastcampus.shop.dto.QnaDto" useGeneratedKeys="true" keyProperty="qnaId">
-        INSERT INTO qna (qna_category, title, content, is_secret, member_id, product_id, password, create_at)
-        VALUES (#{qnaCategory}, #{title}, #{content}, #{isSecret}, #{memberId}, #{productId}, #{password}, NOW())
+        INSERT INTO qna (qna_category, title, content, is_secret, member_id, product_id, password, create_at, update_at)
+        VALUES (#{qnaCategory}, #{title}, #{content}, #{isSecret}, #{memberId}, #{productId}, #{password}, NOW(), NOW())
     </insert>
 
     <!-- 수정 -->

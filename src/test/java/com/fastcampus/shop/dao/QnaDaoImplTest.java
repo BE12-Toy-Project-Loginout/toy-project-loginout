@@ -182,7 +182,7 @@ public class QnaDaoImplTest {
     @Test
     @Transactional
     @Rollback(false)// DB에 실제 반영할 경우 false, 테스트 후 롤백할 경우 true
-    public void insert240QnasWithAllFields() throws Exception {
+    public void insertQnasWithAllFields() throws Exception {
         qnaDao.deleteAll();
         for (int i = 1; i <= 255; i++) {
             QnaDto dto = new QnaDto();
