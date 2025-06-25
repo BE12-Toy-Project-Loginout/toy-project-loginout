@@ -116,10 +116,17 @@
         SET   view_cnt = view_cnt + 1
         WHERE qna_id = #{qnaId}
     </update>
-
-    <!-- QnaMapper.xml -->
+    
     <delete id="deleteByAdmin" parameterType="int">
         DELETE FROM qna WHERE qna_id = #{qnaId}
     </delete>
+
+    <!-- 게시글에 작성자 이름까지 같이 조회 -->
+    <!--<select id="findAllWithMemberName" resultType="com.fastcampus.shop.dto.QnaDto">
+        SELECT q.qna_id, q.title, q.content, q.create_at, q.member_id, m.name AS member_name
+        FROM qna q
+                 JOIN member m ON q.member_id = m.member_id
+        ORDER BY q.create_at DESC
+    </select>-->
 
 </mapper>

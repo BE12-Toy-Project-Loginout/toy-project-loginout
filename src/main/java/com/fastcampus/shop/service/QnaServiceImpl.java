@@ -91,4 +91,10 @@ public class QnaServiceImpl implements QnaService {
         return qnaDao.deleteByAdmin(qnaId);
     }
 
+    /*@Override
+    public List<QnaDto> getAllWithMemberName() throws Exception {
+        return qnaDao.findAllWithMemberName();
+    }*/
+
+
 }
