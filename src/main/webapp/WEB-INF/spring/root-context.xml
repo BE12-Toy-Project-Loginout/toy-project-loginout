@@ -15,7 +15,7 @@
            https://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- Root Context: defines shared resources visible to all other web components -->
-    <bean id="dataSourcePrimary" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://192.168.130.35/loginout?useUnicode=true&amp;characterEncoding=utf8"/>
         <property name="username" value="skykim"/>
@@ -34,7 +34,7 @@
     <!-- feature/cart_with_order: 장바구니 및 주문 기능 관련 설정 영역 -->
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSourcePrimary"/>
+        <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath:mappers/*Mapper.xml"/>
     </bean>

@@ -125,4 +125,4 @@
     );
     updateCart();
 </script>
-</html>
+
