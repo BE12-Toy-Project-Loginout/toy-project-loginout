@@ -221,6 +221,7 @@
     let showList = function(qnaId) {
         $.ajax({
             type:'GET',       // 요청 메서드
+            url: '/comments?qnaId='+qnaId,  // 요청 URI
             url: contextPath + '/comments?qnaId='+qnaId,  // 요청 URI
             success : function(result){
                 $("#commentList").html(toHTML(result));    // 올바른 jQuery 선택자

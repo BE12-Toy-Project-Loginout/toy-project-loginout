@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.MemberDao">
+
+    <select id="selectMemberById" resultType="MemberDto" parameterType="int">
+        SELECT member_id, member_name, member_email, member_phonenumber,
+               member_zipcode, member_address, member_address_detail
+        FROM member
+        WHERE member_id = #{memberId}
+    </select>
+</mapper>

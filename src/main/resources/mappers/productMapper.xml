@@ -4,29 +4,54 @@
 
 <mapper namespace="com.fastcampus.shop.dao.ProductDao">
 
+<!--    <select id="selectAllProductList" resultType="ProductListDto" parameterType="map">-->
+<!--        SELECT product_id, product_name, product_description, product_category, product_price, product_image, product_sales_volume, product_posted_at-->
+<!--        FROM product-->
+<!--        LIMIT #{offset}, #{pageSize}-->
+<!--    </select>-->
+
     <select id="selectAllProductList" resultType="ProductListDto" parameterType="map">
-        SELECT product_id, product_name, product_description, product_category, product_price, product_image, product_sales_volume, product_posted_at
-        FROM product
-        LIMIT #{offset}, #{pageSize}
+        SELECT
+            p.product_id,
+            p.product_name,
+            p.product_description,
+            p.product_category,
+            p.product_price,
+            p.product_sales_volume,
+            p.product_posted_at,
+            pi.image_path
+        FROM product p
+                 LEFT JOIN product_image2 pi ON p.product_id = pi.product_id AND pi.use_yn = 1
+            LIMIT #{offset}, #{pageSize}
     </select>
 
+
     <select id="selectFilteredSortedPage" resultType="ProductListDto" parameterType="map">
-        SELECT product_id, product_name, product_description, product_category, product_price,
-        product_image, product_sales_volume, product_posted_at
-        FROM product
+        SELECT
+        p.product_id,
+        p.product_name,
+        p.product_description,
+        p.product_category,
+        p.product_price,
+        p.product_sales_volume,
+        p.product_posted_at,
+        pi.image_path
+        FROM product p
+        LEFT JOIN product_image2 pi
+        ON p.product_id = pi.product_id AND pi.use_yn = 1
         <where>
-            <if test="product_category != null and product_category != ''">
-                product_category = #{product_category}
+            <if test="productCategory != null and productCategory != ''">
+                p.product_category = #{productCategory}
             </if>
         </where>
         <choose>
             <when test="orderColumn != null and orderDir != null">
                 ORDER BY
                 <choose>
-                    <when test="orderColumn == 'product_posted_at'"> product_posted_at </when>
-                    <when test="orderColumn == 'product_name'"> product_name </when>
-                    <when test="orderColumn == 'product_price'"> product_price </when>
-                    <when test="orderColumn == 'product_sales_volume'"> product_sales_volume </when>
+                    <when test="orderColumn == 'product_posted_at'"> p.product_posted_at </when>
+                    <when test="orderColumn == 'product_name'"> p.product_name </when>
+                    <when test="orderColumn == 'product_price'"> p.product_price </when>
+                    <when test="orderColumn == 'product_sales_volume'"> p.product_sales_volume </when>
                 </choose>
                 <choose>
                     <when test="orderDir == 'ASC'"> ASC </when>
@@ -44,12 +69,22 @@
     <select id="filteredCount" resultType="int" parameterType="java.util.Map">
         SELECT COUNT(*) FROM product
         <where>
-            <if test="product_category != null and product_category != ''">
-                product_category = #{product_category}
+            <if test="productCategory != null and productCategory != ''">
+                product_category = #{productCategory}
             </if>
         </where>
     </select>
 
+
+    <select id="selectProductById" resultType="ProductListDto" parameterType="int">
+        SELECT product_id, product_name, product_description, product_category,
+               product_price, product_image, product_sales_volume, product_posted_at
+        FROM product
+        WHERE product_id = #{productId}
+    </select>
+
+
+    <!-- 이미지 -->
     <select id="selectThumbnailImage" resultType="com.fastcampus.shop.dto.ProductListImageDto">
         SELECT image_id, product_id, filename, content_type, image_data, is_thumbnail
         FROM product_image

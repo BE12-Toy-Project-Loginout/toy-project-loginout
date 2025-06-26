@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.OrderDao">
+
+    <insert id="insertOrder" parameterType="com.fastcampus.shop.dto.OrderDto" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO orders (
+            member_id, receiver_name, receiver_zipcode, receiver_address,
+            receiver_address_detail, receiver_phone, receiver_email, created_at,
+            total_item_qty, total_product_price
+        )
+        VALUES (
+                   #{memberId}, #{receiverName}, #{receiverZipcode}, #{receiverAddress},
+                   #{receiverAddressDetail}, #{receiverPhone}, #{receiverEmail}, #{createdAt},
+                   #{totalItemQty}, #{totalProductPrice}
+               )
+    </insert>
+
+
+    <insert id="insertOrderDetail" parameterType="com.fastcampus.shop.dto.OrderDto" useGeneratedKeys="true" keyProperty="orderDetailId">
+        INSERT INTO order_detail (
+            order_id, product_id, quantity, each_price
+        )
+        VALUES (
+                   #{orderId}, #{productId}, #{quantity}, #{eachPrice}
+               )
+    </insert>
+</mapper>
