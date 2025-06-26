@@ -3,6 +3,7 @@ package com.fastcampus.shop.service.impl;
 import com.fastcampus.shop.dao.UserMapper;
 import com.fastcampus.shop.dto.User;
 import com.fastcampus.shop.service.MemberService;
+import com.fastcampus.shop.service.QMemberService;
 import com.fastcampus.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Service("userService")
 public class UserServiceImpl implements UserService {
     @Autowired
-    private MemberService memberService;
+    private QMemberService memberService;
 
     private final UserMapper userMapper;
 

@@ -1,17 +1,17 @@
-package com.fastcampus.shop.service.impl;
+package com.fastcampus.shop.service;
 
 import com.fastcampus.shop.dao.MemberMapper;
-import com.fastcampus.shop.service.MemberService;
+import com.fastcampus.shop.service.QMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("memberService")
-public class MemberServiceImpl implements MemberService {
+@Service("qmemberService")
+public class QMemberServiceImpl implements QMemberService {
 
     private final MemberMapper memberMapper;
 
     @Autowired
-    public MemberServiceImpl(MemberMapper memberMapper) {
+    public QMemberServiceImpl(MemberMapper memberMapper) {
         this.memberMapper = memberMapper;
     }
 
