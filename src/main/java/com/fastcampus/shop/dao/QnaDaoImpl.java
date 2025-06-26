@@ -102,10 +102,10 @@ public class QnaDaoImpl implements QnaDao {
         return sqlSession.delete(NAMESPACE + ".deleteByAdmin", qnaId);
     }
 
-   /* @Override
+    @Override
     public List<QnaDto> findAllWithMemberName() throws Exception {
         return sqlSession.selectList(NAMESPACE + ".findAllWithMemberName");
-    }*/
+    }
 
 
 }

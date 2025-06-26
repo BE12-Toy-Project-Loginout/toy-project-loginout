@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <title>QnAList</title>
     <%--<link rel="stylesheet" href="<c:url value='/css/menu.css'/>">--%>
+    <link rel="stylesheet" href="<c:url value='/resources/css/qna.css'/>">
 </head>
 <body>
 <div id="menu">
@@ -33,6 +34,17 @@
 </script>
 <div style="text-align:center">
     <div class="qna-container">
+        <div class="qna-header">
+            <h1 class="qna-title">Q&A</h1>
+            <div class="qna-info">
+                로그인 후 문의 가능합니다.<br>
+                정확한 상품명, 주문번호를 알려주시면<br>
+                더욱 빠른 답변이 가능합니다.<br>
+                <br>
+                월-금 09:00 ~ 17:00 / 점심시간 12:00 ~ 13:00<br>
+                (주말/공휴일 휴무)
+            </div>
+        </div>
         <div class="search-container">
             <form action="<c:url value='/qna/list'/>" class="search-form" method="get">
                 <select class="search-option" name="option">
@@ -43,14 +55,14 @@
                 <input type="text" name="keyword" class="search-input" value="${ph.sc.keyword}" placeholder="검색어를 입력해주세요">
                 <input type="submit" class="search-button" value="검색">
             </form>
-            <button id="writeBtn" class="btn-write" onclick="location.href='<c:url value="/qna/write"/>'"><i class="fa fa-pencil"></i> 글쓰기</button>
+            <button id="writeBtn" class="btn btn-write" onclick="location.href='<c:url value="/qna/write"/>'"><i class="fa fa-pencil"></i> 글쓰기</button>
         </div>
         <table border="1" style="margin:0 auto;">
             <tr>
                 <th class="no">번호</th>
                 <th class="title">제목</th>
-                <th class="writer">이름</th>
-                <th class="createAt">등록일</th>
+                <th class="writer">작성자</th>
+                <th class="createAt">작성일</th>
                 <th class="viewCnt">조회수</th>
             </tr>
             <c:forEach var="qnaDto" items="${list}">
@@ -61,7 +73,7 @@
                                 <c:out value='${qnaDto.title}'/>
                         </a>
                     </td>
-                    <td class="writer">${qnaDto.memberId}</td>
+                    <td class="writer">${qnaDto.memberName}</td>
                     <%--<td class="createAt">
                         <fmt:formatDate value="${qnaDto.createAt}" pattern="yyyy-MM-dd" />
                     </td>--%>

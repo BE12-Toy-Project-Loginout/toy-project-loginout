@@ -9,49 +9,11 @@
     <meta charset="UTF-8">
     <title>QnADetails</title>
     <%--<link rel="stylesheet" href="<c:url value='/css/menu.css'/>">--%>
+    <link rel="stylesheet" href="<c:url value='/resources/css/qna.css'/>">
     <script type="text/javascript">
         var contextPath = "${pageContext.request.contextPath}";
     </script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <style>
-        .container {
-            display: flex;
-            justify-content: center;   /* 가로 가운데 정렬 */
-            align-items: center;       /* 세로 가운데 정렬(필요 시) */
-            flex-direction: column;
-            min-height: 80vh;          /* 세로 중앙정렬 효과 */
-        }
-        .frm {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 600px;
-            margin: 0 auto;
-        }
-        .frm input[type="text"], .frm textarea {
-            width: 100%;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            font-size: 1.1em;
-        }
-        .frm textarea {
-            height: 300px;
-            resize: vertical;
-        }
-        .btn {
-            margin-right: 8px;
-        }
-        .writing-header {
-            text-align: center;
-        }
-        .button-row {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
 <div id="menu">
@@ -69,11 +31,11 @@
     if(msg == "WRT_ERR") alert("게시물 등록에 실패했습니다. 다시 시도해주세요.");
     if(msg=="MOD_ERR") alert("게시물 수정에 실패하였습니다. 다시 시도해 주세요.");
 </script>
-<div class="container">
+<div class="container" style="width: 100%; max-width: 1000px; box-sizing: border-box;">
 <%--<div style="text-align:center">--%>
     <h2 class="writing-header">QnA 게시판 ${mode == "new" ? "글쓰기" : (mode == "edit" ? "수정" : "읽기")}</h2>
     <!-- 게시글 폼 시작 -->
-    <form id="form" class="frm" action="" method="post">
+    <form id="form" class="frm" action="" method="post" style="width: 100%; max-width: 1000px; box-sizing: border-box;">
     <input type="hidden" name="memberId" value="${qnaDto.memberId}">
         <input type="hidden" name="qnaId" value="${qnaDto.qnaId}">
         <input name="title" type="text" value="<c:out value='${qnaDto.title}'/>" placeholder="  제목을 입력해 주세요." ${mode == "new" || mode == "edit" ? "" : "readonly='readonly'"}><br>
@@ -108,13 +70,16 @@
     <!-- 게시글 폼 끝 -->
 
     <!-- ======= 댓글 영역 ======= -->
-    <div style="width:600px; margin:0 auto;">
+    <div class="comment-section" style="width: 100%; max-width: 1000px; box-sizing: border-box;">
         <h3>댓글</h3>
         comment: <input type="text" name="answerContent" id="comment">
         <button id="sendBtn" type="button">등록</button>
         <button id="modBtn" type="button">수정</button>
 
-        <div id="commentList"></div>
+        <div id="commentList" style="width: 100%;">
+            <!-- 댓글이 없을 때도 동일한 너비를 유지하기 위한 빈 컨테이너 -->
+            <div class="empty-comment-container" style="width: 100%; min-height: 50px; box-sizing: border-box;"></div>
+        </div>
         <div id="replyForm" style="display: none">
             <input type="text" name="replyContent">
             <button id="wrtRepBtn" type="button">등록</button>
@@ -224,7 +189,12 @@
             url: '/comments?qnaId='+qnaId,  // 요청 URI
             url: contextPath + '/comments?qnaId='+qnaId,  // 요청 URI
             success : function(result){
-                $("#commentList").html(toHTML(result));    // 올바른 jQuery 선택자
+                if(result && result.length > 0) {
+                    $("#commentList").html(toHTML(result));    // 올바른 jQuery 선택자
+                } else {
+                    // 댓글이 없을 때도 동일한 너비를 유지하기 위한 빈 컨테이너
+                    $("#commentList").html('<div class="empty-comment-container" style="width: 100%; min-height: 50px; box-sizing: border-box;"></div>');
+                }
             },
             error   : function(){ alert("error") } // 에러가 발생했을 때, 호출될 함수
         });

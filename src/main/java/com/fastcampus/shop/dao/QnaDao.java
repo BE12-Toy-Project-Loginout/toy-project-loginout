@@ -44,5 +44,5 @@ public interface QnaDao {
 
     int deleteByAdmin(@Param("qnaId") Integer qnaId) throws Exception;
 
-    //List<QnaDto> findAllWithMemberName() throws Exception;
+    List<QnaDto> findAllWithMemberName() throws Exception;
 }
