@@ -57,22 +57,6 @@ function login(){
                     window.location.href = contextPath + '/home';
                 }
                 return;
-
-                // This code is unreachable due to the return statement above
-                // Keeping the sidebar menu update logic for reference
-                /*
-                // Update sidebar menu items
-                $('#login-link').hide();
-                $('#signup-link').hide();
-                $('#logout-link').show();
-
-                // Show admin link if user is admin
-                if (result.isAdmin === true) {
-                    $('#admin-link').show();
-                } else {
-                    $('#admin-link').hide();
-                }
-                */
             } else {
                 showErrorMessage(result.message);
             }
@@ -103,7 +87,6 @@ function logout() {
             $('#logout-link').hide();
             $('#admin-link').hide();
 
-            // No need to hide user welcome message as it's been removed
         },
         error: function(request, status, error) {
             console.log(error);
@@ -116,4 +99,3 @@ function showErrorMessage(msg) {
     $('#msg').html('<i class="fa fa-exclamation-circle"> ' + msg + '</i>');
 }
 
-// Sidebar functions moved to sidebar.js

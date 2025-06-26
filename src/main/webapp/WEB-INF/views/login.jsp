@@ -16,92 +16,11 @@
     </script>
     <script src="${pageContext.request.contextPath}/resources/js/login.js" type="text/javascript"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            height: 100%;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-
         .container {
             position: relative;
             width: 100%;
             height: 100vh;
             overflow: hidden;
-        }
-
-        .menu-toggle {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            display: none;
-            z-index: 2000;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -260px;
-            width: 260px;
-            height: 100%;
-            background-color: white;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
-            padding: 60px 20px;
-            transition: left 0.3s ease;
-            z-index: 1500;
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin-bottom: 20px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: black;
-        }
-
-        .sidebar ul li a:hover {
-            color: purple;
-        }
-
-        /* 세로 LOGINOUT 텍스트 - 더 크게 */
-        .vertical-text {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            color: #000;
-            font-weight: bold;
-            font-size: 20px;
-            z-index: 500;
         }
 
         /* 하단 아이콘 - 항상 고정되게 */
@@ -142,10 +61,6 @@
                         <input type="password" id="pwd" name="userPassword" class="input-field" />
                     </div>
                     <div id="msg" style="color: red; font-size: 0.875rem;"></div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #6b7280;">
-                        <a href="#" style="text-decoration: underline;">아이디찾기</a>
-                        <a href="#" style="text-decoration: underline;">비밀번호 찾기</a>
-                    </div>
                     <button type="button" id="btn" style="width: 100%; background-color: #c084fc; color: white; padding: 0.5rem; border-radius: 0.375rem; border: none; cursor: pointer;">
                         로그인
                     </button>
