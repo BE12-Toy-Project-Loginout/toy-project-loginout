@@ -14,6 +14,21 @@
     <org.slf4j-version>1.7.36</org.slf4j-version>
   </properties>
   <dependencies>
+
+    <!-- 비밀번호 해싱을 위한 BCrypt -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-core</artifactId>
+      <version>5.7.10</version> <!-- Spring 5.3.30과 잘 호환됨 -->
+    </dependency>
+
+    <!-- javax.mail -->
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->
     <dependency>
       <groupId>org.bgee.log4jdbc-log4j2</groupId>
@@ -67,6 +82,11 @@
     </dependency>
 
     <!-- Spring -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${org.springframework-version}</version> <!-- 프로젝트와 맞는 버전으로 조정 -->
+    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
@@ -236,6 +256,15 @@
 
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
