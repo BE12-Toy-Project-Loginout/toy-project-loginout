@@ -16,6 +16,11 @@ public class QnaDto {
     private Date updateAt;
     private int viewCnt;
     private int commentCnt;
+    /*private String memberName;
+
+    public String getMemberName() { return memberName; }
+    public void setMemberName(String memberName) { this.memberName = memberName; }
+*/
 
     public Integer getQnaId() {
         return qnaId;

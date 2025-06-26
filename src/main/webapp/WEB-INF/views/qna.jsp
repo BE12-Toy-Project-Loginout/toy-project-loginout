@@ -218,7 +218,7 @@
     let showList = function(qnaId) {
         $.ajax({
             type:'GET',       // 요청 메서드
-            url: '/toyproject/comments?qnaId='+qnaId,  // 요청 URI
+            url: '/comments?qnaId='+qnaId,  // 요청 URI
             success : function(result){
                 $("#commentList").html(toHTML(result));    // 올바른 jQuery 선택자
             },
@@ -241,7 +241,7 @@
 
             $.ajax({
                 type: 'PATCH',       // 요청 메서드
-                url: '/toyproject/comments/' + answerId,  // 요청 URI // /toyproject/comments/27
+                url: '/comments/' + answerId,  // 요청 URI // /toyproject/comments/27
                 headers: {"content-type": "application/json"}, // 요청 헤더
                 data: JSON.stringify({answerId: answerId, answerContent: answerContent}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
                 success: function (result) {
@@ -270,7 +270,7 @@
 
             $.ajax({
                 type: 'POST',       // 요청 메서드
-                url: '/toyproject/comments?qnaId=' + qnaId,  // 요청 URI
+                url: '/comments?qnaId=' + qnaId,  // 요청 URI
                 headers: {"content-type": "application/json"}, // 요청 헤더
                 data: JSON.stringify({qnaId: qnaId, answerContent: answerContent}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
                 success: function (result) {
@@ -300,7 +300,7 @@
 
             $.ajax({
                 type: 'POST',       // 요청 메서드
-                url: '/toyproject/comments?qnaId=' + qnaId,  // 요청 URI
+                url: '/comments?qnaId=' + qnaId,  // 요청 URI
                 headers: {"content-type": "application/json"}, // 요청 헤더
                 data: JSON.stringify({panswerId:panswerId, qnaId: qnaId, answerContent: answerContent}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
                 success: function (result) {
@@ -350,7 +350,7 @@
             let qnaId = $(this).parent().attr("data-qnaId");
             $.ajax({
                 type: 'DELETE',       // 요청 메서드
-                url: '/toyproject/comments/' + answerId + '?qnaId=' + qnaId,  // 요청 URI
+                url: '/comments/' + answerId + '?qnaId=' + qnaId,  // 요청 URI
                 success: function (result) {
                     alert(result)
                     showList(qnaId);

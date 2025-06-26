@@ -30,4 +30,5 @@ public interface QnaService {
 
     int removeByAdmin(Integer qnaId) throws Exception;
 
+    //List<QnaDto> getAllWithMemberName() throws Exception;
 }
