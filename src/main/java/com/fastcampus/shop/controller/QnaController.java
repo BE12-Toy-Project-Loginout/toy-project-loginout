@@ -1,10 +1,10 @@
 package com.fastcampus.shop.controller;
 
 
-import com.fastcampus.shop.dto.PageHandler;
+import com.fastcampus.shop.domain.QPageHandler;
+import com.fastcampus.shop.domain.QSearchCondition;
 import com.fastcampus.shop.dto.QnaCommentDto;
 import com.fastcampus.shop.dto.QnaDto;
-import com.fastcampus.shop.dto.SearchCondition;
 import com.fastcampus.shop.service.AdminService;
 import com.fastcampus.shop.service.QnaCommentService;
 import com.fastcampus.shop.service.QnaService;
@@ -32,10 +32,21 @@ public class QnaController {
     @Autowired
     AdminService adminService;
 
+    @GetMapping
+    public String qnaRootRedirect() {
+        return "redirect:/qna/list";
+    }
+
+
     @PostMapping("/modify")
     public String modify(QnaDto qnaDto, Model m, HttpSession session, RedirectAttributes rattr){
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
+        if (memberId == null) {
+            rattr.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
         qnaDto.setMemberId(memberId);
 
         boolean isAdmin = adminService.isAdmin(memberId);
@@ -71,9 +82,15 @@ public class QnaController {
 
     @PostMapping("/write")
     public String write(QnaDto qnaDto, Model m, HttpSession session, RedirectAttributes rattr){
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
-        qnaDto.setMemberId(memberId);
+        if (memberId == null) {
+            // 로그인 안된 경우 처리
+            rattr.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
+        qnaDto.setMemberId(memberId);// 세션에서 가져온 memberId 세팅
 
         try {
             int rowCnt = qnaService.write(qnaDto); //insert
@@ -103,13 +120,18 @@ public class QnaController {
     @PostMapping("/remove")
     public String remove(@RequestParam("qnaId") Integer qnaId,
                          /*@RequestParam("memberId") Integer memberId,*/
-                         SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
+                         QSearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
         // 테스트용 memberId 하드코딩
         //Integer memberId = 1001; // ← 실제 존재하는 FK 값
 
         // 로그인 없이 세션을 가짜로 채우고 싶다면
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
+        if (memberId == null) {
+            rattr.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/login";
+        }
+
         boolean isAdmin = adminService.isAdmin(memberId);
 
         //String writer = (String)session.getAttribute("memberId");
@@ -148,9 +170,9 @@ public class QnaController {
     }
 
     @GetMapping("/read")
-    public String read(Integer qnaId, SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
+    public String read(Integer qnaId, QSearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
 
-        session.setAttribute("memberId", 1001);
+        //session.setAttribute("memberId", 1001);
         Integer memberId = (Integer) session.getAttribute("memberId");
         boolean isAdmin = adminService.isAdmin(memberId);
 
@@ -173,7 +195,7 @@ public class QnaController {
     }
 
     @GetMapping("/list")
-    public String list(SearchCondition sc, Model m, HttpServletRequest request) {
+    public String list(QSearchCondition sc, Model m, HttpServletRequest request) {
         if (!loginCheck(request))
             return "redirect:/login/login?toURL=" + request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
         System.out.println("### sc.getCurrentPage() = " + sc.getCurrentPage());
@@ -183,9 +205,11 @@ public class QnaController {
             int totalCnt = qnaService.getSearchResultCnt(sc);
             m.addAttribute("totalCnt", totalCnt);
 
-            PageHandler pageHandler = new PageHandler(totalCnt, sc);
+            QPageHandler pageHandler = new QPageHandler(totalCnt, sc);
 
             List<QnaDto> list = qnaService.getSearchResultPage(sc);
+            //List<QnaDto> list = qnaService.getSearchResultPageWithMemberName(sc);
+
             m.addAttribute("list", list);
             m.addAttribute("ph", pageHandler);
 
@@ -207,5 +231,3 @@ public class QnaController {
         return true;  // 로그인 했다고 가정
     }
 }
-
-

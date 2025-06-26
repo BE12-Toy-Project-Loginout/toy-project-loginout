@@ -1,7 +1,7 @@
 package com.fastcampus.shop.dao;
 
+import com.fastcampus.shop.domain.QSearchCondition;
 import com.fastcampus.shop.dto.QnaDto;
-import com.fastcampus.shop.dto.SearchCondition;
 import org.apache.ibatis.session.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -75,12 +75,12 @@ public class QnaDaoImpl implements QnaDao {
     }
 
     @Override
-    public int searchResultCnt(SearchCondition sc) throws Exception{
+    public int searchResultCnt(QSearchCondition sc) throws Exception{
         return sqlSession.selectOne(NAMESPACE + ".searchResultCnt", sc);
     }
 
     @Override
-    public List<QnaDto> searchSelectPage(SearchCondition sc) throws Exception{
+    public List<QnaDto> searchSelectPage(QSearchCondition sc) throws Exception{
         return sqlSession.selectList(NAMESPACE + ".searchSelectPage", sc);
     }
 
@@ -101,5 +101,11 @@ public class QnaDaoImpl implements QnaDao {
     public int deleteByAdmin(Integer qnaId) throws Exception {
         return sqlSession.delete(NAMESPACE + ".deleteByAdmin", qnaId);
     }
+
+    @Override
+    public List<QnaDto> findAllWithMemberName() throws Exception {
+        return sqlSession.selectList(NAMESPACE + ".findAllWithMemberName");
+    }
+
 
 }

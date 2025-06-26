@@ -9,46 +9,67 @@
     <meta charset="UTF-8">
     <title>QnADetails</title>
     <%--<link rel="stylesheet" href="<c:url value='/css/menu.css'/>">--%>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="<c:url value='/resources/css/qna.css'/>">
     <style>
-        .container {
+        /* 댓글 스타일 */
+        #commentList ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #commentList li {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .comment-header {
             display: flex;
-            justify-content: center;   /* 가로 가운데 정렬 */
-            align-items: center;       /* 세로 가운데 정렬(필요 시) */
-            flex-direction: column;
-            min-height: 80vh;          /* 세로 중앙정렬 효과 */
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
-        .frm {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 600px;
-            margin: 0 auto;
+
+        .commenter {
+            color: #333;
         }
-        .frm input[type="text"], .frm textarea {
-            width: 100%;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            font-size: 1.1em;
+
+        .update-time {
+            color: #777;
+            font-size: 0.9em;
         }
-        .frm textarea {
-            height: 300px;
-            resize: vertical;
+
+        .comment-content {
+            margin: 10px 0;
+            padding: 5px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
         }
-        .btn {
-            margin-right: 8px;
+
+        .comment-actions {
+            margin-top: 5px;
+            text-align: right;
         }
-        .writing-header {
-            text-align: center;
+
+        .comment-actions button {
+            margin-left: 5px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            cursor: pointer;
         }
-        .button-row {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
+
+        .comment-actions button:hover {
+            background-color: #e8e8e8;
         }
     </style>
+    <script type="text/javascript">
+        var contextPath = "${pageContext.request.contextPath}";
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div id="menu">
@@ -66,11 +87,11 @@
     if(msg == "WRT_ERR") alert("게시물 등록에 실패했습니다. 다시 시도해주세요.");
     if(msg=="MOD_ERR") alert("게시물 수정에 실패하였습니다. 다시 시도해 주세요.");
 </script>
-<div class="container">
+<div class="container" style="width: 100%; max-width: 1000px; box-sizing: border-box;">
 <%--<div style="text-align:center">--%>
     <h2 class="writing-header">QnA 게시판 ${mode == "new" ? "글쓰기" : (mode == "edit" ? "수정" : "읽기")}</h2>
     <!-- 게시글 폼 시작 -->
-    <form id="form" class="frm" action="" method="post">
+    <form id="form" class="frm" action="" method="post" style="width: 100%; max-width: 1000px; box-sizing: border-box;">
     <input type="hidden" name="memberId" value="${qnaDto.memberId}">
         <input type="hidden" name="qnaId" value="${qnaDto.qnaId}">
         <input name="title" type="text" value="<c:out value='${qnaDto.title}'/>" placeholder="  제목을 입력해 주세요." ${mode == "new" || mode == "edit" ? "" : "readonly='readonly'"}><br>
@@ -105,13 +126,16 @@
     <!-- 게시글 폼 끝 -->
 
     <!-- ======= 댓글 영역 ======= -->
-    <div style="width:600px; margin:0 auto;">
+    <div class="comment-section" style="width: 100%; max-width: 1000px; box-sizing: border-box;">
         <h3>댓글</h3>
-        comment: <input type="text" name="answerContent" id="comment">
+        댓글 달기 <input type="text" name="answerContent" id="comment">
         <button id="sendBtn" type="button">등록</button>
         <button id="modBtn" type="button">수정</button>
 
-        <div id="commentList"></div>
+        <div id="commentList" style="width: 100%;">
+            <!-- 댓글이 없을 때도 동일한 너비를 유지하기 위한 빈 컨테이너 -->
+            <div class="empty-comment-container" style="width: 100%; min-height: 50px; box-sizing: border-box;"></div>
+        </div>
         <div id="replyForm" style="display: none">
             <input type="text" name="replyContent">
             <button id="wrtRepBtn" type="button">등록</button>
@@ -195,6 +219,19 @@
     let qnaId = '${qnaDto.qnaId}';
 
 
+    // 날짜 포맷팅 함수
+    let formatDate = function(dateStr) {
+        let date = new Date(dateStr);
+        let year = date.getFullYear();
+        let month = String(date.getMonth() + 1).padStart(2, '0');
+        let day = String(date.getDate()).padStart(2, '0');
+        let hours = String(date.getHours()).padStart(2, '0');
+        let minutes = String(date.getMinutes()).padStart(2, '0');
+        let seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+    }
+
     let toHTML = function (comments) {
         let tmp = "<ul>";
 
@@ -204,12 +241,16 @@
             tmp += ' data-qnaId=' + comment.qnaId + '>'
             if (comment.answerId != comment.panswerId)
                 tmp += 'ㄴ'
-            tmp += ' commenter=<span class="commenter">' + comment.memberId + '</span>'
-            tmp += ' content=<span class="content">' + comment.answerContent + '</span>'
-            tmp += ' update_at=' + comment.updateAt
+            tmp += '<div class="comment-header">'
+            tmp += '<span class="commenter">' + comment.memberName + '</span>'
+            tmp += ' <span class="update-time">' + formatDate(comment.updateAt) + '</span>'
+            tmp += '</div>'
+            tmp += '<div class="comment-content">' + comment.answerContent + '</div>'
+            tmp += '<div class="comment-actions">'
             tmp += '<button class="delBtn">삭제</button>'
             tmp += '<button class="modBtn">수정</button>'
             tmp += '<button class="replyBtn">답글</button>'
+            tmp += '</div>'
             tmp += '</li>'
         })
         return tmp + "</ul>";
@@ -218,9 +259,15 @@
     let showList = function(qnaId) {
         $.ajax({
             type:'GET',       // 요청 메서드
-            url: '/toyproject/comments?qnaId='+qnaId,  // 요청 URI
+            url: '/comments?qnaId='+qnaId,  // 요청 URI
+            url: contextPath + '/comments?qnaId='+qnaId,  // 요청 URI
             success : function(result){
-                $("#commentList").html(toHTML(result));    // 올바른 jQuery 선택자
+                if(result && result.length > 0) {
+                    $("#commentList").html(toHTML(result));    // 올바른 jQuery 선택자
+                } else {
+                    // 댓글이 없을 때도 동일한 너비를 유지하기 위한 빈 컨테이너
+                    $("#commentList").html('<div class="empty-comment-container" style="width: 100%; min-height: 50px; box-sizing: border-box;"></div>');
+                }
             },
             error   : function(){ alert("error") } // 에러가 발생했을 때, 호출될 함수
         });
@@ -241,7 +288,7 @@
 
             $.ajax({
                 type: 'PATCH',       // 요청 메서드
-                url: '/toyproject/comments/' + answerId,  // 요청 URI // /toyproject/comments/27
+                url: contextPath +'/comments/' + answerId,  // 요청 URI // /toyproject/comments/27
                 headers: {"content-type": "application/json"}, // 요청 헤더
                 data: JSON.stringify({answerId: answerId, answerContent: answerContent}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
                 success: function (result) {
@@ -270,7 +317,7 @@
 
             $.ajax({
                 type: 'POST',       // 요청 메서드
-                url: '/toyproject/comments?qnaId=' + qnaId,  // 요청 URI
+                url: contextPath + '/comments?qnaId=' + qnaId,  // 요청 URI
                 headers: {"content-type": "application/json"}, // 요청 헤더
                 data: JSON.stringify({qnaId: qnaId, answerContent: answerContent}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
                 success: function (result) {
@@ -290,7 +337,7 @@
 
         $("#wrtRepBtn").click(function () {
             let answerContent = $("input[name=replyContent]").val();
-            let panswerId = $("#replyForm").parent().attr("data-panswerId");
+            let panswerId = $("#replyForm").closest('li').attr("data-panswerId");
 
             if (answerContent.trim() == '') {
                 alert("댓글을 입력해주세요.");
@@ -300,7 +347,7 @@
 
             $.ajax({
                 type: 'POST',       // 요청 메서드
-                url: '/toyproject/comments?qnaId=' + qnaId,  // 요청 URI
+                url: contextPath + '/comments?qnaId=' + qnaId,  // 요청 URI
                 headers: {"content-type": "application/json"}, // 요청 헤더
                 data: JSON.stringify({panswerId:panswerId, qnaId: qnaId, answerContent: answerContent}),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
                 success: function (result) {
@@ -325,8 +372,9 @@
 
 
         $("#commentList").on("click", ".modBtn", function () {
-            let answerId = $(this).parent().attr("data-answerId");
-            let answerContent = $("span.content", $(this).parent()).text();
+            let li = $(this).closest('li');
+            let answerId = li.attr("data-answerId");
+            let answerContent = $(".comment-content", li).text();
 
             //1.comment의 내용을 input에 넣어주기
             $("input[name=answerContent]").val(answerContent);
@@ -335,8 +383,10 @@
         });
 
         $("#commentList").on("click", ".replyBtn", function () {
+            let li = $(this).closest('li');
+
             //1. replyForm을 옮기고
-            $("#replyForm").appendTo($(this).parent());
+            $("#replyForm").appendTo(li);
 
             //2. 답글을 입력할 폼을 보여주고
             $("#replyForm").css("display", "block");
@@ -346,11 +396,12 @@
 
         //$(".delBtn").click(function(){
         $("#commentList").on("click", ".delBtn", function () {
-            let answerId = $(this).parent().attr("data-answerId");
-            let qnaId = $(this).parent().attr("data-qnaId");
+            let li = $(this).closest('li');
+            let answerId = li.attr("data-answerId");
+            let qnaId = li.attr("data-qnaId");
             $.ajax({
                 type: 'DELETE',       // 요청 메서드
-                url: '/toyproject/comments/' + answerId + '?qnaId=' + qnaId,  // 요청 URI
+                url: contextPath + '/comments/' + answerId + '?qnaId=' + qnaId,  // 요청 URI
                 success: function (result) {
                     alert(result)
                     showList(qnaId);

@@ -1,8 +1,7 @@
 package com.fastcampus.shop.service;
 
+import com.fastcampus.shop.domain.QSearchCondition;
 import com.fastcampus.shop.dto.QnaDto;
-
-import com.fastcampus.shop.dto.SearchCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -24,10 +23,11 @@ public interface QnaService {
     //int remove(Integer qnaId, Integer memberId) throws Exception;
     int remove(Integer qnaId, Integer memberId) throws Exception;
 
-    List<QnaDto> getSearchResultPage(SearchCondition sc) throws Exception;
+    List<QnaDto> getSearchResultPage(QSearchCondition sc) throws Exception;
 
-    int getSearchResultCnt(SearchCondition sc) throws Exception;
+    int getSearchResultCnt(QSearchCondition sc) throws Exception;
 
     int removeByAdmin(Integer qnaId) throws Exception;
 
+    List<QnaDto> getAllWithMemberName() throws Exception;
 }

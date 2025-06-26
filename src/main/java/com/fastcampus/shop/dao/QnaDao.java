@@ -1,11 +1,10 @@
 package com.fastcampus.shop.dao;
 
+import com.fastcampus.shop.domain.QSearchCondition;
 import com.fastcampus.shop.dto.QnaDto;
 
 import java.util.List;
 import java.util.Map;
-
-import com.fastcampus.shop.dto.SearchCondition;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -34,13 +33,15 @@ public interface QnaDao {
 
     List<QnaDto> selectPage(Map map) throws Exception;
 
-    int searchResultCnt(SearchCondition sc) throws Exception;
+    int searchResultCnt(QSearchCondition sc) throws Exception;
 
-    List<QnaDto> searchSelectPage(SearchCondition sc) throws Exception;
+    List<QnaDto> searchSelectPage(QSearchCondition sc) throws Exception;
 
     int increaseViewCnt(Integer bno) throws Exception;
 
     int updateCommentCnt(@Param("qnaId") Integer qnaId, @Param("commentCnt") Integer commentCnt) throws Exception;
 
     int deleteByAdmin(@Param("qnaId") Integer qnaId) throws Exception;
+
+    List<QnaDto> findAllWithMemberName() throws Exception;
 }

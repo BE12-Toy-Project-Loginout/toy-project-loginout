@@ -1,7 +1,7 @@
 package com.fastcampus.shop.dao;
 
+import com.fastcampus.shop.domain.QSearchCondition;
 import com.fastcampus.shop.dto.QnaDto;
-import com.fastcampus.shop.dto.SearchCondition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +43,12 @@ public class QnaDaoImplTest {
             qnaDao.insert(dto);
         }
 
-        SearchCondition sc = new SearchCondition(1, 10, "title2", "T");
+        QSearchCondition sc = new QSearchCondition(1, 10, "title2", "T");
         List<QnaDto> list = qnaDao.searchSelectPage(sc);
         System.out.println("list = " + list);
         assertTrue(list.size() == 2);
 
-        sc = new SearchCondition(1, 10, "1001", "W");
+        sc = new QSearchCondition(1, 10, "1001", "W");
         list = qnaDao.searchSelectPage(sc);
         System.out.println("list = " + list);
         assertTrue(list.size() == 2);
@@ -74,12 +74,12 @@ public class QnaDaoImplTest {
             qnaDao.insert(dto);
         }
 
-        SearchCondition sc = new SearchCondition(1, 10, "문의 제목 2", "T");
+        QSearchCondition sc = new QSearchCondition(1, 10, "문의 제목 2", "T");
         int cnt = qnaDao.searchResultCnt(sc);
         System.out.println("cnt = " + cnt);
         assertTrue(cnt == 2);
 
-        sc = new SearchCondition(1, 10, "1001", "W");
+        sc = new QSearchCondition(1, 10, "1001", "W");
         cnt = qnaDao.searchResultCnt(sc);
         System.out.println("cnt = " + cnt);
         assertTrue(cnt == 2);

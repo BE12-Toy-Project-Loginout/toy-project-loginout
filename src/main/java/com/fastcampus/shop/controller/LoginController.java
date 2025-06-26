@@ -43,7 +43,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         try {
-            userService.logout();
+            userService.logout(request);
             return "redirect:/login";
         } catch (Exception e) {
             System.err.println("로그아웃 오류: " + e.getMessage());

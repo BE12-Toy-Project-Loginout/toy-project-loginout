@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fastcampus.shop.dao.MemberMapper2">
+
+    <select id="isDuplicateId" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_login_id = #{id}
+    </select>
+
+    <select id="isDuplicateEmail" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM member WHERE member_email = #{email}
+    </select>
+
+    <insert id="insertSimpleMember" parameterType="com.fastcampus.shop.dto.Member2">
+        INSERT INTO member (member_login_id, member_password, member_name, member_phonenumber, member_email)
+        VALUES (#{id}, #{pwd}, #{name}, CONCAT(#{phone1}, '-', #{phone2}, '-', #{phone3}), #{email})
+    </insert>
+
+    <insert id="insertDetailedMember" parameterType="com.fastcampus.shop.dto.Member2">
+        INSERT INTO member (member_login_id, member_password, member_name, member_phonenumber, member_zipcode, member_address, member_address_detail, member_email)
+        VALUES (#{id}, #{pwd}, #{name}, CONCAT(#{phone1}, '-', #{phone2}, '-', #{phone3}), #{zipcode}, #{address1}, #{address2}, #{email})
+    </insert>
+
+    <insert id="insertEmailAuthCode">
+        INSERT INTO email_auth (email, code)
+        VALUES (#{email}, #{code})
+            ON DUPLICATE KEY UPDATE code = #{code}, created_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <select id="selectEmailAuthCode" parameterType="String" resultType="String">
+        SELECT code FROM email_auth WHERE email = #{email}
+    </select>
+
+    <select id="isEmailVerified" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM email_auth WHERE email = #{email}
+    </select>
+</mapper>

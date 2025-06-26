@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -28,7 +28,7 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            background: url('${pageContext.request.contextPath}${backgroundImage != null ? backgroundImage.imagePath : "/resources/images/bg_main.png"}') no-repeat center center / cover;
+            background: url('${pageContext.request.contextPath}${backgroundImage != null ? backgroundImage.imagePath : "/resources/images/bg_main.jpg"}') no-repeat center center / cover;
         }
 
         .text-content {
