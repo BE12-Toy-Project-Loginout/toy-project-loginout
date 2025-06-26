@@ -11,7 +11,7 @@ public class MemberService {
     @Autowired
     MemberDao memberDao;
 
-    public MemberDto getMemberById(int memberId) {
-        return memberDao.selectMemberById(memberId);
+    public MemberDto getMemberByLoginId(String loginId) {
+        return memberDao.selectMemberByLoginId(loginId);
     }
 }

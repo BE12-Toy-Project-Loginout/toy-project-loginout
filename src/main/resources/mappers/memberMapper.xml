@@ -10,4 +10,12 @@
         FROM member
         WHERE member_id = #{memberId}
     </select>
+
+    <select id="selectMemberByLoginId" resultType="MemberDto" parameterType="string">
+        SELECT member_id, member_login_id, member_name, member_email, member_phonenumber,
+               member_zipcode, member_address, member_address_detail
+        FROM member
+        WHERE member_login_id = #{loginId}
+    </select>
+
 </mapper>
