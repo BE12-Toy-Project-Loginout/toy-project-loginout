@@ -18,7 +18,7 @@ public class CartController {
 
     @RequestMapping(value = "", method = {RequestMethod.GET, RequestMethod.POST})
     public String rootCart(HttpSession session) {
-        Long memberId = (Long) session.getAttribute("memberId");
+        Integer memberId = (Integer) session.getAttribute("memberId");
         return (memberId != null)
                 ? "redirect:/cart/" + memberId
                 : "redirect:/cart/guest";
@@ -31,8 +31,8 @@ public class CartController {
             HttpSession session,
             Model model) throws Exception {
 
-        Long sessionMemberId = (Long) session.getAttribute("memberId");
-        if (sessionMemberId == null || !sessionMemberId.equals(memberId)) {
+        Integer sessionMemberId = (Integer) session.getAttribute("memberId");
+        if (sessionMemberId == null || !Long.valueOf(sessionMemberId).equals(memberId)) {
             return "redirect:/cart/guest";
         }
 
@@ -58,8 +58,8 @@ public class CartController {
             @RequestParam String quantity,
             HttpSession session) throws Exception {
 
-        Long sessionMemberId = (Long) session.getAttribute("memberId");
-        if (sessionMemberId == null || !sessionMemberId.equals(memberId)) {
+        Integer sessionMemberId = (Integer) session.getAttribute("memberId");
+        if (sessionMemberId == null || !Long.valueOf(sessionMemberId).equals(memberId)) {
             return "redirect:/cart/guest";
         }
 
@@ -111,8 +111,8 @@ public class CartController {
             @RequestParam Long cartId,
             HttpSession session) throws Exception {
 
-        Long sessionMemberId = (Long) session.getAttribute("memberId");
-        if (sessionMemberId == null || !sessionMemberId.equals(memberId)) {
+        Integer sessionMemberId = (Integer) session.getAttribute("memberId");
+        if (sessionMemberId == null || !Long.valueOf(sessionMemberId).equals(memberId)) {
             return "redirect:/cart/guest";
         }
 
