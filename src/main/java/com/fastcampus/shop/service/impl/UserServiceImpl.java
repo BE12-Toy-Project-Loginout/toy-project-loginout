@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
                 session.setAttribute("userStatus", status);
 
                 //memberId를 주문과 연결하기 위해 추가
-                session.setAttribute("memberId", validatedUser.getMemberId());
+                session.setAttribute("memberId", (int)validatedUser.getMemberId());
 
 
 
