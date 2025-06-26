@@ -17,7 +17,7 @@
             <h1>회원 가입</h1>
             <span class="required">* 필수 입력 사항</span>
             <section class="form-section">
-                <form action="${pageContext.request.contextPath}/feature/home" method="post" onsubmit="return formCheck(this)">
+                <form action="${pageContext.request.contextPath}/home" method="post" onsubmit="return formCheck(this)">
                     <table>
                         <tr>
                             <th>아이디 *</th>

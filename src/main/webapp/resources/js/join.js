@@ -17,7 +17,7 @@ let isIdChecked = false;
 // 아이디 중복 확인
 function checkId() {
     const id = document.querySelector('input[name="id"]').value;
-    fetch(`/feature/checkId?id=${encodeURIComponent(id)}`)
+    fetch(`/checkId?id=${encodeURIComponent(id)}`)
         .then(res => res.text())
         .then(msg => {
             const msgElem = document.getElementById("idCheckMsg");
@@ -112,7 +112,7 @@ function sendEmail() {
         return;
     }
 
-    fetch("/feature/sendEmail", {
+    fetch("/sendEmail", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -146,7 +146,7 @@ function verifyCode() {
     params.append("email", email);
     params.append("code", code);
 
-    fetch('/feature/verifyEmail', {
+    fetch('/verifyEmail', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: params.toString(),
