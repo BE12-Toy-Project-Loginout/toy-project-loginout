@@ -10,6 +10,62 @@
     <title>QnADetails</title>
     <%--<link rel="stylesheet" href="<c:url value='/css/menu.css'/>">--%>
     <link rel="stylesheet" href="<c:url value='/resources/css/qna.css'/>">
+    <style>
+        /* 댓글 스타일 */
+        #commentList ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #commentList li {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .commenter {
+            color: #333;
+        }
+
+        .update-time {
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        .comment-content {
+            margin: 10px 0;
+            padding: 5px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comment-actions {
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .comment-actions button {
+            margin-left: 5px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            cursor: pointer;
+        }
+
+        .comment-actions button:hover {
+            background-color: #e8e8e8;
+        }
+    </style>
     <script type="text/javascript">
         var contextPath = "${pageContext.request.contextPath}";
     </script>
@@ -72,7 +128,7 @@
     <!-- ======= 댓글 영역 ======= -->
     <div class="comment-section" style="width: 100%; max-width: 1000px; box-sizing: border-box;">
         <h3>댓글</h3>
-        comment: <input type="text" name="answerContent" id="comment">
+        댓글 달기 <input type="text" name="answerContent" id="comment">
         <button id="sendBtn" type="button">등록</button>
         <button id="modBtn" type="button">수정</button>
 
@@ -163,6 +219,19 @@
     let qnaId = '${qnaDto.qnaId}';
 
 
+    // 날짜 포맷팅 함수
+    let formatDate = function(dateStr) {
+        let date = new Date(dateStr);
+        let year = date.getFullYear();
+        let month = String(date.getMonth() + 1).padStart(2, '0');
+        let day = String(date.getDate()).padStart(2, '0');
+        let hours = String(date.getHours()).padStart(2, '0');
+        let minutes = String(date.getMinutes()).padStart(2, '0');
+        let seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+    }
+
     let toHTML = function (comments) {
         let tmp = "<ul>";
 
@@ -172,12 +241,16 @@
             tmp += ' data-qnaId=' + comment.qnaId + '>'
             if (comment.answerId != comment.panswerId)
                 tmp += 'ㄴ'
-            tmp += ' commenter=<span class="commenter">' + comment.memberId + '</span>'
-            tmp += ' content=<span class="content">' + comment.answerContent + '</span>'
-            tmp += ' update_at=' + comment.updateAt
+            tmp += '<div class="comment-header">'
+            tmp += '<span class="commenter">' + comment.memberName + '</span>'
+            tmp += ' <span class="update-time">' + formatDate(comment.updateAt) + '</span>'
+            tmp += '</div>'
+            tmp += '<div class="comment-content">' + comment.answerContent + '</div>'
+            tmp += '<div class="comment-actions">'
             tmp += '<button class="delBtn">삭제</button>'
             tmp += '<button class="modBtn">수정</button>'
             tmp += '<button class="replyBtn">답글</button>'
+            tmp += '</div>'
             tmp += '</li>'
         })
         return tmp + "</ul>";
@@ -264,7 +337,7 @@
 
         $("#wrtRepBtn").click(function () {
             let answerContent = $("input[name=replyContent]").val();
-            let panswerId = $("#replyForm").parent().attr("data-panswerId");
+            let panswerId = $("#replyForm").closest('li').attr("data-panswerId");
 
             if (answerContent.trim() == '') {
                 alert("댓글을 입력해주세요.");
@@ -299,8 +372,9 @@
 
 
         $("#commentList").on("click", ".modBtn", function () {
-            let answerId = $(this).parent().attr("data-answerId");
-            let answerContent = $("span.content", $(this).parent()).text();
+            let li = $(this).closest('li');
+            let answerId = li.attr("data-answerId");
+            let answerContent = $(".comment-content", li).text();
 
             //1.comment의 내용을 input에 넣어주기
             $("input[name=answerContent]").val(answerContent);
@@ -309,8 +383,10 @@
         });
 
         $("#commentList").on("click", ".replyBtn", function () {
+            let li = $(this).closest('li');
+
             //1. replyForm을 옮기고
-            $("#replyForm").appendTo($(this).parent());
+            $("#replyForm").appendTo(li);
 
             //2. 답글을 입력할 폼을 보여주고
             $("#replyForm").css("display", "block");
@@ -320,8 +396,9 @@
 
         //$(".delBtn").click(function(){
         $("#commentList").on("click", ".delBtn", function () {
-            let answerId = $(this).parent().attr("data-answerId");
-            let qnaId = $(this).parent().attr("data-qnaId");
+            let li = $(this).closest('li');
+            let answerId = li.attr("data-answerId");
+            let qnaId = li.attr("data-qnaId");
             $.ajax({
                 type: 'DELETE',       // 요청 메서드
                 url: contextPath + '/comments/' + answerId + '?qnaId=' + qnaId,  // 요청 URI
