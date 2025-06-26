@@ -84,6 +84,14 @@
     <div>
         총 상품 구매 금액: <strong id="totalProducts">0원</strong>
         &nbsp;+ 배송비: <strong id="totalShipping">0원</strong>
+<%--        배송비: <c:choose>--%>
+<%--        <c:when test="${order.shippingFee == 0}">--%>
+<%--            무료--%>
+<%--        </c:when>--%>
+<%--        <c:otherwise>--%>
+<%--            ${order.shippingFee}원--%>
+<%--        </c:otherwise>--%>
+<%--    </c:choose>--%>
         &nbsp;= 결제 예정 금액: <strong id="grandTotal">0원</strong>
     </div>
 </div>
@@ -112,32 +120,71 @@
 </div>
 
 <script>
-    const SHIPPING_FEE = 2500;
+    const SHIPPING_FEE   = 2500;
+    const FREE_THRESHOLD = 20000;
+
     function updateCart() {
         let totalProd = 0;
-        const rows = document.querySelectorAll('tbody tr');
+        const rows    = document.querySelectorAll('tbody tr');
+
+        // 1) 합계 금액만 먼저 계산
         rows.forEach(row => {
-            const unit = parseInt(row.querySelector('.unit-price').innerText, 10) || 0;
+            const unit = parseInt(
+                row.querySelector('.unit-price').innerText.replace(/,/g, ''), 10
+            ) || 0;
             let qty = parseInt(row.querySelector('.qty-input').value, 10);
             if (isNaN(qty) || qty < 1) qty = 1;
-            const rowSum = unit * qty + SHIPPING_FEE;
-            row.querySelector('.row-sum').innerText = rowSum.toLocaleString() + '원';
             totalProd += unit * qty;
         });
-        const totalShip = SHIPPING_FEE * rows.length;
-        document.getElementById('totalProducts').innerText  = totalProd.toLocaleString()  + '원';
-        document.getElementById('totalShipping').innerText = totalShip.toLocaleString() + '원';
-        document.getElementById('grandTotal').innerText    = (totalProd + totalShip).toLocaleString() + '원';
+
+        // 2) 글로벌 무료여부 결정
+        const allFree = totalProd >= FREE_THRESHOLD;
+
+        let totalShip = 0;
+        // 3) 각 행별 배송비·합계 업데이트
+        rows.forEach(row => {
+            const unit = parseInt(
+                row.querySelector('.unit-price').innerText.replace(/,/g, ''), 10
+            ) || 0;
+            let qty = parseInt(row.querySelector('.qty-input').value, 10);
+            if (isNaN(qty) || qty < 1) qty = 1;
+
+            const subtotal = unit * qty;
+            const shipping = allFree ? 0 : SHIPPING_FEE;
+            totalShip += shipping;
+
+            row.querySelector('.shipping').innerText =
+                shipping === 0 ? '무료' : SHIPPING_FEE.toLocaleString() + '원';
+            row.querySelector('.row-sum').innerText =
+                (subtotal + shipping).toLocaleString() + '원';
+        });
+
+        // 4) 요약 영역 업데이트
+        document.getElementById('totalProducts').innerText =
+            totalProd.toLocaleString() + '원';
+
+        const shipEl = document.getElementById('totalShipping');
+        if (shipEl) {
+            shipEl.innerText =
+                totalShip === 0 ? '무료' : totalShip.toLocaleString() + '원';
+        }
+
+        document.getElementById('grandTotal').innerText =
+            (totalProd + totalShip).toLocaleString() + '원';
     }
+
+    // 이벤트 바인딩 & 초기 호출
     document.querySelectorAll('.qty-input').forEach(input =>
         input.addEventListener('input', updateCart)
     );
-    updateCart();
     document.getElementById('selectAll').addEventListener('change', e =>
         document.querySelectorAll('input[name="selected"]').forEach(cb =>
             cb.checked = e.target.checked
         )
     );
+    updateCart();
 </script>
-</body>
+
+
+
 </html>
