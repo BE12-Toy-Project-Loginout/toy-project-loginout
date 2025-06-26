@@ -9,7 +9,7 @@ import lombok.Data;
 public class CartDto {
 
         private String cartId;
-        private String memberId;
+        private long memberId;
         private String productDetailId;
         private String productId;
         private long productPrice;

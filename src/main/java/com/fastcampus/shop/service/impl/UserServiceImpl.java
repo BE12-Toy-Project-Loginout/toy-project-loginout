@@ -121,6 +121,11 @@ public class UserServiceImpl implements UserService {
                 String status = getUserStatus(validatedUser);
                 session.setAttribute("userStatus", status);
 
+                //memberId를 주문과 연결하기 위해 추가
+                session.setAttribute("memberId", validatedUser.getMemberId());
+
+
+
                 // 마지막 로그인 시간 업데이트
                 updateLastLogin(validatedUser.getUserLoginId());
                 response.put("success", true);

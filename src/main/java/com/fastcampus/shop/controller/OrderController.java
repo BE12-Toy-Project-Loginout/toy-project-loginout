@@ -40,13 +40,25 @@ public class OrderController {
         System.out.println("quantity = " + quantities);
 
         // 세션에 가짜 로그인 정보 삽입
-        MemberDto mockLoginMember = new MemberDto();
-        mockLoginMember.setMemberId(1001); // 실제 DB에 있는 회원 ID
-        session.setAttribute("loginMember", mockLoginMember);
+//        MemberDto mockLoginMember = new MemberDto();
+//        mockLoginMember.setMemberId(1001); // 실제 DB에 있는 회원 ID
+//        session.setAttribute("loginMember", mockLoginMember);
 
-        MemberDto sessionMember = (MemberDto) session.getAttribute("loginMember");
+        String loginId = (String) session.getAttribute("userLoginId");
+        if (loginId == null) {
+            m.addAttribute("message", "로그인이 필요합니다.");
+            m.addAttribute("redirectUrl", "/login");
+            return "redirectWithAlert"; // ✅ 위 JSP 이름과 일치해야 합니다.
+        }
 
-        MemberDto member = memberService.getMemberById(sessionMember.getMemberId());
+        MemberDto member = memberService.getMemberByLoginId(loginId);  // 여기가 핵심
+        System.out.println("loginId in session = " + loginId);
+        System.out.println("조회된 멤버: " + member); // 👉 null 이라면 쿼리 실패
+
+
+        if (member == null) {
+            throw new IllegalStateException("해당 loginId에 대한 회원 정보가 없습니다: " + loginId);}
+
 
         String phone = member.getMemberPhonenumber();
         if (phone != null && phone.contains("-")) {
@@ -109,7 +121,8 @@ public class OrderController {
             HttpSession session, RedirectAttributes redirectAttributes
     ) {
 
-        MemberDto member = (MemberDto) session.getAttribute("loginMember");
+        String loginId = (String) session.getAttribute("userLoginId");
+        MemberDto member = memberService.getMemberByLoginId(loginId);
 
         ReceiverInfoDto receiver = new ReceiverInfoDto();
         receiver.setReceiverName(receiverName);

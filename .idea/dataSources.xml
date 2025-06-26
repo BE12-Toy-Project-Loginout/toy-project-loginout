@@ -1,18 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="loginout@192.168.130.35" uuid="6694932d-3610-4d4f-beb9-0aa37f24d805">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://192.168.130.35:3306</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-  </component>
+    <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+
+        <data-source source="LOCAL" name="@192.168.130.35" uuid="b8ec9764-ff92-4ef8-90b6-1e012fc2c6c3">
+
+        <data-source source="LOCAL" name="loginout@192.168.130.35" uuid="6694932d-3610-4d4f-beb9-0aa37f24d805">
+            feature/cart_with_order
+            <driver-ref>mysql.8</driver-ref>
+            <synchronize>true</synchronize>
+            <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+            <jdbc-url>jdbc:mysql://192.168.130.35:3306/loginout</jdbc-url>
+            <jdbc-additional-properties>
+                <property name="com.intellij.clouds.kubernetes.db.host.port" />
+                <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+                <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
+                <property name="com.intellij.clouds.kubernetes.db.container.port" />
+            </jdbc-additional-properties>
+            <working-dir>$ProjectFileDir$</working-dir>
+        </data-source>
+        <data-source source="LOCAL" name="springbasic@localhost" uuid="6b1a89be-93e9-4fb9-94d7-062432db4488">
+            <driver-ref>mysql.8</driver-ref>
+            <synchronize>true</synchronize>
+            <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+            <jdbc-url>jdbc:mysql://localhost:3306/springbasic</jdbc-url>
+            <jdbc-additional-properties>
+                <property name="com.intellij.clouds.kubernetes.db.host.port" />
+                <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+                <property name="com.intellij.clouds.kubernetes.db.container.port" />
+            </jdbc-additional-properties>
+            <working-dir>$ProjectFileDir$</working-dir>
+        </data-source>
+    </component>
 </project>

@@ -20,7 +20,7 @@ public class User {
     private String userName;
     private boolean isLock;
     private String statusType;
-
+    private long memberId;
 
     public User(String userLoginId, String userPassword) {
         this.userLoginId = userLoginId;
