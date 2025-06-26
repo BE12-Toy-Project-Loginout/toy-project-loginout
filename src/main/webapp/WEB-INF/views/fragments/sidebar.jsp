@@ -152,8 +152,8 @@
         <li><a href="#" id="signup-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
         <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>
         <li><a href="${pageContext.request.contextPath}/admin" id="admin-link" <c:if test="${!isAdmin}">style="display: none;"</c:if>>관리자 페이지</a></li>
-        <li><a href="#" style="text-decoration: none; color: inherit;">장바구니</a></li>
-        <li><a href="#" style="text-decoration: none; color: inherit;">주문조회</a></li>
+        <li><a href="${pageContext.request.contextPath}/cart" style="text-decoration: none; color: inherit;">장바구니</a></li>
+        <li><a href="${pageContext.request.contextPath}/order" style="text-decoration: none; color: inherit;">주문조회</a></li>
         <li><a href="#" style="text-decoration: none; color: inherit;">마이페이지</a></li>
     </ul>
 
