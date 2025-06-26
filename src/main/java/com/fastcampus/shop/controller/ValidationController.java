@@ -1,6 +1,5 @@
 package com.fastcampus.shop.controller;
 
-import com.fastcampus.shop.service.MemberService;
 import com.fastcampus.shop.service.MemberService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

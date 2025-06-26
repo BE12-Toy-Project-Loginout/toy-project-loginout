@@ -29,12 +29,6 @@ public class JoinController {
             return "redirect:/join";
         }
 
-        if (!memberService.isValidEmail(member.getEmail())) {
-            String msg = URLEncoder.encode("이미 존재하는 이메일입니다.", "utf-8");
-            m.addAttribute("msg", msg);
-            return "redirect:/join";
-        }
-
         Boolean isVerified = (Boolean) session.getAttribute("emailVerified");
         if (isVerified == null || !isVerified) {
             String msg = URLEncoder.encode("이메일 인증이 필요합니다.", "utf-8");
