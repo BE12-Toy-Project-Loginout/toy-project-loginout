@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fastcampus.shop.dao.CartDao">
+
+    <resultMap id="CartResultMap" type="com.fastcampus.shop.dto.CartDto">
+        <id column="cart_id" property="cartId"/>
+        <result column="member_id" property="memberId"/>
+        <result column="product_detail_id" property="productDetailId"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="product_name" property="productName"/>
+        <result column="session_token" property="sessionToken"/>
+        <result column="quantity" property="quantity"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="status" property="status"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="expires_at" property="expiresAt"/>
+
+
+    </resultMap>
+
+    <select id="getAllCart" parameterType="String" resultMap="CartResultMap">
+        SELECT
+            c.*,
+            p.product_name,
+            p.product_price,
+            p.product_id
+        FROM loginout.cart c
+                 LEFT  JOIN loginout.product_detail pd ON pd.product_id = c.product_id
+                 LEFT JOIN loginout.product p ON p.product_id = pd.product_id
+        WHERE c.status = 'ACTIVE'
+    </select>
+
+    <insert id="insertCart"
+            parameterType="com.fastcampus.shop.dto.CartDto"
+            useGeneratedKeys="true"
+            keyProperty="cartId">
+        INSERT INTO loginout.cart
+        (
+         product_id,
+         product_price,
+         product_name,
+         quantity,
+         total_price
+         )
+        VALUES
+            (
+             #{productId},
+             #{productPrice},
+             #{productName},
+             #{quantity},
+             #{totalPrice}
+            )
+    </insert>
+
+
+    <update id="updateCart" parameterType="com.fastcampus.shop.dto.CartDto">
+        UPDATE loginout.cart
+        SET quantity    = quantity    + #{quantity},
+           total_price = total_price + #{totalPrice}
+        WHERE
+              product_id  = #{productId}
+          AND status      = 'ACTIVE'
+    </update>
+
+
+    <delete id="deleteCart" parameterType="Long">
+        DELETE FROM loginout.cart
+        WHERE cart_id = #{cartId}
+    </delete>
+
+
+
+</mapper>
