@@ -28,7 +28,7 @@
             width: 100%;
             height: 100vh;
             overflow: hidden;
-            background: url('${pageContext.request.contextPath}${backgroundImage != null ? backgroundImage.imagePath : "/resources/images/bg_main.png"}') no-repeat center center / cover;
+            background: url('${pageContext.request.contextPath}${backgroundImage != null ? backgroundImage.imagePath : "/resources/images/bg_main.jpg"}') no-repeat center center / cover;
         }
 
         .text-content {

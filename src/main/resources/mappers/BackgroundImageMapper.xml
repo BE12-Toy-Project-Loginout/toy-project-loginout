@@ -11,6 +11,6 @@
         FROM
             background_image
         WHERE
-            image_name = 'bg_main.png'
+            image_name = 'bg_main.jpg'
     </select>
 </mapper>
