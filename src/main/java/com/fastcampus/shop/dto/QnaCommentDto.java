@@ -7,12 +7,21 @@ public class QnaCommentDto {
     private Integer answerId;
     private Integer panswerId;
     private Integer memberId;
+    private String memberName;
     private Integer qnaId;
     private String answerContent;
     private Date createAt;
     private Date updateAt;
 
     public QnaCommentDto() { }
+
+    public QnaCommentDto(Integer panswerId, Integer memberId, String memberName, Integer qnaId, String answerContent) {
+        this.panswerId = panswerId;
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.qnaId = qnaId;
+        this.answerContent = answerContent;
+    }
 
     public QnaCommentDto(Integer panswerId, Integer memberId, Integer qnaId, String answerContent) {
         this.panswerId = panswerId;
@@ -43,6 +52,14 @@ public class QnaCommentDto {
 
     public void setMemberId(Integer memberId) {
         this.memberId = memberId;
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
 
     public Integer getQnaId() {
@@ -81,11 +98,11 @@ public class QnaCommentDto {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         QnaCommentDto that = (QnaCommentDto) o;
-        return Objects.equals(answerId, that.answerId) && Objects.equals(panswerId, that.panswerId) && Objects.equals(memberId, that.memberId) && Objects.equals(qnaId, that.qnaId) && Objects.equals(answerContent, that.answerContent);
+        return Objects.equals(answerId, that.answerId) && Objects.equals(panswerId, that.panswerId) && Objects.equals(memberId, that.memberId) && Objects.equals(memberName, that.memberName) && Objects.equals(qnaId, that.qnaId) && Objects.equals(answerContent, that.answerContent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answerId, panswerId, memberId, qnaId, answerContent);
+        return Objects.hash(answerId, panswerId, memberId, memberName, qnaId, answerContent);
     }
 }
