@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css">
 </head>
 <body>
-<%@ include file="fragments/sidebar.jsp" %>
-
 <h2>장바구니</h2>
 
 <table>
@@ -91,29 +89,71 @@
 </div>
 
 <div class="footer-summary">
+    <form method="post" action="${pageContext.request.contextPath}/order">
+
+
+        <c:if test="${not empty sessionScope.memberId}">
+            <input type="hidden" name="memberId" value="${sessionScope.memberId}"/>
+        </c:if>
+
         <c:forEach var="item" items="${cartList}">
+
             <input type="hidden" name="productId"    value="${item.productId}"/>
+            <input type="hidden" name="productName"  value="${fn:escapeXml(item.productName)}"/>
+            <input type="hidden" name="productPrice" value="${fn:replace(item.productPrice, ',', '')}"/>
             <input type="hidden" name="quantity"     value="${item.quantity}"/>
         </c:forEach>
+
         <button type="submit" class="btn btn-order">전체 상품 구매</button>
     </form>
+    <form method="post" action="${pageContext.request.contextPath}/order/selected" style="display:inline; margin-left:8px;">
         <button type="submit" class="btn">선택 상품 주문</button>
     </form>
 </div>
 
 <script>
-    const SHIPPING_FEE   = 2500;
+    const SHIPPING_FEE = 2500;
+    const FREE_SHIPPING_THRESHOLD = 20000;
 
     function updateCart() {
+        // 1) 총 상품 금액 계산
         let totalProd = 0;
-        const rows    = document.querySelectorAll('tbody tr');
+        const rows = document.querySelectorAll('tbody tr');
         rows.forEach(row => {
+            const unit = parseInt(row.querySelector('.unit-price').innerText, 10) || 0;
             let qty = parseInt(row.querySelector('.qty-input').value, 10);
             if (isNaN(qty) || qty < 1) qty = 1;
-            const rowSum = unit * qty + SHIPPING_FEE;
-            row.querySelector('.row-sum').innerText = rowSum.toLocaleString() + '원';
             totalProd += unit * qty;
         });
+
+        // 2) 무료배송 여부 판별
+        const isFree = totalProd >= FREE_SHIPPING_THRESHOLD;
+
+        // 3) 각 행 배송비·합계 갱신
+        rows.forEach(row => {
+            const unit = parseInt(row.querySelector('.unit-price').innerText, 10) || 0;
+            const qty  = parseInt(row.querySelector('.qty-input').value, 10) || 1;
+            const shipCell = row.querySelector('.shipping');
+            const sumCell  = row.querySelector('.row-sum');
+
+            if (isFree) {
+                shipCell.innerText = '무료';
+                sumCell.innerText  = (unit * qty).toLocaleString() + '원';
+            } else {
+                shipCell.innerText = SHIPPING_FEE.toLocaleString() + '원';
+                sumCell.innerText  = (unit * qty + SHIPPING_FEE).toLocaleString() + '원';
+            }
+        });
+
+        // 4) 요약 영역 반영
+        const totalShipText = isFree
+            ? '무료'
+            : (SHIPPING_FEE * rows.length).toLocaleString() + '원';
+
+        document.getElementById('totalProducts').innerText  = totalProd.toLocaleString() + '원';
+        document.getElementById('totalShipping').innerText = totalShipText;
+        document.getElementById('grandTotal').innerText    =
+            (totalProd + (isFree ? 0 : SHIPPING_FEE * rows.length)).toLocaleString() + '원';
     }
 
     // 이벤트 바인딩 & 초기 호출
@@ -127,3 +167,7 @@
     );
     updateCart();
 </script>
+
+
+</body>
+</html>
