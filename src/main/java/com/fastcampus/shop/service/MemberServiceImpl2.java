@@ -1,8 +1,7 @@
 package com.fastcampus.shop.service;
 
 import com.fastcampus.shop.dao.MemberMapper2;
-import com.fastcampus.shop.dao.MemberMapper2;
-import com.fastcampus.shop.dto.Member;
+import com.fastcampus.shop.dto.Member2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -39,7 +38,7 @@ public class MemberServiceImpl2 implements MemberService2 {
     }
 
     @Override
-    public void registerMember(Member member) throws Exception {
+    public void registerMember(Member2 member) throws Exception {
         if (!memberMapper.isEmailVerified(member.getEmail())) {
             System.out.println("▶ 이메일 인증 실패");
             throw new IllegalStateException("이메일 인증이 완료되지 않았습니다.");

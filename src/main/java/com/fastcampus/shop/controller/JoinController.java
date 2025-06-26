@@ -1,6 +1,6 @@
 package com.fastcampus.shop.controller;
 
-import com.fastcampus.shop.dto.Member;
+import com.fastcampus.shop.dto.Member2;
 import com.fastcampus.shop.service.MemberService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ public class JoinController {
     }
 
     @PostMapping("/feature/home")
-    public String info(@ModelAttribute("user") Member member, Model m, HttpSession session) throws Exception {
+    public String info(@ModelAttribute("user") Member2 member, Model m, HttpSession session) throws Exception {
         if (!memberService.isValidId(member.getId())) {
             String msg = URLEncoder.encode("이미 존재하는 아이디입니다.", "utf-8");
             m.addAttribute("msg", msg);

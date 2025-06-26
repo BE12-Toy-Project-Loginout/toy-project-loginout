@@ -12,12 +12,12 @@
         SELECT COUNT(*) FROM member WHERE member_email = #{email}
     </select>
 
-    <insert id="insertSimpleMember" parameterType="com.fastcampus.shop.dto.Member">
+    <insert id="insertSimpleMember" parameterType="com.fastcampus.shop.dto.Member2">
         INSERT INTO member (member_login_id, member_password, member_name, member_phonenumber, member_email)
         VALUES (#{id}, #{pwd}, #{name}, CONCAT(#{phone1}, '-', #{phone2}, '-', #{phone3}), #{email})
     </insert>
 
-    <insert id="insertDetailedMember" parameterType="com.fastcampus.shop.dto.Member">
+    <insert id="insertDetailedMember" parameterType="com.fastcampus.shop.dto.Member2">
         INSERT INTO member (member_login_id, member_password, member_name, member_phonenumber, member_zipcode, member_address, member_address_detail, member_email)
         VALUES (#{id}, #{pwd}, #{name}, CONCAT(#{phone1}, '-', #{phone2}, '-', #{phone3}), #{zipcode}, #{address1}, #{address2}, #{email})
     </insert>

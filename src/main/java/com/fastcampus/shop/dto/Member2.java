@@ -2,7 +2,7 @@ package com.fastcampus.shop.dto;
 
 import java.util.Objects;
 
-public class Member {
+public class Member2 {
     private String id;
     private String pwd;
     private String verifyPwd;
@@ -18,7 +18,7 @@ public class Member {
 
     private String email;
 
-    public Member(){}
+    public Member2(){}
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -59,7 +59,7 @@ public class Member {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Member member = (Member) o;
+        Member2 member = (Member2) o;
         return id.equals(member.id) && Objects.equals(name, member.name) && Objects.equals(phone1, member.phone1) && Objects.equals(phone2, member.phone2) && Objects.equals(phone3, member.phone3) && Objects.equals(email, member.email);
     }
 
