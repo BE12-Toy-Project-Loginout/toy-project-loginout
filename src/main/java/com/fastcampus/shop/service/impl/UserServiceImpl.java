@@ -2,6 +2,8 @@ package com.fastcampus.shop.service.impl;
 
 import com.fastcampus.shop.dao.UserMapper;
 import com.fastcampus.shop.dto.User;
+import com.fastcampus.shop.service.MemberService;
+import com.fastcampus.shop.service.QMemberService;
 import com.fastcampus.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.Map;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private QMemberService memberService;
 
     private final UserMapper userMapper;
 
@@ -44,8 +48,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void logout() throws Exception {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    public void logout(HttpServletRequest request) throws Exception {
+        //HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
@@ -108,6 +112,12 @@ public class UserServiceImpl implements UserService {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("userName", validatedUser.getUserName());
                 session.setAttribute("userLoginId", validatedUser.getUserLoginId());
+
+                // ✅ [추가된 부분] memberId 조회 후 세션에 저장
+                Long memberId = memberService.getMemberIdByLoginId(validatedUser.getUserLoginId());
+                session.setAttribute("memberId", memberId.intValue()); // ✅ Integer로 저장
+
+
                 String status = getUserStatus(validatedUser);
                 session.setAttribute("userStatus", status);
 

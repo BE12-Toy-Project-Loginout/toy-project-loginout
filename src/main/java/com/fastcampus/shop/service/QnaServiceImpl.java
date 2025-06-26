@@ -1,8 +1,8 @@
 package com.fastcampus.shop.service;
 import com.fastcampus.shop.dao.QnaCommentDao;
 import com.fastcampus.shop.dao.QnaDao;
+import com.fastcampus.shop.domain.QSearchCondition;
 import com.fastcampus.shop.dto.QnaDto;
-import com.fastcampus.shop.dto.SearchCondition;
 import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,12 +77,12 @@ public class QnaServiceImpl implements QnaService {
 
 
     @Override
-    public List<QnaDto> getSearchResultPage(SearchCondition sc) throws Exception {
+    public List<QnaDto> getSearchResultPage(QSearchCondition sc) throws Exception {
         return qnaDao.searchSelectPage(sc);
     }
 
     @Override
-    public int getSearchResultCnt(SearchCondition sc) throws Exception {
+    public int getSearchResultCnt(QSearchCondition sc) throws Exception {
         return qnaDao.searchResultCnt(sc);
     }
 
@@ -91,10 +91,10 @@ public class QnaServiceImpl implements QnaService {
         return qnaDao.deleteByAdmin(qnaId);
     }
 
-    /*@Override
+    @Override
     public List<QnaDto> getAllWithMemberName() throws Exception {
         return qnaDao.findAllWithMemberName();
-    }*/
+    }
 
 
 }

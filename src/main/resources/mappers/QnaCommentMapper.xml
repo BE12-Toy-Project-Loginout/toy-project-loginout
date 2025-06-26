@@ -6,16 +6,18 @@
 
     <!-- 전체 조회 -->
     <select id="findAll" parameterType="int" resultType="com.fastcampus.shop.dto.QnaCommentDto">
-        SELECT answer_id, answer_content, member_id, qna_id, create_at, update_at, ifnull(panswer_id, answer_id) as panswer_id
-        FROM qna_answer
-        WHERE qna_id = #{qnaId}
+        SELECT a.answer_id, a.answer_content, a.member_id, m.member_name, a.qna_id, a.create_at, a.update_at, ifnull(a.panswer_id, a.answer_id) as panswer_id
+        FROM qna_answer a
+        JOIN member m ON a.member_id = m.member_id
+        WHERE a.qna_id = #{qnaId}
         ORDER BY panswer_id ASC, answer_id ASC <!-- 최신순으로 정렬 -->
     </select>
     <!-- 상세 조회 -->
     <select id="findById" parameterType="int" resultType="com.fastcampus.shop.dto.QnaCommentDto">
-        SELECT answer_id, answer_content, member_id, qna_id, create_at, update_at, panswer_id
-        FROM qna_answer
-        WHERE answer_id = #{answerId}
+        SELECT a.answer_id, a.answer_content, a.member_id, m.member_name, a.qna_id, a.create_at, a.update_at, a.panswer_id
+        FROM qna_answer a
+        JOIN member m ON a.member_id = m.member_id
+        WHERE a.answer_id = #{answerId}
     </select>
 
     <!-- 등록 -->
