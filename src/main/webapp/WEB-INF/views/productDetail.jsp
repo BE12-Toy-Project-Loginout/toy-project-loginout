@@ -23,7 +23,9 @@
 </head>
 
 <body>
-<div class="product-area">
+<%@ include file="fragments/sidebar.jsp" %>
+
+<div class="product-area" style="margin-left: 50px;">
     <div class="image-box">
         <img src="${pageContext.request.contextPath}/product/image?productId=${productDetail.productId}"
              onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.jpg'"

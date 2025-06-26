@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void logout() throws Exception {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    public void logout(HttpServletRequest request) throws Exception {
+        //HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();

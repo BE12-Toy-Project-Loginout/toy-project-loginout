@@ -15,7 +15,7 @@ public interface UserService {
 
      void updateLastLogin(String userLoginId) throws Exception;
 
-     void logout() throws Exception;
+     void logout(HttpServletRequest request) throws Exception;
 
      int getLoginFailCount(User user) throws Exception;
 
