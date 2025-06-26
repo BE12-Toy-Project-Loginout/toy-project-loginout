@@ -85,21 +85,6 @@
         z-index: 500;
     }
 
-    /* 하단 아이콘 - 항상 고정되게 */
-    .icon-bar {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 9999; /* 사이드바보다 위 */
-    }
-
-    .icon-bar img {
-        width: 24px;
-        height: 24px;
-    }
 
     /* Shop 메뉴 드롭다운 */
     .shop-submenu {
@@ -153,8 +138,6 @@
         <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>
         <li><a href="${pageContext.request.contextPath}/admin" id="admin-link" <c:if test="${!isAdmin}">style="display: none;"</c:if>>관리자 페이지</a></li>
         <li><a href="${pageContext.request.contextPath}/cart" style="text-decoration: none; color: inherit;">장바구니</a></li>
-        <li><a href="${pageContext.request.contextPath}/order" style="text-decoration: none; color: inherit;">주문조회</a></li>
-        <li><a href="#" style="text-decoration: none; color: inherit;">마이페이지</a></li>
     </ul>
 
 </div>
@@ -162,11 +145,4 @@
 <!-- 세로 텍스트 (쇼핑몰 로고) -->
 <div class="vertical-text">
     <span style="color: #c084fc;">LOGINOUT</span>
-</div>
-
-<!-- 고정 하단 아이콘 -->
-<div class="icon-bar">
-    <img src="${pageContext.request.contextPath}/resources/images/icon_mypage.png" alt="mypage">
-    <img src="${pageContext.request.contextPath}/resources/images/icon_cart.png" alt="cart">
-    <img src="${pageContext.request.contextPath}/resources/images/icon_search.png" alt="search">
 </div>
