@@ -61,10 +61,10 @@
 
 <script>
     $(document).ready(function() {
-        // Add click event for login link
-        $('#login-link').on('click', function(e) {
+        // Add click event for login/logout link
+        $('#login-logout-link').on('click', function(e) {
             // No need to prevent default as we want the normal link behavior
-            console.log('Login link clicked');
+            console.log('Login/logout link clicked');
         });
     });
 </script>

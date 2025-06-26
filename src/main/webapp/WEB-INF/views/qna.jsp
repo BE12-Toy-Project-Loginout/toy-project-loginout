@@ -1,7 +1,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
-<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -72,16 +72,17 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-<div id="menu">
+<%@ include file="fragments/sidebar.jsp" %>
+<%--<div id="menu">
     <ul>
         <li id="logo">Loginout</li>
         <li><a href="<c:url value='/'/>">Home</a></li>
-        <%--<li><a href="<c:url value='/board/list'/>">Board</a></li>
+        &lt;%&ndash;<li><a href="<c:url value='/board/list'/>">Board</a></li>
         <li><a href="<c:url value='/login/login'/>">login</a></li>
-        <li><a href="<c:url value='/register/add'/>">Sign in</a></li>--%>
+        <li><a href="<c:url value='/register/add'/>">Sign in</a></li>&ndash;%&gt;
         <li><a href=""><i class="fas fa-search small"></i></a></li>
     </ul>
-</div>
+</div>--%>
 <script>
     let msg="${msg}";
     if(msg == "WRT_ERR") alert("게시물 등록에 실패했습니다. 다시 시도해주세요.");

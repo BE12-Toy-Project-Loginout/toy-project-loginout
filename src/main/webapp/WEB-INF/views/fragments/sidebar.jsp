@@ -133,9 +133,8 @@
         </li>
         <li><a href="${pageContext.request.contextPath}/notice">공지사항</a></li>
         <li><a href="${pageContext.request.contextPath}/qna">Q&A</a></li>
-        <li><a href="${pageContext.request.contextPath}/login" id="login-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>로그인</a></li>
-        <li><a href="#" id="signup-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
-        <li><a href="${pageContext.request.contextPath}/logout" id="logout-link" <c:if test="${!isLoggedIn}">style="display: none;"</c:if>>로그아웃</a></li>
+        <li><a href="${pageContext.request.contextPath}/<c:choose><c:when test="${isLoggedIn}">logout</c:when><c:otherwise>login</c:otherwise></c:choose>" id="login-logout-link"><c:choose><c:when test="${isLoggedIn}">로그아웃</c:when><c:otherwise>로그인</c:otherwise></c:choose></a></li>
+        <li><a href="${pageContext.request.contextPath}/feature/join" id="signup-link" <c:if test="${isLoggedIn}">style="display: none;"</c:if>>회원가입</a></li>
         <li><a href="${pageContext.request.contextPath}/admin" id="admin-link" <c:if test="${!isAdmin}">style="display: none;"</c:if>>관리자 페이지</a></li>
         <li><a href="${pageContext.request.contextPath}/cart" style="text-decoration: none; color: inherit;">장바구니</a></li>
     </ul>

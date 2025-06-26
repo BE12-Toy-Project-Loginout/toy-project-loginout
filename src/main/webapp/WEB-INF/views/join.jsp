@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <meta charset="UTF-8">
 
 <!DOCTYPE html>
@@ -11,32 +12,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/join.css"> <!-- 분리된 CSS 파일 링크 -->
 </head>
 <body>
+<%@ include file="fragments/sidebar.jsp" %>
 <div class="container">
-    <aside class="sidebar">
-        <!-- Hamburger menu icon -->
-        <svg class="menu-icon" viewBox="0 0 40 40" fill="none">
-            <rect x="7" y="10" width="26" height="3" rx="1.5" fill="#3a4251"/>
-            <rect x="7" y="18.5" width="26" height="3" rx="1.5" fill="#3a4251"/>
-            <rect x="7" y="27" width="26" height="3" rx="1.5" fill="#3a4251"/>
-        </svg>
-        <div class="logout">LOGINOUT</div>
-        <div class="icon-group">
-            <!-- Clipboard icon -->
-            <svg class="icon" viewBox="0 0 32 32" fill="none">
-                <rect x="8" y="4" width="16" height="24" rx="2" stroke="#3a4251" stroke-width="2"/>
-                <rect x="12" y="2" width="8" height="4" rx="2" fill="#3a4251"/>
-            </svg>
-            <!-- Moon icon -->
-            <svg class="icon" viewBox="0 0 32 32" fill="none">
-                <path d="M24 20.5C21.5 22.5 18 23.5 14.5 22.5C9.5 21 6 16.5 7.5 11.5C8.5 8 11 5.5 14 4.5C13.5 6 13.5 8 14.5 10C16 13.5 19.5 16 24 16.5C24 17.5 24 19 24 20.5Z" stroke="#3a4251" stroke-width="2"/>
-            </svg>
-            <!-- Search icon -->
-            <svg class="icon" viewBox="0 0 32 32" fill="none">
-                <circle cx="15" cy="15" r="8" stroke="#3a4251" stroke-width="2"/>
-                <line x1="22" y1="22" x2="28" y2="28" stroke="#3a4251" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </div>
-    </aside>
     <main class="main-content">
         <div style="width:100%; max-width:700px;">
             <h1>회원 가입</h1>

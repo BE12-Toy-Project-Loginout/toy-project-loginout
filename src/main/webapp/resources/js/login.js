@@ -98,9 +98,8 @@ function logout() {
             $('#pwd').val('');
 
             // Update sidebar menu items
-            $('#login-link').show();
+            $('#login-logout-link').text('로그인').attr('href', contextPath + '/login');
             $('#signup-link').show();
-            $('#logout-link').hide();
             $('#admin-link').hide();
 
             // No need to hide user welcome message as it's been removed

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css">
 </head>
 <body>
+<%@ include file="fragments/sidebar.jsp" %>
+
 <h2>장바구니</h2>
 
 <table>
@@ -125,4 +127,3 @@
     );
     updateCart();
 </script>
-

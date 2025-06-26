@@ -12,6 +12,8 @@
 </head>
 <body>
 
+<%@ include file="fragments/sidebar.jsp" %>
+
 <div class="product-area">
 
     <!-- 1) 상단: 두 개의 50% 칸 -->

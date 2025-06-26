@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
-<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -13,16 +11,7 @@
     <link rel="stylesheet" href="<c:url value='/resources/css/qna.css'/>">
 </head>
 <body>
-<div id="menu">
-    <ul>
-        <li id="logo">Loginout</li>
-        <li><a href="<c:url value='/'/>">Home</a></li>
-        <%--<li><a href="<c:url value='/board/list'/>">Board</a></li>
-        <li><a href="<c:url value='/login/login'/>">login</a></li>
-        <li><a href="<c:url value='/register/add'/>">Sign in</a></li>--%>
-        <li><a href=""><i class="fas fa-search small"></i></a></li>
-    </ul>
-</div>
+<%@ include file="fragments/sidebar.jsp" %>
 <script>
     let msg = "${msg}";
     if(msg=="LIST_ERR")  alert("QnA 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.");

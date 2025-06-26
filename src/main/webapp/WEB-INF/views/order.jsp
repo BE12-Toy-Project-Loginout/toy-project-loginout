@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/order.css"/>
 </head>
 <body>
+<%@ include file="fragments/sidebar.jsp" %>
 
 <c:set var="addrType" value="${param.addrType != null ? param.addrType : 'member'}"/>
 
