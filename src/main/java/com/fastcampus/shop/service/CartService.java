@@ -18,6 +18,16 @@ public class CartService {
         return cartDao.getAllCart();
     }
 
+    public List<CartDto> getMyCart(Long memberId) throws Exception {
+        return cartDao.getMyCart(memberId);
+    }
+
+    public List<CartDto> getBySessionToken(String sessionToken) throws Exception {
+        return cartDao.getBySessionToken(sessionToken);
+    }
+
+
+
 //    public void insertCart(CartDto cartDto) throws Exception {
 //        cartDao.insertCart(cartDto); // CartDto 객체를 받아서 DB에 삽입
 //    }
@@ -33,6 +43,9 @@ public class CartService {
 //        }
 //    }
 
+
+
+//update+insert
 @Transactional
     public void upsertCart(CartDto dto) throws Exception {
         int updated = cartDao.updateCart(dto);

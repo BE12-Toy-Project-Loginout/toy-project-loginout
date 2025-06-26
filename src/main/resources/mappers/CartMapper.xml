@@ -1,75 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fastcampus.shop.dao.CartDao">
-
     <resultMap id="CartResultMap" type="com.fastcampus.shop.dto.CartDto">
-        <id column="cart_id" property="cartId"/>
-        <result column="member_id" property="memberId"/>
-        <result column="product_detail_id" property="productDetailId"/>
-        <result column="product_id" property="productId"/>
-        <result column="product_price" property="productPrice"/>
-        <result column="product_name" property="productName"/>
+        <id     column="cart_id"       property="cartId"/>
+        <result column="member_id"     property="memberId"/>
         <result column="session_token" property="sessionToken"/>
-        <result column="quantity" property="quantity"/>
-        <result column="total_price" property="totalPrice"/>
-        <result column="status" property="status"/>
-        <result column="created_at" property="createdAt"/>
-        <result column="updated_at" property="updatedAt"/>
-        <result column="expires_at" property="expiresAt"/>
-
-
+        <result column="product_id"    property="productId"/>
+        <result column="product_name"  property="productName"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="quantity"      property="quantity"/>
+        <result column="total_price"   property="totalPrice"/>
+        <result column="status"        property="status"/>
+        <result column="created_at"    property="createdAt"/>
+        <result column="updated_at"    property="updatedAt"/>
+        <result column="expires_at"    property="expiresAt"/>
     </resultMap>
 
-    <select id="getAllCart" parameterType="String" resultMap="CartResultMap">
-        SELECT
-            c.*,
-            p.product_name,
-            p.product_price,
-            p.product_id
-        FROM loginout.cart c
-                 LEFT  JOIN loginout.product_detail pd ON pd.product_id = c.product_id
-                 LEFT JOIN loginout.product p ON p.product_id = pd.product_id
-        WHERE c.status = 'ACTIVE'
+    <select id="getAllCart" resultMap="CartResultMap">
+        SELECT * FROM cart WHERE status='ACTIVE'
     </select>
-
-    <insert id="insertCart"
-            parameterType="com.fastcampus.shop.dto.CartDto"
-            useGeneratedKeys="true"
-            keyProperty="cartId">
-        INSERT INTO loginout.cart
-        (
-         product_id,
-         product_price,
-         product_name,
-         quantity,
-         total_price
-         )
-        VALUES
-            (
-             #{productId},
-             #{productPrice},
-             #{productName},
-             #{quantity},
-             #{totalPrice}
-            )
-    </insert>
-
-
+    <select id="getMyCart" parameterType="long" resultMap="CartResultMap">
+        SELECT * FROM cart WHERE status='ACTIVE' AND member_id=#{memberId}
+    </select>
+    <select id="getBySessionToken" parameterType="string" resultMap="CartResultMap">
+        SELECT * FROM cart WHERE status='ACTIVE' AND session_token=#{sessionToken}
+    </select>
     <update id="updateCart" parameterType="com.fastcampus.shop.dto.CartDto">
-        UPDATE loginout.cart
-        SET quantity    = quantity    + #{quantity},
-           total_price = total_price + #{totalPrice}
-        WHERE
-              product_id  = #{productId}
-          AND status      = 'ACTIVE'
+        UPDATE cart
+        <set>
+            quantity    = quantity    + #{quantity},
+            total_price = total_price + #{totalPrice},
+            updated_at  = NOW()
+        </set>
+        WHERE status='ACTIVE'
+        <if test="memberId != null"> AND member_id=#{memberId}</if>
+        <if test="sessionToken != null"> AND session_token=#{sessionToken}</if>
+        AND product_id=#{productId}
     </update>
 
 
-    <delete id="deleteCart" parameterType="Long">
-        DELETE FROM loginout.cart
-        WHERE cart_id = #{cartId}
-    </delete>
+    <insert id="insertCart" parameterType="com.fastcampus.shop.dto.CartDto" useGeneratedKeys="true" keyProperty="cartId">
+        INSERT INTO cart (member_id, session_token, product_id, product_name, product_price, quantity, total_price, status, created_at, updated_at)
+        VALUES (#{memberId}, #{sessionToken}, #{productId}, #{productName}, #{productPrice}, #{quantity}, #{totalPrice}, 'ACTIVE', NOW(), NOW())
+    </insert>
 
-
-
+        <!-- 장바구니 삭제 -->
+        <delete id="deleteCart"
+                parameterType="long">
+            DELETE FROM loginout.cart
+            WHERE cart_id = #{cartId}
+              AND status  = 'ACTIVE'
+        </delete>
 </mapper>
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="com.fastcampus.shop.dao.CartDao">-->
+
+<!--    &lt;!&ndash; DTO 필드 ↔ 컬럼 매핑 &ndash;&gt;-->
+<!--    <resultMap id="CartResultMap" type="com.fastcampus.shop.dto.CartDto">-->
+<!--        <id     column="cart_id"        property="cartId"/>-->
+<!--        <result column="member_id"      property="memberId"/>-->
+<!--        <result column="session_token"  property="sessionToken"/>-->
+<!--        <result column="product_detail_id" property="productDetailId"/>-->
+<!--        <result column="product_id"     property="productId"/>-->
+<!--        <result column="product_name"   property="productName"/>-->
+<!--        <result column="product_price"  property="productPrice"/>-->
+<!--        <result column="quantity"       property="quantity"/>-->
+<!--        <result column="total_price"    property="totalPrice"/>-->
+<!--        <result column="status"         property="status"/>-->
+<!--        <result column="created_at"     property="createdAt"/>-->
+<!--        <result column="updated_at"     property="updatedAt"/>-->
+<!--        <result column="expires_at"     property="expiresAt"/>-->
+<!--    </resultMap>-->
+
+<!--    &lt;!&ndash; (Optional) 전체 조회: ADMIN 용 &ndash;&gt;-->
+<!--    <select id="getAllCart" resultMap="CartResultMap">-->
+<!--        SELECT c.*, p.product_name, p.product_price-->
+<!--        FROM loginout.cart c-->
+<!--                 LEFT JOIN loginout.product_detail pd-->
+<!--                           ON pd.product_id = c.product_id-->
+<!--                 LEFT JOIN loginout.product p-->
+<!--                           ON p.product_id  = pd.product_id-->
+<!--        WHERE c.status = 'ACTIVE'-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash; 회원 장바구니 조회 &ndash;&gt;-->
+<!--    <select id="getMyCart"-->
+<!--            parameterType="java.lang.Long"-->
+<!--            resultMap="CartResultMap">-->
+<!--        SELECT c.*, p.product_name, p.product_price-->
+<!--        FROM loginout.cart c-->
+<!--                 LEFT JOIN loginout.product_detail pd-->
+<!--                           ON pd.product_id = c.product_id-->
+<!--                 LEFT JOIN loginout.product p-->
+<!--                           ON p.product_id  = pd.product_id-->
+<!--        WHERE c.status    = 'ACTIVE'-->
+<!--          AND c.member_id = #{memberId}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash; 비회원(세션) 장바구니 조회 &ndash;&gt;-->
+<!--    <select id="getBySessionToken"-->
+<!--            parameterType="java.lang.String"-->
+<!--            resultMap="CartResultMap">-->
+<!--        SELECT c.*, p.product_name, p.product_price-->
+<!--        FROM loginout.cart c-->
+<!--                 LEFT JOIN loginout.product_detail pd-->
+<!--                           ON pd.product_id = c.product_id-->
+<!--                 LEFT JOIN loginout.product p-->
+<!--                           ON p.product_id  = pd.product_id-->
+<!--        WHERE c.status        = 'ACTIVE'-->
+<!--          AND c.session_token = #{sessionToken}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash; 장바구니 추가 &ndash;&gt;-->
+<!--    <insert id="insertCart"-->
+<!--            parameterType="com.fastcampus.shop.dto.CartDto"-->
+<!--            useGeneratedKeys="true"-->
+<!--            keyProperty="cartId">-->
+<!--        INSERT INTO loginout.cart-->
+<!--        (member_id, session_token,-->
+<!--         product_id, product_price,-->
+<!--         product_name, quantity,-->
+<!--         total_price, status,-->
+<!--         created_at, updated_at)-->
+<!--        VALUES-->
+<!--            (#{memberId}, #{sessionToken},-->
+<!--             #{productId}, #{productPrice},-->
+<!--             #{productName}, #{quantity},-->
+<!--             #{totalPrice}, 'ACTIVE',-->
+<!--             CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash; 장바구니 수량/합계 업데이트 &ndash;&gt;-->
+<!--    <update id="updateCart"-->
+<!--            parameterType="com.fastcampus.shop.dto.CartDto">-->
+<!--        UPDATE loginout.cart-->
+<!--        <set>-->
+<!--            quantity    = quantity    + #{quantity},-->
+<!--            total_price = total_price + #{totalPrice},-->
+<!--            updated_at  = CURRENT_TIMESTAMP-->
+<!--        </set>-->
+<!--        WHERE product_id = #{productId}-->
+<!--        AND status     = 'ACTIVE'-->
+<!--        <if test="memberId != null">-->
+<!--            AND member_id = #{memberId}-->
+<!--        </if>-->
+<!--        <if test="sessionToken != null">-->
+<!--            AND session_token = #{sessionToken}-->
+<!--        </if>-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash; 장바구니 삭제 &ndash;&gt;-->
+<!--    <delete id="deleteCart"-->
+<!--            parameterType="long">-->
+<!--        DELETE FROM loginout.cart-->
+<!--        WHERE cart_id = #{cartId}-->
+<!--          AND status  = 'ACTIVE'-->
+<!--    </delete>-->
+
+<!--</mapper>-->

@@ -15,6 +15,18 @@ public class CartDaoImpl implements CartDao {
     private static final String NAMESPACE = "com.fastcampus.shop.dao.CartDao.";
 
     @Override
+    public List<CartDto> getMyCart(Long memberId) throws Exception {
+        return sqlSession.selectList(NAMESPACE + "getMyCart",memberId);
+    }
+
+    @Override
+    public List<CartDto> getBySessionToken(String sessionToken) throws Exception{
+        return sqlSession.selectList(NAMESPACE + "getBySessionToken",sessionToken);
+    }
+
+
+
+    @Override
     public List<CartDto> getAllCart() throws Exception {
         return sqlSession.selectList(NAMESPACE + "getAllCart");
     }

@@ -27,7 +27,8 @@
             member_login_fail_count as loginFailCount,
             member_last_login_date as lastLogin,
             member_status_type as statusType,
-            is_lock as isLock
+            is_lock as isLock,
+            member_id as memberId   <!-- memberId를 주문과 연결하기 위해 추가 -->
         FROM
             member
         WHERE

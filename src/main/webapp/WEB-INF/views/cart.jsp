@@ -11,74 +11,74 @@
 <body>
 <h2>장바구니</h2>
 
-<form id="cartForm" method="post" action="${pageContext.request.contextPath}/cart">
-    <table>
-        <thead>
-        <tr>
-            <th><input type="checkbox" id="selectAll"/></th>
-            <th>이미지</th>
-            <th>상품 정보</th>
-            <th>판매가</th>
-            <th>수량</th>
-            <th>배송구분</th>
-            <th>배송비</th>
-            <th>합계</th>
-            <th>선택</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="item" items="${cartList}">
-            <tr data-cart-id="${item.cartId}">
-
-        <!-- 기존 체크박스 칸 -->
-        <td>
-            <input type="checkbox" name="selected" value="${item.cartId}"/>
-        </td>
-
-        <!-- 1) 이미지 셀 -->
-        <td>
-        <img class="cart-img"
-             src="${pageContext.request.contextPath}/product/image?productId=${item.productId}"
-             onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.jpg'"
-             alt="${fn:escapeXml(item.productName)} 이미지" />
-
-        </td>
-
-                <td><strong>${item.productName}</strong></td>
-                <td class="unit-price">${fn:replace(item.productPrice, ',', '')}</td>
-                <td>
-                    <input
-                            type="number"
-                            class="qty-input"
-                            name="quantity_${item.cartId}"
-                            value="${item.quantity}"
-                            min="1"
-                            oninput="updateCart()"
-                    />
-                </td>
-                <td>택배</td>
-                <td class="shipping">2500</td>
-                <td class="row-sum"></td>
-                <td>
-                    <form action="${pageContext.request.contextPath}/order" method="post" style="display:inline">
-                        <input type="hidden" name="productId" value="${item.productId}" />
-                        <input type="hidden" name="quantity"  value="${item.quantity}" />
-                        <button type="submit" class="btn btn-order">주문하기</button>
-                    </form>
-                    <form action="${pageContext.request.contextPath}/wishlist/add" method="post" style="display:inline">
-                        <input type="hidden" name="productId" value="${item.productId}"/>
-                        <button type="submit" class="btn">관심상품등록</button>
-                    </form>
-                    <form action="${pageContext.request.contextPath}/cart/delete" method="post" style="display:inline">
+<table>
+    <thead>
+    <tr>
+        <th><input type="checkbox" id="selectAll"/></th>
+        <th>이미지</th>
+        <th>상품 정보</th>
+        <th>판매가</th>
+        <th>수량</th>
+        <th>배송구분</th>
+        <th>배송비</th>
+        <th>합계</th>
+        <th>선택</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="item" items="${cartList}">
+        <tr data-cart-id="${item.cartId}">
+            <td><input type="checkbox" name="selected" value="${item.cartId}"/></td>
+            <td>
+                <img class="placeholder-img"
+                     src="${pageContext.request.contextPath}/product/image?productId=${item.productId}"
+                     onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.jpg'"
+                     alt="${fn:escapeXml(item.productName)}"/>
+            </td>
+            <td><strong>${fn:escapeXml(item.productName)}</strong></td>
+            <td class="unit-price">${fn:replace(item.productPrice, ',', '')}</td>
+            <td>
+                <input type="number"
+                       class="qty-input"
+                       data-cart-id="${item.cartId}"
+                       value="${item.quantity}"
+                       min="1"
+                       oninput="updateCart()"/>
+            </td>
+            <td>택배</td>
+            <td class="shipping">2500</td>
+            <td class="row-sum"></td>
+            <td>
+                <form action="${pageContext.request.contextPath}/order" method="post" style="display:inline">
+                    <input type="hidden" name="productId" value="${item.productId}"/>
+                    <input type="hidden" name="quantity"  value="${item.quantity}"/>
+                    <c:if test="${not empty sessionScope.memberId}">
+                        <input type="hidden" name="memberId" value="${sessionScope.memberId}"/>
+                    </c:if>
+                    <button type="submit" class="btn btn-order">주문하기</button>
+                </form>
+                <form action="${pageContext.request.contextPath}/wishlist/add" method="post" style="display:inline">
+                    <input type="hidden" name="productId" value="${item.productId}"/>
+                    <button type="submit" class="btn">관심상품등록</button>
+                </form>
+                <c:choose>
+                <c:when test="${not empty sessionScope.memberId}">
+                <form action="${pageContext.request.contextPath}/cart/${sessionScope.memberId}/delete"
+                      method="post" style="display:inline">
+                    </c:when>
+                    <c:otherwise>
+                    <form action="${pageContext.request.contextPath}/cart/guest/delete"
+                          method="post" style="display:inline">
+                        </c:otherwise>
+                        </c:choose>
                         <input type="hidden" name="cartId" value="${item.cartId}"/>
                         <button type="submit" class="btn btn-delete">X 삭제</button>
                     </form>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</form>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 
 <div class="summary">
     <div>
@@ -89,22 +89,30 @@
 </div>
 
 <div class="footer-summary">
-    <form id="orderAllForm" method="post" action="${pageContext.request.contextPath}/order">
+    <form method="post" action="${pageContext.request.contextPath}/order">
+
+
+        <c:if test="${not empty sessionScope.memberId}">
+            <input type="hidden" name="memberId" value="${sessionScope.memberId}"/>
+        </c:if>
+
         <c:forEach var="item" items="${cartList}">
-            <input type="hidden" name="productId" value="${item.productId}" />
-            <input type="hidden" name="quantity"  value="${item.quantity}" />
+
+            <input type="hidden" name="productId"    value="${item.productId}"/>
+            <input type="hidden" name="productName"  value="${fn:escapeXml(item.productName)}"/>
+            <input type="hidden" name="productPrice" value="${fn:replace(item.productPrice, ',', '')}"/>
+            <input type="hidden" name="quantity"     value="${item.quantity}"/>
         </c:forEach>
+
         <button type="submit" class="btn btn-order">전체 상품 구매</button>
     </form>
-
-    <form id="orderSelectedForm" method="post" action="${pageContext.request.contextPath}/order/selected">
+    <form method="post" action="${pageContext.request.contextPath}/order/selected" style="display:inline; margin-left:8px;">
         <button type="submit" class="btn">선택 상품 주문</button>
     </form>
 </div>
 
 <script>
     const SHIPPING_FEE = 2500;
-
     function updateCart() {
         let totalProd = 0;
         const rows = document.querySelectorAll('tbody tr');
@@ -121,17 +129,15 @@
         document.getElementById('totalShipping').innerText = totalShip.toLocaleString() + '원';
         document.getElementById('grandTotal').innerText    = (totalProd + totalShip).toLocaleString() + '원';
     }
-
     document.querySelectorAll('.qty-input').forEach(input =>
         input.addEventListener('input', updateCart)
     );
     updateCart();
-
-    document.getElementById('selectAll').addEventListener('change', e => {
+    document.getElementById('selectAll').addEventListener('change', e =>
         document.querySelectorAll('input[name="selected"]').forEach(cb =>
             cb.checked = e.target.checked
-        );
-    });
+        )
+    );
 </script>
 </body>
 </html>
