@@ -3,7 +3,7 @@ package com.fastcampus.shop.dto;
 public class Member {
     private Long memberId;
     private String memberLoginId;
-    private String name; // 필요시 추가
+    private String name;
 
     // Getters and Setters
     public Long getMemberId() {
@@ -22,5 +22,4 @@ public class Member {
         this.memberLoginId = memberLoginId;
     }
 
-    // 이름 등 다른 필드도 필요시 추가
 }
