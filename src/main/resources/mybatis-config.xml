@@ -14,4 +14,5 @@
         <typeAlias alias="ProductListDto" type="com.fastcampus.shop.dto.ProductListDto"/>
         <typeAlias alias="MemberDto" type="com.fastcampus.shop.dto.MemberDto"/>
     </typeAliases>
+
 </configuration>
