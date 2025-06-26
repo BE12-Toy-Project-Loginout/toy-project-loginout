@@ -1,8 +1,16 @@
 body {
-    font-family: 'Noto Sans KR', sans-serif;
-    padding: 40px;
-    background-color: #fff;
-    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* ✅ 항상 3열 고정 */
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    box-sizing: border-box;
 }
 
 .header {
@@ -31,16 +39,6 @@ body {
 }
 
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* ✅ 항상 3열 고정 */
-    gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto 40px auto;
-    box-sizing: border-box;
-}
-
-
 .product {
     display: flex;
     flex-direction: column;
@@ -66,7 +64,7 @@ body {
 }
 
 .product-name {
-    font-size: 23px;
+    font-size: 21px;
     font-weight: bold;
     margin-bottom: 4px;
 }
@@ -91,7 +89,9 @@ body {
 
 .pagination {
     text-align: center;
-    margin-top: 30px;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 5vh;
 }
 
 .pagination a {
