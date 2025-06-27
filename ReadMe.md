@@ -111,5 +111,3 @@ src/main/java/com/fastcampus/shop/
 2. 브랜치 생성 (`feature/your-feature-name`)
 3. 변경사항 커밋
 4. 풀 리퀘스트 제출
-
----
